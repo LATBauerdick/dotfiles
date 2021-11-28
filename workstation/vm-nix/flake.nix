@@ -1,5 +1,5 @@
 {
-  description = "NixOS systems and tools by mitchellh";
+  description = "NixOS systems and tools by LATBauerdick, inspired and copied from mitchellh";
 
   inputs = {
     # Pin our primary nixpkgs repository. This is the main nixpkgs repository
@@ -38,7 +38,6 @@
       system = "aarch64-linux";
       user   = "bauerdic";
     };
-
     nixosConfigurations.vm-intel = mkVM "vm-intel" {
       # inherit nixpkgs home-manager;
       nixpkgs = nixpkgs-unstable;
