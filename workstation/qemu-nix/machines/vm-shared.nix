@@ -15,14 +15,6 @@
   # We expect to run the VM on hidpi machines.
   hardware.video.hidpi.enable = true;
 
-  # Use the systemd-boot EFI boot loader.
-  #### boot.loader.systemd-boot.enable = true;
-  #### boot.loader.efi.canTouchEfiVariables = true;
-  #### for qemu we us MBR and the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";
-
   # Define your hostname.
   networking.hostName = "nixos-latb";
 
