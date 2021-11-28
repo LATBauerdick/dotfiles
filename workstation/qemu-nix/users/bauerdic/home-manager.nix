@@ -26,6 +26,7 @@ in {
       jq
       kitty
       lima
+      neofetch
       neovim-unwrapped
 
       pandoc
