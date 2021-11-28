@@ -20,39 +20,7 @@
   # changes in each release.
   #####LATB???? home.stateVersion = "21.05";
 
-#  programs.gpg = {
-#    enable = true;
-#  };
-
-#  services.gpg-agent = {
-#    enable = true;
-#    pinentryFlavor = "qt";
-#  };
-
-#  nixpkgs.overlays = [
-#    (import (builtins.fetchTarball {
-#      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-#      sha256 = "0k0mc62zxcw3cng3gqbnzj2aaq3bsbh0i1zdficxgic8x758y2rs";
-#    }))
-#  ];
-
-
-#  programs.neovim = {
-#    enable = true;
-#    package = pkgs.neovim-unwrapped;
-#    viAlias = false;
-#    vimAlias = true;
-#  };
-
   xdg.enable = true;
-
-  home.file.".tmux.conf".source = ../../../../tmux/tmux.conf;
-
-  home.file.".zshrc".source = ../../../../zsh/zshrc;
-  home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
-
-  xdg.configFile."nvim".source = ../../../../vim;
-  xdg.configFile."kitty".source = ../../../../kitty;
 
   home.packages = with pkgs; [
       abduco
@@ -70,28 +38,19 @@
       gnumake
       pinentry-qt
       htop
-#      hub
-#      imagemagick
       jq
       kitty
-#      librsvg
       lima
-#      lzop
-#      mdcat
+      neofetch
       neovim-unwrapped
 
-#      nodejs
       pandoc
-#      pv
 #      qemu
-#      qrencode
-#      restic
       ripgrep
       silver-searcher
-#      tldr
       tmux
 #      thefuck
-#      tree
+      tree
       wget
       zoxide
 
@@ -99,14 +58,35 @@
       cabal-install
       cabal2nix
 
-
 # tex
       texlive.combined.scheme-full
+
   ];
 #    programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel9k}/share/zsh-powerlevel9k/powerlevel9k.zsh-theme";
 
 # Tex installation
   fonts.fontconfig.enable = true;
+
+  #------------------------------------------------------------------
+  # Env vars and dotfiles
+  #--------------------------------------------------------------------
+
+  home.sessionVariables = {
+    LANG = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    EDITOR = "nvim";
+    PAGER = "less -FirSwX";
+    MANPAGER = "less -FirSwX";
+  };
+
+  home.file.".tmux.conf".source = ../../../../tmux/tmux.conf;
+
+  home.file.".zshrc".source = ../../../../zsh/zshrc;
+  home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
+
+  xdg.configFile."nvim".source = ../../../../vim;
+  xdg.configFile."kitty".source = ../../../../kitty;
 
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;

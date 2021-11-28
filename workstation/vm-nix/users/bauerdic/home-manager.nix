@@ -218,4 +218,11 @@ in {
     package = pkgs.vanilla-dmz;
     size = 128;
   };
+
+# https://github.com/nix-community/nix-direnv
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+  programs.direnv.nix-direnv.enableFlakes = true;
+  programs.zsh.enable = true;
+
 }
