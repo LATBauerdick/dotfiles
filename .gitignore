@@ -1,5 +1,7 @@
 .DS_Store
 *CONFLICT*
+result
+flake.lock
 vim/autoload/
 vim/bundle/
 vim/plugged/
@@ -9,8 +11,6 @@ vim/pack/packer/start/packer.nvim/
 karabiner/automatic_backups/
 karabiner/karabiner.json
 workstation/.terraform
-workstation/mac-nix/result
-workstation/mac-nix/flake.lock
 .terraform.tfstate.lock.info
 terraform.tfstate
 terraform.tfstate.backup
