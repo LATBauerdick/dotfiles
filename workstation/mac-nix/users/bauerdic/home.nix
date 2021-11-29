@@ -20,7 +20,6 @@
   # changes in each release.
   #####LATB???? home.stateVersion = "21.05";
 
-  xdg.enable = true;
 
   home.packages = with pkgs; [
       abduco
@@ -85,6 +84,7 @@
   home.file.".zshrc".source = ../../../../zsh/zshrc;
   home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
 
+  xdg.enable = true;
   xdg.configFile."nvim".source = ../../../../vim;
   xdg.configFile."kitty".source = ../../../../kitty;
 
