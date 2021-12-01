@@ -32,7 +32,7 @@
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-      sha256 = "0hyq4rjjx2ac0khrvpga4b3z35phrnhaabmrpyrgb1bzzkfqjq5l";
+      sha256 = "0zmg0hj4ivlx3f7a5fgl439fgvdah1v22wczvgvrra3dwwa5p7fr";
     }))
   ];
 
@@ -43,6 +43,7 @@
       fd
       fzf
       dtach
+      dvtm
       gawk
       git
       git-crypt
@@ -56,16 +57,11 @@
 #      librsvg
 #      lzop
 #      mdcat
-      neovim
-#      nodejs
+      neovim-unwrapped
+
       pandoc
-#      pv
-#      qrencode
-#      restic
       ripgrep
       silver-searcher
-#      tldr
-      texlive.combined.scheme-full
       tmux
       thefuck
       tree
@@ -75,6 +71,39 @@
 # language support
       cabal-install
       cabal2nix
+  
+      texlive.combined.scheme-full
   ];
 #    programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel9k}/share/zsh-powerlevel9k/powerlevel9k.zsh-theme";
+
+# Tex installation
+  fonts.fontconfig.enable = true;
+
+  #------------------------------------------------------------------
+  # Env vars and dotfiles
+  #--------------------------------------------------------------------
+
+  home.sessionVariables = {
+    LANG = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    EDITOR = "nvim";
+    PAGER = "less -FirSwX";
+    MANPAGER = "less -FirSwX";
+  };
+
+  home.file.".tmux.conf".source = ../../../../tmux/tmux.conf;
+
+  home.file.".zshrc".source = ../../../../zsh/zshrc;
+  home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
+
+  xdg.enable = true;
+  xdg.configFile."nvim".source = ../../../../vim;
+  xdg.configFile."kitty".source = ../../../../kitty;
+
+# https://github.com/nix-community/nix-direnv
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+  programs.direnv.nix-direnv.enableFlakes = true;
+  programs.zsh.enable = true;
 }

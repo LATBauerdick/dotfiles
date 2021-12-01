@@ -3,6 +3,10 @@
     ./vm-shared.nix
   ];
 
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   virtualisation.vmware.guest.enable = true;
 
   # Interface is this on Intel Fusion

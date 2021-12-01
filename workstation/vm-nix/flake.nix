@@ -1,5 +1,5 @@
 {
-  description = "NixOS systems and tools by mitchellh";
+  description = "NixOS systems and tools by LATBauerdick, inspired and copied from mitchellh";
 
   inputs = {
     # Pin our primary nixpkgs repository. This is the main nixpkgs repository
@@ -26,13 +26,18 @@
   outputs = { self, nixpkgs, home-manager, nixpkgs-unstable, home-manager-unstable }: let
     mkVM = import ./lib/mkvm.nix;
   in {
+    nixosConfigurations.vm-qemu = mkVM "vm-qemu" {
+      nixpkgs = nixpkgs-unstable;
+      home-manager = home-manager-unstable;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
     nixosConfigurations.vm-aarch64 = mkVM "vm-aarch64" {
       nixpkgs = nixpkgs-unstable;
       home-manager = home-manager-unstable;
       system = "aarch64-linux";
       user   = "bauerdic";
     };
-
     nixosConfigurations.vm-intel = mkVM "vm-intel" {
       # inherit nixpkgs home-manager;
       nixpkgs = nixpkgs-unstable;

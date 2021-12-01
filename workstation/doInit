@@ -16,13 +16,13 @@ git clone --recursive git@gitlab.com:latb/dotfiles .dotfiles \
     && ln -sf ../.dotfiles/karabiner .config/         \
     && ln -sf ../.dotfiles/nixpkgs .config/           \
     && ln -sf .dotfiles/zsh/zshrc .zshrc              \
-    && ln -sf .dotfiles/zsh/p10k.zsh .p10k.zs         \
+    && ln -sf .dotfiles/zsh/p10k.zsh .p10k.zsh        \
     && ln -sf .dotfiles/tmux/tmux.conf .tmux.conf     \
     && ln -sf .dotfiles/git/gitconfig .gitconfig      \
     && ln -sf ../.dotfiles/ssh/sshconfig .ssh/config  \
 
 # oh-my-zsh and powerlevel10k theme
-git clone git@github.com:robbyrussell/oh-my-zsh.git .oh-my-zsh
+git clone git@github.com:robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
 
 # powerline

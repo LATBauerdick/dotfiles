@@ -26,6 +26,7 @@ in {
       jq
       kitty
       lima
+      neofetch
       neovim-unwrapped
 
       pandoc
@@ -49,14 +50,14 @@ in {
       watch
 
 # tex
-      texlive.combined.scheme-full
+#      texlive.combined.scheme-full
 #      texlive.mytexlive
 
   ];
 #    programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel9k}/share/zsh-powerlevel9k/powerlevel9k.zsh-theme";
 
 #  fonts for Tex installation
-  fonts.fontconfig.enable = true;
+#  fonts.fontconfig.enable = true;
 
   #---------------------------------------------------------------------
   # Env vars and dotfiles
@@ -217,4 +218,11 @@ in {
     package = pkgs.vanilla-dmz;
     size = 128;
   };
+
+# https://github.com/nix-community/nix-direnv
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+  programs.direnv.nix-direnv.enableFlakes = true;
+  programs.zsh.enable = true;
+
 }
