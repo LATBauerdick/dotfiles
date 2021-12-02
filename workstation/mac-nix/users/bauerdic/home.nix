@@ -39,7 +39,7 @@
       htop
       jq
       kitty
-      lima
+#      lima
       neofetch
       neovim-unwrapped
 
