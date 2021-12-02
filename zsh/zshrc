@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # [ -e $HOME/.nix-defexpr/channels ] && export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
-# [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
+[ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # vi mode
 bindkey -v
@@ -77,7 +77,7 @@ export LESS=' -R -X -F '
 export BAT_THEME="Solarized (light)"
 
 export GITHUB_USER="latbauerdick"
-# export PATH=~/bin:~/.local/bin:~/.npm-global/bin:$PATH:/usr/local/sbin:/usr/local/bin
+export PATH=~/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:$PATH
 
 export MANPAGER="less -X -i" # Don’t clear the screen after quitting a manual page
 # export CLICOLOR=1
