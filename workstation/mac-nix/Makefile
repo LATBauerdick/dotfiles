@@ -15,7 +15,7 @@ NIXMAC ?= homeManagerConfigurationsMac.bauerdic.activationPackage
 NIXLIMA ?= homeManagerConfigurationsLima.bauerdic.activationPackage
 
 update:
-	nix flake update
+	nix flake lock
 
 macbuild:
 	nix build ".#${NIXMAC}"
