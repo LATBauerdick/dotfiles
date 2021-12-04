@@ -14,6 +14,11 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 NIXMAC ?= homeManagerConfigurationsMac.bauerdic.activationPackage
 NIXLIMA ?= homeManagerConfigurationsLima.bauerdic.activationPackage
 
+macall:
+	nix flake lock
+	nix build ".#${NIXMAC}"
+	./result/activate
+
 update:
 	nix flake lock
 
