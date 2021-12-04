@@ -24,12 +24,13 @@
   home.packages = with pkgs; [
       abduco
       bat
+      coreutils
       ctags
       fd
       fzf
       dtach
       gawk
-      gcc
+#      gcc
       git
       git-crypt
       git-lfs
@@ -46,6 +47,7 @@
       pandoc
 #      qemu
       ripgrep
+      starship
       silver-searcher
       tmux
 #      thefuck
