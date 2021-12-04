@@ -56,8 +56,8 @@
       zoxide
 
 # language support
-      cabal-install
-      cabal2nix
+#      cabal-install
+#      cabal2nix
 
 # tex
       texlive.combined.scheme-full
