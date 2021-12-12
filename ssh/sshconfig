@@ -64,7 +64,7 @@ Host lpro
   User bauerdic
   IdentityFile   ~/.ssh/id_ed25519
 
-Host lil
+Host iml
   HostName mac-126620.local
   User bauerdic
   IdentityFile   ~/.ssh/id_ed25519
