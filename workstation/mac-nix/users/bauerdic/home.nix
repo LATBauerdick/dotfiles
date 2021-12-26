@@ -24,7 +24,7 @@
   home.packages = with pkgs; [
       abduco
       bat
-      coreutils
+#      coreutils
       ctags
       fd
       fzf
