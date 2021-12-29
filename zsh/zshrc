@@ -10,21 +10,22 @@ fi
 
 # vi mode
 bindkey -v
+export MYPOSHTHEME=$(brew --prefix oh-my-posh)/themes/powerlevel10k_rainbow.omp.json
+# clean-detailed.omp.json
+# powerlevel10k_classic.omp.json
+eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
 
 # oh-my-zsh {{{
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
-ZSH_THEME=powerlevel10k/powerlevel10k
+# ZSH_THEME=powerlevel10k/powerlevel10k
 DEFAULT_USER="bauerdic"
 plugins=(git z history history-substring-search)
-
 source $ZSH/oh-my-zsh.sh
+# }}}
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-
-# }}}
 
 # Alias' {{{
 alias vi="vim"
