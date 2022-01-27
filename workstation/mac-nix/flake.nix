@@ -23,6 +23,22 @@
     lib = nixpkgs.lib;
 
   in {
+    homeManagerConfigurationsM1X = {
+      bauerdic = home-manager.lib.homeManagerConfiguration {
+        system = "aarch64-darwin";
+        pkgs = import nixpkgs {
+          system = "aarch64-darwin";
+          config = { allowUnfree = true; };
+        };
+        username = "bauerdic";
+        homeDirectory = "/home/bauerdic";
+        configuration = {
+          imports = [
+            ./users/bauerdic/home.nix
+          ];
+        };
+      };
+    };
     homeManagerConfigurationsMac = {
       bauerdic = home-manager.lib.homeManagerConfiguration {
         system = "x86_64-darwin";

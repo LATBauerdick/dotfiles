@@ -78,7 +78,7 @@ export LESS=' -R -X -F '
 export BAT_THEME="Solarized (light)"
 
 export GITHUB_USER="latbauerdick"
-export PATH=~/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:$PATH
+export PATH=~/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:$PATH
 
 export MANPAGER="less -X -i" # Don’t clear the screen after quitting a manual page
 # export CLICOLOR=1
@@ -114,14 +114,9 @@ eval "$(zoxide init zsh)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f "/home/bauerdic/.ghcup/env" ] && source "/home/bauerdic/.ghcup/env" # ghcup-env
+. $HOME/.ghcup/env
 
 export BAT_THEME="Solarized (light)"
-
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
 
 autoload -U zmv
 
@@ -155,4 +150,4 @@ flakify() {
   fi
   ${EDITOR:-vim} flake.nix
 }
-
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"

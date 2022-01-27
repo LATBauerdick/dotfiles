@@ -39,7 +39,7 @@
       pinentry-qt
       htop
       jq
-      kitty
+      /* kitty */
 #      lima
       neofetch
       neovim-unwrapped
