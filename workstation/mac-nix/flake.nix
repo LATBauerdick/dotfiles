@@ -57,9 +57,9 @@
     };
     homeManagerConfigurationsLima = {
       bauerdic = home-manager.lib.homeManagerConfiguration {
-        system = "x86_64-linux";
+        system = "aarch64-linux";
         pkgs = import nixpkgs {
-          system = "x86_64-linux";
+          system = "aarch64-linux";
           config = { allowUnfree = true; };
         };
         username = "bauerdic";

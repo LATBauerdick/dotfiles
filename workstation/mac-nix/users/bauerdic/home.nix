@@ -24,7 +24,7 @@
   home.packages = with pkgs; [
       abduco
       bat
-#      coreutils
+      coreutils
       ctags
       fd
       fzf
@@ -45,6 +45,7 @@
       neovim-unwrapped
 
       pandoc
+      python
 #      qemu
       ripgrep
       starship
@@ -60,7 +61,7 @@
 #      cabal2nix
 
 # tex
-      texlive.combined.scheme-full
+#####      texlive.combined.scheme-full
 
   ];
 
