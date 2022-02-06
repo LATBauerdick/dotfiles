@@ -99,14 +99,14 @@ Host gitlab.cern.ch
   IdentityFile ~/.ssh/ipad_rsa
 
 Host cmslpc*.fnal.gov
-    GSSAPIAuthentication yes
-    GSSAPIDelegateCredentials yes
+#    GSSAPIAuthentication yes
+#    GSSAPIDelegateCredentials yes
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 
 Host 131.225.* *.fnal.gov
-    GSSAPIAuthentication yes
-    GSSAPIDelegateCredentials yes
+#    GSSAPIAuthentication yes
+#    GSSAPIDelegateCredentials yes
     StrictHostKeyChecking no
     ForwardX11Trusted yes
     ForwardX11 yes
