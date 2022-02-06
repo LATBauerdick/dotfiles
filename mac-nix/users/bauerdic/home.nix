@@ -81,14 +81,14 @@
     MANPAGER = "less -FirSwX";
   };
 
-  home.file.".tmux.conf".source = ../../../../tmux/tmux.conf;
+  home.file.".tmux.conf".source = ./tmux.conf;
 
-  home.file.".zshrc".source = zshrc;
-  home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
+  home.file.".zshrc".source = ./zshrc;
+  home.file.".p10k.zsh".source = ./p10k.zsh;
 
   xdg.enable = true;
-  xdg.configFile."nvim".source = ../../../../vim;
-  xdg.configFile."kitty".source = ../../../../kitty;
+  xdg.configFile."nvim".source = ./vim;
+  xdg.configFile."kitty".source = ./kitty;
 
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;

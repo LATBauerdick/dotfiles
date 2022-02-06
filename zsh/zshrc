@@ -10,7 +10,7 @@ fi
 
 # vi mode
 bindkey -v
-export MYPOSHTHEME=.poshthemes/powerlevel10k_rainbow.omp.json
+export MYPOSHTHEME=~/.poshthemes/powerlevel10k_rainbow.omp.json
 # clean-detailed.omp.json
 # powerlevel10k_classic.omp.json
 eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
@@ -92,6 +92,7 @@ export GREP_OPTIONS='--color=auto'
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /home/bauerdic/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 # }}}
 #
@@ -107,10 +108,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 export EDITOR="nvim"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='rg --files'
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_COMMAND='rg --files'
 
-eval "$(zoxide init zsh)"
+# eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -152,4 +153,3 @@ flakify() {
   fi
   ${EDITOR:-vim} flake.nix
 }
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
