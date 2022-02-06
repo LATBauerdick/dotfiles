@@ -26,6 +26,7 @@
       bat
       coreutils
       ctags
+      exiftool
       fd
       fzf
       dtach
@@ -40,13 +41,13 @@
       htop
       jq
       /* kitty */
-#      lima
+      lima
       neofetch
       neovim-unwrapped
 
       pandoc
       python
-#      qemu
+      qemu
       ripgrep
       starship
       silver-searcher
@@ -87,6 +88,7 @@
   home.file.".p10k.zsh".source = ./p10k.zsh;
   home.file.".ssh/config".source = ./sshconfig;
   home.file.".config/karabiner/assets".source = ./karabiner-assets;
+  home.file.".gitconfig".source = ./gitconfig;
 
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;
