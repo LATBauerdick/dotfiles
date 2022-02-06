@@ -85,6 +85,8 @@
 
   home.file.".zshrc".source = ./zshrc;
   home.file.".p10k.zsh".source = ./p10k.zsh;
+  home.file.".ssh/config".source = ./sshconfig;
+  home.file.".config/karabiner/assets".source = ./karabiner-assets;
 
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;
