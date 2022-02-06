@@ -83,7 +83,7 @@
 
   home.file.".tmux.conf".source = ../../../../tmux/tmux.conf;
 
-  home.file.".zshrc".source = ../../../../zsh/zshrc;
+  home.file.".zshrc".source = zshrc;
   home.file.".p10k.zsh".source = ../../../../zsh/p10k.zsh;
 
   xdg.enable = true;

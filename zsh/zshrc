@@ -89,6 +89,8 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # Tell grep to highlight matches
 export GREP_OPTIONS='--color=auto'
 
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /home/bauerdic/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 # }}}
