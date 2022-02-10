@@ -37,14 +37,15 @@
       git-lfs
       gnupg
       gnumake
-      pinentry-qt
       htop
+      imagemagick
       jq
       /* kitty */
       lima
       neofetch
       neovim-unwrapped
 
+      pinentry-qt
       pandoc
       python
       qemu
