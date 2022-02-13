@@ -7,6 +7,10 @@ AddKeysToAgent yes
 #   UseKeychain yes
 #   IdentityFile ~/.ssh/id_rsa
 
+Host lnix
+  Hostname 192.168.64.2
+  User bauerdic
+
 Host rem
   HostName 116.203.139.203
 
