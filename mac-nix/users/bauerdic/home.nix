@@ -24,6 +24,7 @@
   home.packages = with pkgs; [
       abduco
       bat
+      colima
       coreutils
       ctags
       exiftool
@@ -56,6 +57,7 @@
 #      thefuck
       tree
       wget
+      xz
       zoxide
 
 # language support
