@@ -26,6 +26,12 @@
   outputs = { self, nixpkgs, home-manager, nixpkgs-unstable, home-manager-unstable }: let
     mkVM = import ./lib/mkvm.nix;
   in {
+    nixosConfigurations.vm-intel = mkVM "vm-intel" {
+      nixpkgs = nixpkgs-unstable;
+      home-manager = home-manager-unstable;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
     nixosConfigurations.vm-aarch64 = mkVM "vm-aarch64" {
       nixpkgs = nixpkgs-unstable;
       home-manager = home-manager-unstable;
