@@ -71,6 +71,23 @@
         };
       };
     };
+    homeManagerConfigurationsIntel = {
+      bauerdic = home-manager.lib.homeManagerConfiguration {
+        system = "x86_64-linux";
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = { allowUnfree = true; };
+        };
+        username = "bauerdic";
+        homeDirectory = "/home/bauerdic";
+        configuration = {
+          imports = [
+            ./users/bauerdic/home.nix
+          ];
+        };
+      };
+    };
+
 
 #    nixosConfigurations = {
 #      nix-latb = lib.nixosSystem {
