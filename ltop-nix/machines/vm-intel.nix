@@ -153,5 +153,27 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
+  nix.settings.trusted-users = [ "root" "bauerdic" ];
+
+  boot.kernel.sysctl = {
+    # Note that inotify watches consume 1kB on 64-bit machines.
+    # needed for syncthing
+    "fs.inotify.max_user_watches"   =  204800;   # default:  8192
+  #  "fs.inotify.max_user_instances" =    1024;   # default:   128
+  #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
+  };
+  services.syncthing = {
+    enable = true;
+    dataDir = "/home/bauerdic/";
+    user = "bauerdic";
+  };
+
+  # open firewall ports for mosh, wireguard
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 60001; to = 61000; }
+  ];
+  programs.mosh.enable = true;
+
+
 }
 

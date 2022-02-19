@@ -4,7 +4,7 @@
   users.users.bauerdic = {
     isNormalUser = true;
     home = "/home/bauerdic";
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = [ "docker" "wheel" "networkmanager" ];
     shell = pkgs.zsh;
     initialHashedPassword = "";
     uid = 6170;
