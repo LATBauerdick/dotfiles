@@ -115,7 +115,7 @@
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = "experimental-features = nix-command flakes";
 
-  networking.hostName = "utop"; # Define your hostname.
+  networking.hostName = "ntop"; # Define your hostname.
 
  
   time.timeZone = "America/Chicago"; # Set your time zone.
