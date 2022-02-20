@@ -44,7 +44,7 @@
       lima
       neofetch
       neovim-unwrapped
-
+      obsidian
       pandoc
       python
       qemu

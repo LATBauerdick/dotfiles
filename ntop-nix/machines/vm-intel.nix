@@ -189,5 +189,9 @@
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+                "electron-13.6.9"
+  ];
 }
 
