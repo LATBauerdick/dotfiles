@@ -13,7 +13,8 @@ bindkey -v
 export MYPOSHTHEME=~/.oh-my-posh/powerlevel10k_rainbow.omp.json
 # clean-detailed.omp.json
 # powerlevel10k_classic.omp.json
-eval "$(~/.oh-my-posh/oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
+eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
+# eval "$(~/.oh-my-posh/oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
 
 # oh-my-zsh {{{
 # Path to your oh-my-zsh installation.
