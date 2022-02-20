@@ -1,3 +1,5 @@
+#
+# from https://gitlab.com/ShrykeWindgrace/powershell-modules/-/tree/master/oh-my-posh
 { pkgs }:
 {
   oh-my-posh = pkgs.stdenvNoCC.mkDerivation rec {
