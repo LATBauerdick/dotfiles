@@ -1,7 +1,14 @@
 { config, pkgs, ... }:
 
 #let sources = import ../../nix/sources.nix; in 
-{
+let
+     pkgs0 = import (builtins.fetchTarball {
+        url = "https://github.com/NixOS/nixpkgs/archive/12408341763b8f2f0f0a88001d9650313f6371d5.tar.gz";
+        sha256 = "sha256:17vgd7a8k0rpmc1lg9lwbla6jr5ks2d35qp7ryp6j4dsy7r8rihw";
+    }) {};
+
+     starshipPkg = pkgs0.x86_64-darwin.starship;
+in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -23,6 +30,8 @@
 
 
   home.packages = with pkgs; [
+      /* starshipPkg */
+
       abduco
       bat
       colima
@@ -102,6 +111,6 @@
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.direnv.nix-direnv.enableFlakes = true;
+  /* programs.direnv.nix-direnv.enableFlakes = true; */
   programs.zsh.enable = true;
 }

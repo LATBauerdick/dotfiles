@@ -1,17 +1,10 @@
 # Connectivity info for Linux VM
-NIXADDR ?= 192.168.106.128
-NIXPORT ?= 22
-NIXUSER ?= bauerdic
-NIXSYSTEM ?= mac
-
-# Settings
-NIXBLOCKDEVICE ?= sda
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # The name of the nixosConfiguration in the flake
-NIXM1X ?= homeManagerConfigurationsM1X.bauerdic.activationPackage
+NIXM1X ?= m1mac.bauerdic.activationPackage
 NIXMAC ?= homeManagerConfigurationsMac.bauerdic.activationPackage
 NIXLIMA ?= homeManagerConfigurationsLima.bauerdic.activationPackage
 
