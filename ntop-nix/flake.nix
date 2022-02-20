@@ -21,9 +21,10 @@
       url = "github:nix-community/home-manager/release-21.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    neovim-flake.url = "github:LATBauerdick/neovim-flake";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixpkgs-unstable, home-manager-unstable }: let
+  outputs = { self, nixpkgs, home-manager, nixpkgs-unstable, home-manager-unstable, ... }: let
     mkVM = import ./lib/mkvm.nix;
   in {
     nixosConfigurations.vm-intel = mkVM "vm-intel" {

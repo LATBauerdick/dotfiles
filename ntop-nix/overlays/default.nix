@@ -2,9 +2,11 @@
  * other ".nix" files in this directory are automatically loaded.
  */
 self: super: {
-#  consul-bin = self.callPackage ../pkgs/consul-bin.nix {};
-#  create-dmg = self.callPackage ../pkgs/create-dmg.nix {};
-#  nomad-bin = self.callPackage ../pkgs/nomad-bin.nix {};
-#  terraform-bin = self.callPackage ../pkgs/terraform-bin.nix {};
+  /* starship = super.starship.overrideAttrs (old: { */
+  /*   src = super.fetchFromGitHub { */
+  /*     repo = "starship"; */
+  /*   }; */
+  /* }); */
+
 }
 

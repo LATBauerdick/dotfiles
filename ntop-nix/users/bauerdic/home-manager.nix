@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
+   # sources = import ../../nix/sources.nix; 
+in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -22,6 +24,7 @@
 
 
   home.packages = with pkgs; [
+      sl
       abduco
       bat
       coreutils
