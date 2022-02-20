@@ -28,6 +28,7 @@ test:
 # NixOS. After installing NixOS, you must reboot and set the root password
 # for the next step.
 # UEFI boot works fine for vm-ware
+#sudo dd if=/dev/zero of=/mnt/.swapfile bs=1024 count=4194304; \
 vm/bootstrap0:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
 		parted /dev/$(NIXBLOCKDEVICE) -- mklabel gpt; \
