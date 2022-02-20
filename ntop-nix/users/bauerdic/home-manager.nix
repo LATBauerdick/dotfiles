@@ -95,6 +95,7 @@
   home.file.".zshrc".source = ./zshrc;
   home.file.".p10k.zsh".source = ./p10k.zsh;
   home.file.".ssh/config".source = ./sshconfig;
+  home.file.".oh-my-posh".source = ./oh-my-posh;
   home.file.".config/karabiner/assets".source = ./karabiner-assets;
   home.file.".gitconfig".source = ./gitconfig;
 

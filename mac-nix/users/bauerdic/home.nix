@@ -41,7 +41,7 @@
       htop
       imagemagick
       jq
-      /* kitty */
+#      kitty
       lima
       neofetch
       neovim-unwrapped
@@ -56,6 +56,7 @@
       tmux
 #      thefuck
       tree
+      unzip
       wget
       xz
       zoxide
@@ -92,6 +93,7 @@
   home.file.".ssh/config".source = ./sshconfig;
   home.file.".config/karabiner/assets".source = ./karabiner-assets;
   home.file.".gitconfig".source = ./gitconfig;
+  home.file.".oh-my-posh".source = ./oh-my-posh;
 
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;

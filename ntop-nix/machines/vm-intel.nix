@@ -178,6 +178,16 @@
   ];
   programs.mosh.enable = true;
 
+  networking.hostId = "41ca8470";
+  boot.supportedFilesystems = [ "zfs" ];
+  /* fileSystems."/z" = */
+  /*   { device = "z/d"; */
+  /*     fsType = "zfs"; */
+  /*     options = [ "zfsutil" ]; */
+  /*   }; */
 
+  fonts.fonts = with pkgs; [
+    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
+  ];
 }
 
