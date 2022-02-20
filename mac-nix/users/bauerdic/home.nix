@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 
+#let sources = import ../../nix/sources.nix; in 
 {
 
   # Let Home Manager install and manage itself.
@@ -51,7 +52,6 @@
       python
       qemu
       ripgrep
-      starship
       silver-searcher
       tmux
 #      thefuck
