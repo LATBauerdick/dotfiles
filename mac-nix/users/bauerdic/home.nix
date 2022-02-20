@@ -1,13 +1,17 @@
-{ config, pkgs, ... }:
+{ config, pkgs, specialArgs, ... }:
 
 #let sources = import ../../nix/sources.nix; in 
 let
-     pkgs0 = import (builtins.fetchTarball {
+    pkgs0 = import (builtins.fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/12408341763b8f2f0f0a88001d9650313f6371d5.tar.gz";
         sha256 = "sha256:17vgd7a8k0rpmc1lg9lwbla6jr5ks2d35qp7ryp6j4dsy7r8rihw";
     }) {};
 
-     starshipPkg = pkgs0.x86_64-darwin.starship;
+    starshipPkg = pkgs0.x86_64-darwin.starship;
+       # hacky way of determining which machine I'm running this from
+    inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
+    packages = import ./packages.nix;
+
 in {
 
   # Let Home Manager install and manage itself.
@@ -28,56 +32,9 @@ in {
   # changes in each release.
   #####LATB???? home.stateVersion = "21.05";
 
-
-  home.packages = with pkgs; [
-      /* starshipPkg */
-
-      abduco
-      bat
-      colima
-      coreutils
-      ctags
-      exiftool
-      fd
-      fzf
-      dtach
-      gawk
-#      gcc
-      git
-      git-crypt
-      git-lfs
-      gnupg
-      gnumake
-      htop
-      imagemagick
-      jq
-#      kitty
-      lima
-      neofetch
-      neovim-unwrapped
-
-      pinentry-qt
-      pandoc
-      python
-      qemu
-      ripgrep
-      silver-searcher
-      tmux
-#      thefuck
-      tree
-      unzip
-      wget
-      xz
-      zoxide
-
-# language support
-#      cabal-install
-#      cabal2nix
-
-# tex
-#####      texlive.combined.scheme-full
-
-  ];
+  home.packages = packages pkgs withGUI;
+  /* home.packages = with pkgs; [ */
+  /* ]; */
 
 # Tex installation
   fonts.fontconfig.enable = true;

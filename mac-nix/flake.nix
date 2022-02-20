@@ -32,20 +32,6 @@
       inherit system;
     };
 
-    /* overlay-unstable = final: prev: { */
-    /*   unstable = import nixpkgs { */
-    /*     inherit system; */
-    /*     config = globalPkgsConfig; */
-    /*   }; */
-    /* }; */
-    /* pkgs = import nixpkgs { */
-    /*   inherit system; */
-    /*   config = globalPkgsConfig; */
-    /*   overlays = [ */
-    /*     overlay-unstable */
-    /*     neovim-nightly-overlay */
-    /*   ]; */
-    /* }; */
     lib = nixpkgs.lib;
 
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
@@ -60,27 +46,21 @@
       configuration.imports = [ ./users/bauerdic/home.nix ];
       homeDirectory = "/home/bauerdic";
       username = "bauerdic";
-      extraSpecialArgs = {
+    };
+
+    m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
+      system = "aarch64-darwin";
+      /* pkgs = import nixpkgs { */
+      /*   system = "aarch64-darwin"; */
+      /*   config = { allowUnfree = true; }; */
+      /* }; */
+      username = "bauerdic";
+      homeDirectory = "/home/bauerdic";
+      configuration.imports = [ ./users/bauerdic/home.nix ];
+      extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
         networkInterface = "xxx";
-      };
-    };
-
-    m1mac = {
-      bauerdic = home-manager.lib.homeManagerConfiguration {
-        system = "aarch64-darwin";
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          config = { allowUnfree = true; };
-        };
-        username = "bauerdic";
-        homeDirectory = "/home/bauerdic";
-        configuration = {
-          imports = [
-            ./users/bauerdic/home.nix
-          ];
-        };
       };
     };
     homeManagerConfigurationsMac = {
