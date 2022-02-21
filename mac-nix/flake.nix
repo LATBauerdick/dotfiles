@@ -41,11 +41,16 @@
     overlay = localOverlay;
     nixosModules.home = import ./home.nix; # attr set or list
 
-    homeConfigurations.bauerdic = home-manager.lib.homeManagerConfiguration {
-      system = "aarch64-darwin";
+    intel.bauerdic = home-manager.lib.homeManagerConfiguration {
+      system = "x86_64-linux";
       configuration.imports = [ ./users/bauerdic/home.nix ];
       homeDirectory = "/home/bauerdic";
       username = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+        networkInterface = "xxx";
+      };
     };
 
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
