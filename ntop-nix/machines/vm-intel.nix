@@ -24,8 +24,9 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s20f0u11.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
+  # networking.interfaces.enp0s20f0u11.useDHCP = true;
+  # networking.interfaces.wlp3s0.useDHCP = true;
+  networking.interfaces.ens1f0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -43,9 +44,14 @@
 
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
   
+
+  # Enable the Plasma 5 Desktop Environment.
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -106,7 +112,7 @@
 
   boot.loader.grub.extraEntries = ''
     menuentry "Ubuntu" {
-      search --set=ubuntu --fs-uuid 0d0fbbbe-725a-4476-a1ca-dd27e1391f11
+      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
       configfile "($ubuntu)/boot/grub/grub.cfg"
     }
   '';
