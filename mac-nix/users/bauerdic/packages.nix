@@ -2,7 +2,7 @@ pkgs: withGUI: with pkgs; [
   # these files are meant to be installed in all scenarios
       abduco
       bat
-      colima
+#      colima
       coreutils
       ctags
       exiftool
@@ -19,11 +19,9 @@ pkgs: withGUI: with pkgs; [
       htop
       imagemagick
       jq
-#      kitty
-      lima
+#      lima
       neofetch
       neovim-unwrapped
-
       pinentry-qt
       pandoc
       python
@@ -48,7 +46,10 @@ pkgs: withGUI: with pkgs; [
 
 ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
 ] ++ pkgs.lib.optionals withGUI [
-  sl
-  /* vlc */
+      /* kitty */
+      obsidian
+      sl
+      vlc
+      zoom
 ]
 

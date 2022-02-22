@@ -1,11 +1,12 @@
 {
-  description = "Nix Config for Mac by LATB";
+  description = "NixOS systems and Nix Config by LATBauerdick";
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
     /* nixpkgs.url = "github:nixos/nixpkgs/release-21.11"; */
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
+      # url = "github:nix-community/home-manager/release-21.05";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -33,15 +34,16 @@
     };
 
     lib = nixpkgs.lib;
+    mkVM = import ./lib/mkvm.nix;
 
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
       legacyPackages = pkgsForSystem system;
   }) // {
     # non-system suffixed items should go here
     overlay = localOverlay;
-    nixosModules.home = import ./home.nix; # attr set or list
 
     intel.bauerdic = home-manager.lib.homeManagerConfiguration {
+     # nixosModules.home = import ./users/bauerdic/home.nix; # attr set or list
       system = "x86_64-linux";
       configuration.imports = [ ./users/bauerdic/home.nix ];
       homeDirectory = "/home/bauerdic";
@@ -51,6 +53,13 @@
         isDesktop = true;
         networkInterface = "xxx";
       };
+    };
+
+    nixosConfigurations.intel = mkVM "intel" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
     };
 
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {

@@ -8,8 +8,9 @@ let
     }) {};
 
     starshipPkg = pkgs0.x86_64-darwin.starship;
-       # hacky way of determining which machine I'm running this from
-    inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
+    # hacky way of determining which machine I'm running this from
+    # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
+    withGUI = true;
     packages = import ./packages.nix;
 
 in {
@@ -52,14 +53,22 @@ in {
     MANPAGER = "less -FirSwX";
   };
 
+  programs.zsh = {
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "thefuck" ];
+      theme = "robbyrussell";
+    };
+  };
+
   home.file.".tmux.conf".source = ./tmux.conf;
 
   home.file.".zshrc".source = ./zshrc;
   home.file.".p10k.zsh".source = ./p10k.zsh;
   home.file.".ssh/config".source = ./sshconfig;
+  home.file.".oh-my-posh".source = ./oh-my-posh;
   home.file.".config/karabiner/assets".source = ./karabiner-assets;
   home.file.".gitconfig".source = ./gitconfig;
-  home.file.".oh-my-posh".source = ./oh-my-posh;
 
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;
@@ -68,6 +77,6 @@ in {
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  /* programs.direnv.nix-direnv.enableFlakes = true; */
+  # programs.direnv.nix-direnv.enableFlakes = true;
   programs.zsh.enable = true;
 }

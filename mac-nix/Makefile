@@ -2,6 +2,7 @@
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+NIXNAME ?= intel
 
 # The name of the nixosConfiguration in the flake
 NIXM1X ?= m1mac.bauerdic.activationPackage
@@ -12,6 +13,12 @@ macall:
 	nix flake lock
 	nix build ".#${NIXM1X}"
 	./result/activate
+
+switch:
+	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
+
+test:
+	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test --flake ".#${NIXNAME}"
 
 update:
 	nix flake lock
