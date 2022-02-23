@@ -55,13 +55,12 @@
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s20f0u5.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
+  networking.useDHCP = lib.mkDefault false;
+  networking.interfaces.enp0s20f0u5.useDHCP = lib.mkDefault true;
+  networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
 }
-
