@@ -1,7 +1,9 @@
 #
 # from https://gitlab.com/ShrykeWindgrace/powershell-modules/-/tree/master/oh-my-posh
-{ pkgs }:
+{ pkgs ? import <nixpkgs> {} }:
+/* { pkgs }: */
 {
+
   oh-my-posh = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "oh-my-posh";
     version = "7.15.0";
