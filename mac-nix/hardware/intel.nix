@@ -6,6 +6,7 @@
 {
   imports =
     [ (modulesPath + "/hardware/network/broadcom-43xx.nix")
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "uas" "usb_storage" "sd_mod" "sdhci_pci" ];
@@ -24,10 +25,43 @@
       fsType = "vfat";
     };
 
+  fileSystems."/mnt" =
+    { device = "z/d";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/dev" =
+    { device = "z/d/dev";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/zk" =
+    { device = "z/d/zk";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/data" =
+    { device = "z/d/data";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/p2022" =
+    { device = "z/d/p2022";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
+
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.enp0s20f0u5.useDHCP = true;
+  networking.interfaces.wlp3s0.useDHCP = true;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
 }
+

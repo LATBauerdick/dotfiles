@@ -23,10 +23,10 @@
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
+  # networking.useDHCP = false;
   # networking.interfaces.enp0s20f0u11.useDHCP = true;
   # networking.interfaces.wlp3s0.useDHCP = true;
-  networking.interfaces.ens1f0.useDHCP = true;
+  # networking.interfaces.ens1f0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
