@@ -47,8 +47,10 @@ pkgs: withGUI: with pkgs; [
 
 ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       mutt-with-sidebar
+      bitwarden-cli
 ] ++ pkgs.lib.optionals withGUI [
       /* kitty */
+      bitwarden
       buttercup-desktop
       obsidian
       skypeforlinux
