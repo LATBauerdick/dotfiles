@@ -147,7 +147,13 @@
     killall
     vim
     curl
+    # gui apps
     firefox
+    # window manager stuff
+    xmobar
+    nitrogen
+    picom
+    dmenu
   ];
 
  # Enable the OpenSSH daemon.

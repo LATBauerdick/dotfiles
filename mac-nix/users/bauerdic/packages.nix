@@ -22,6 +22,7 @@ pkgs: withGUI: with pkgs; [
 #      lima
       neofetch
       neovim-unwrapped
+      neuron-notes
       pinentry-qt
       pandoc
       python
@@ -45,11 +46,15 @@ pkgs: withGUI: with pkgs; [
 
 
 ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+      mutt-with-sidebar
 ] ++ pkgs.lib.optionals withGUI [
       /* kitty */
+      buttercup-desktop
       obsidian
-      sl
+      skypeforlinux
+      slack
+      thunderbird
       vlc
-      zoom
+      zoom-us
 ]
 
