@@ -23,6 +23,7 @@ pkgs: withGUI: with pkgs; [
       neofetch
       neovim-unwrapped
       neuron-notes
+      oh-my-posh
       pinentry-qt
       pandoc
       python
