@@ -42,16 +42,31 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
-  
+
 
   # Enable the Plasma 5 Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
 
+  # setup i3 windowing environment
+  /* services.xserver = { */
+  /*   desktopManager = { */
+  /*     xterm.enable = false; */
+  /*     wallpaper.mode = "scale"; */
+  /*   }; */
+  /*   displayManager = { */
+  /*     defaultSession = "none+i3"; */
+  /*     lightdm.enable = true; */
+
+  /*   }; */
+
+  /*   windowManager = { */
+  /*     i3.enable = true; */
+  /*   }; */
+  /* }; */
   # services.xrdp.enable = true;
 
 
@@ -121,7 +136,7 @@
 
  # use unstable nix so we can access flakes
   nix.package = pkgs.nixUnstable;
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  # nix.extraOptions = "experimental-features = nix-command flakes";
 
   networking.hostName = "umini"; # Define your hostname.
 
@@ -172,7 +187,7 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
-  nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
+  # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
 
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.

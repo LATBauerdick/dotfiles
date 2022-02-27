@@ -7,6 +7,7 @@
   imports =
     [ (modulesPath + "/hardware/network/broadcom-43xx.nix")
       (modulesPath + "/installer/scan/not-detected.nix")
+      ./zfs.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "uas" "usb_storage" "sd_mod" "sdhci_pci" ];
@@ -23,31 +24,6 @@
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/5F66-17ED";
       fsType = "vfat";
-    };
-
-  fileSystems."/mnt" =
-    { device = "z/d";
-      fsType = "zfs";
-    };
-
-  fileSystems."/mnt/dev" =
-    { device = "z/d/dev";
-      fsType = "zfs";
-    };
-
-  fileSystems."/mnt/zk" =
-    { device = "z/d/zk";
-      fsType = "zfs";
-    };
-
-  fileSystems."/mnt/data" =
-    { device = "z/d/data";
-      fsType = "zfs";
-    };
-
-  fileSystems."/mnt/p2022" =
-    { device = "z/d/p2022";
-      fsType = "zfs";
     };
 
   swapDevices = [ ];

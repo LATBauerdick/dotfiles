@@ -23,12 +23,13 @@ pkgs: withGUI: with pkgs; [
       neofetch
       neovim-unwrapped
       neuron-notes
-      oh-my-posh
+      /* oh-my-posh */
       pinentry-qt
       pandoc
       python
       qemu
       ripgrep
+      sanoid
       silver-searcher
       tmux
 #      thefuck
