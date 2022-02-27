@@ -40,16 +40,41 @@
   # };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
+  # services.xserver.enable = true;
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
 
 
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+#  services.xserver.enable = true;
+#  services.xserver.displayManager.sddm.enable = true;
+#  services.xserver.desktopManager.plasma5.enable = true;
+
+  services.xrdp.enable = true;
+#  services.xrdp.defaultWindowManager = "startplasma-x11";
+  services.xrdp.defaultWindowManager = "awesome-x11";
+  networking.firewall.allowedTCPPorts = [ 3389 ];
+
+  services.xserver = {
+    enable = true;
+    dpi=219;
+    displayManager = {
+        sddm.enable = true;
+        defaultSession = "none+awesome";
+    };
+
+    windowManager.awesome = {
+      enable = true;
+      luaModules = with pkgs.luaPackages; [
+        luarocks     # is the package manager for Lua modules
+        luadbi-mysql # Database abstraction layer
+      ];
+
+    };
+  };
+
 
   # setup i3 windowing environment
   /* services.xserver = { */
@@ -208,13 +233,35 @@
   ];
   programs.mosh.enable = true;
 
+# zfs setup
   networking.hostId = "41ca8470";
   boot.supportedFilesystems = [ "zfs" ];
-  /* fileSystems."/z" = */
-  /*   { device = "z/d"; */
-  /*     fsType = "zfs"; */
-  /*     options = [ "zfsutil" ]; */
-  /*   }; */
+
+  fileSystems."/mnt" =
+    { device = "z/d";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
+  fileSystems."/mnt/dev" =
+    { device = "z/d/dev";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
+  fileSystems."/mnt/zk" =
+    { device = "z/d/zk";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
+  fileSystems."/mnt/data" =
+    { device = "z/d/data";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
+  fileSystems."/mnt/p2022" =
+    { device = "z/d/p2022";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
 
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
@@ -224,6 +271,12 @@
                 "electron-13.6.9"
   ];
 
-  appstream.enable = true;
+  # appstream.enable = true;
+
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+  };
+
 }
 

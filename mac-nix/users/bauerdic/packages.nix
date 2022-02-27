@@ -49,7 +49,6 @@ pkgs: withGUI: with pkgs; [
 ###] ++ pkgs.lib.optionals withGUI [
       kitty
       bitwarden
-      buttercup-desktop
       obsidian
       skypeforlinux
       slack
