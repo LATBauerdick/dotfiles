@@ -2,7 +2,6 @@ pkgs: withGUI: with pkgs; [
   # these files are meant to be installed in all scenarios
       abduco
       bat
-#      colima
       coreutils
       ctags
       exiftool
@@ -10,7 +9,6 @@ pkgs: withGUI: with pkgs; [
       fzf
       dtach
       gawk
-#      gcc
       git
       git-crypt
       git-lfs
@@ -19,7 +17,6 @@ pkgs: withGUI: with pkgs; [
       htop
       imagemagick
       jq
-#      lima
       neofetch
       neovim-unwrapped
       neuron-notes
@@ -29,10 +26,8 @@ pkgs: withGUI: with pkgs; [
       python
       qemu
       ripgrep
-      sanoid
       silver-searcher
       tmux
-#      thefuck
       tree
       unzip
       wget
@@ -50,8 +45,9 @@ pkgs: withGUI: with pkgs; [
 ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       mutt-with-sidebar
       bitwarden-cli
-] ++ pkgs.lib.optionals withGUI [
-      /* kitty */
+      sanoid
+###] ++ pkgs.lib.optionals withGUI [
+      kitty
       bitwarden
       buttercup-desktop
       obsidian
