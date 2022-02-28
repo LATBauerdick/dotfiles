@@ -16,8 +16,8 @@ nixpkgs.lib.nixosSystem rec {
     }
   ];
 
-  extraArgs = {
-    currentSystem = system;
-  };
+  /* extraArgs = { */
+  /*   currentSystem = system; */
+  /* }; */
 }
 
