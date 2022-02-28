@@ -26,7 +26,9 @@
   # networking.useDHCP = false;
   # networking.interfaces.enp0s20f0u11.useDHCP = true;
   # networking.interfaces.wlp3s0.useDHCP = true;
-  # networking.interfaces.ens1f0.useDHCP = true;
+  networking.interfaces.ens1f0.useDHCP = true;
+  # networking.interfaces.enp4s0f0.useDHCP = true;
+  networking.networkmanager.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -239,7 +241,8 @@
   programs.mosh.enable = true;
 
 # zfs setup
-  networking.hostId = "41ca8470";
+#  networking.hostId = "41ca8470";
+  networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
   boot.supportedFilesystems = [ "zfs" ];
 
   fileSystems."/mnt" =
@@ -247,26 +250,26 @@
       fsType = "zfs";
       options = [ "zfsutil" ];
     };
-  fileSystems."/mnt/dev" =
-    { device = "z/d/dev";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
-  fileSystems."/mnt/zk" =
-    { device = "z/d/zk";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
-  fileSystems."/mnt/data" =
-    { device = "z/d/data";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
-  fileSystems."/mnt/p2022" =
-    { device = "z/d/p2022";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
+#  fileSystems."/mnt/dev" =
+#    { device = "z/d/dev";
+#      fsType = "zfs";
+#      options = [ "zfsutil" ];
+#    };
+#  fileSystems."/mnt/zk" =
+#    { device = "z/d/zk";
+#      fsType = "zfs";
+#      options = [ "zfsutil" ];
+#    };
+#  fileSystems."/mnt/data" =
+#    { device = "z/d/data";
+#      fsType = "zfs";
+#      options = [ "zfsutil" ];
+#    };
+#  fileSystems."/mnt/p2022" =
+#    { device = "z/d/p2022";
+#      fsType = "zfs";
+#      options = [ "zfsutil" ];
+#    };
 
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
