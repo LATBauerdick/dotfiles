@@ -24,11 +24,6 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   # networking.useDHCP = false;
-  # networking.interfaces.enp0s20f0u11.useDHCP = true;
-  # networking.interfaces.wlp3s0.useDHCP = true;
-  networking.interfaces.ens1f0.useDHCP = true;
-  # networking.interfaces.enp4s0f0.useDHCP = true;
-  networking.networkmanager.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -53,52 +48,6 @@
 #  services.xserver.enable = true;
 #  services.xserver.displayManager.sddm.enable = true;
 #  services.xserver.desktopManager.plasma5.enable = true;
-
-  services.xrdp.enable = true;
-#  services.xrdp.defaultWindowManager = "startplasma-x11";
-  services.xrdp.defaultWindowManager = "awesome-x11";
-  networking.firewall.allowedTCPPorts = [ 3389 ];
-
-  services.xserver = {
-    enable = true;
-    dpi=219;
-    displayManager = {
-        sddm.enable = true;
-        defaultSession = "none+awesome";
-    };
-
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks     # is the package manager for Lua modules
-        luadbi-mysql # Database abstraction layer
-      ];
-
-    };
-  };
-  environment.variables = {
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.5";
-    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
-  };
-
-  # setup i3 windowing environment
-  /* services.xserver = { */
-  /*   desktopManager = { */
-  /*     xterm.enable = false; */
-  /*     wallpaper.mode = "scale"; */
-  /*   }; */
-  /*   displayManager = { */
-  /*     defaultSession = "none+i3"; */
-  /*     lightdm.enable = true; */
-
-  /*   }; */
-
-  /*   windowManager = { */
-  /*     i3.enable = true; */
-  /*   }; */
-  /* }; */
-  # services.xrdp.enable = true;
 
 
   # Configure keymap in X11
@@ -158,20 +107,68 @@
 
   boot.loader.efi.canTouchEfiVariables = false;
 
-  boot.loader.grub.extraEntries = ''
-    menuentry "Ubuntu" {
-      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
-      configfile "($ubuntu)/boot/grub/grub.cfg"
-    }
-  '';
+  # networking.interfaces.enp0s20f0u11.useDHCP = true;
+  # networking.interfaces.wlp3s0.useDHCP = true;
+  networking.interfaces.ens1f0.useDHCP = true;
+  # networking.interfaces.enp4s0f0.useDHCP = true;
+  networking.networkmanager.enable = true;
 
- # use unstable nix so we can access flakes
+#  boot.loader.grub.extraEntries = ''
+#    menuentry "Ubuntu" {
+#      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
+#      configfile "($ubuntu)/boot/grub/grub.cfg"
+#    }
+#  '';
+
+  services.xrdp.enable = true;
+#  services.xrdp.defaultWindowManager = "startplasma-x11";
+  services.xrdp.defaultWindowManager = "awesome-x11";
+  networking.firewall.allowedTCPPorts = [ 3389 ];
+
+  services.xserver = {
+    enable = true;
+    dpi=219;
+    displayManager = {
+        sddm.enable = true;
+        defaultSession = "none+awesome";
+    };
+
+    windowManager.awesome = {
+      enable = true;
+      luaModules = with pkgs.luaPackages; [
+        luarocks     # is the package manager for Lua modules
+        luadbi-mysql # Database abstraction layer
+      ];
+
+    };
+  };
+  environment.variables = {
+    GDK_SCALE = "2";
+    GDK_DPI_SCALE = "0.5";
+    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
+  };
+
+  # setup i3 windowing environment
+  /* services.xserver = { */
+  /*   desktopManager = { */
+  /*     xterm.enable = false; */
+  /*     wallpaper.mode = "scale"; */
+  /*   }; */
+  /*   displayManager = { */
+  /*     defaultSession = "none+i3"; */
+  /*     lightdm.enable = true; */
+  /*   }; */
+  /*   windowManager = { */
+  /*     i3.enable = true; */
+  /*   }; */
+  /* }; */
+  # services.xrdp.enable = true;
+
+  # use unstable nix so we can access flakes
   nix.package = pkgs.nixUnstable;
-  # nix.extraOptions = "experimental-features = nix-command flakes";
+  nix.extraOptions = "experimental-features = nix-command flakes";
 
   networking.hostName = "umini"; # Define your hostname.
-
- 
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -245,11 +242,11 @@
   networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
   boot.supportedFilesystems = [ "zfs" ];
 
-  fileSystems."/mnt" =
-    { device = "z/d";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
+#  fileSystems."/mnt" =
+#    { device = "z/d";
+#      fsType = "zfs";
+#      options = [ "zfsutil" ];
+#    };
 #  fileSystems."/mnt/dev" =
 #    { device = "z/d/dev";
 #      fsType = "zfs";

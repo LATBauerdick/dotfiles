@@ -75,6 +75,7 @@ in {
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;
   xdg.configFile."kitty".source = ./kitty;
+  xdg.configFile."awesome".source = ./awesome;
 
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;

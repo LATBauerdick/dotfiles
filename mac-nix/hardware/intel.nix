@@ -5,7 +5,7 @@
 
 {
   imports =
-    [ (modulesPath + "/hardware/network/broadcom-43xx.nix")
+    [ #mini (modulesPath + "/hardware/network/broadcom-43xx.nix")
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
@@ -15,7 +15,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    # { device = "/dev/disk/by-uuid/1648a0af-200a-4894-b0a0-d592ec37b7b7";
+    # { device = "/dev/disk/by-uuid/b51bcfb4-1ccd-4ca0-a2d6-cad224eb0f9d";
     { device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
