@@ -121,16 +121,18 @@
 #  '';
 
   services.xrdp.enable = true;
-#  services.xrdp.defaultWindowManager = "startplasma-x11";
   services.xrdp.defaultWindowManager = "awesome-x11";
-  networking.firewall.allowedTCPPorts = [ 3389 ];
+#  services.xrdp.defaultWindowManager = "startplasma-x11";
 
   services.xserver = {
     enable = true;
-    dpi=219;
+    # dpi=219;
+    dpi=329;
     displayManager = {
-        sddm.enable = true;
-        defaultSession = "none+awesome";
+      sddm.enable = true;
+      /* lightdm.enable = true; */
+      /* startx.enable = true; */
+      defaultSession = "none+awesome";
     };
 
     windowManager.awesome = {
@@ -162,7 +164,6 @@
   /*     i3.enable = true; */
   /*   }; */
   /* }; */
-  # services.xrdp.enable = true;
 
   # use unstable nix so we can access flakes
   nix.package = pkgs.nixUnstable;
@@ -199,6 +200,8 @@
     nitrogen
     picom
     dmenu
+  # To make SMB mounting easier on the command line
+    cifs-utils
   ];
 
  # Enable the OpenSSH daemon.
@@ -207,11 +210,6 @@
   services.openssh.permitRootLogin = "yes";
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
-
-  # Disable the firewall since we're in a VM and we want to make it
-  # easy to visit stuff in here. We only use NAT networking anyways.
-  # networking.firewall.enable = false;
-
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
@@ -231,10 +229,20 @@
     user = "bauerdic";
   };
 
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
+  # open firewall ports for services.xrdp
+  # and the needed ports in the firewall for `services.samba`
+  networking.firewall.allowedTCPPorts = [ 445 139 3389 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
+  # the needed ports in the firewall for `services.samba`
+  networking.firewall.allowedUDPPorts = [ 137 138 ];
+  /* networking.firewall.allowedTCPPorts = [ 445 139 ]; */
+
+
   programs.mosh.enable = true;
 
 # zfs setup
@@ -281,6 +289,86 @@
   services.plex = {
     enable = true;
     openFirewall = true;
+  };
+
+# SMB file sharing
+  services.gvfs.enable = true;
+  services.samba.openFirewall = true;
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    extraConfig = ''
+      workgroup = WORKGROUP
+      server string = umini
+      netbios name = umini
+      security = user
+      #use sendfile = yes
+      #max protocol = smb2
+      hosts allow = 192.168.0  localhost
+      hosts deny = 0.0.0.0/0
+      guest account = nobody
+      map to guest = bad user
+      #browseable = yes
+      #smb encrypt = required
+    '';
+
+    # You will still need to set up the user accounts to begin with:
+    # $ sudo smbpasswd -a yourusername
+
+    shares = {
+      public = {
+        path = "/Volumes";
+        browseable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "bauerdic";
+        "force group" = "users";
+      };
+      private = {
+        path = "/Volumes";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "bauerdic";
+        "force group" = "users";
+      };
+      homes = {
+        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
+        "read only" = "no";
+        "guest ok" = "no";
+      };
+    };
+  };
+
+  # mDNS, avahi
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+    extraServiceFiles = {
+      smb = ''
+        <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+          <name replace-wildcards="yes">%h</name>
+          <service>
+            <type>_smb._tcp</type>
+            <port>445</port>
+          </service>
+        </service-group>
+      '';
+    };
   };
 
 }
