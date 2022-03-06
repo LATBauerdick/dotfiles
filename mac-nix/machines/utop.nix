@@ -123,7 +123,9 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  hardware.bluetooth.enable = false;
+  # hardware.bluetooth.enable = false;
+  services.blueman.enable = true;
+
   hardware.facetimehd.enable = true;
 
   # hardware.opengl.extraPackages = [ pkgs.vaapiIntel ];
