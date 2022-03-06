@@ -54,7 +54,7 @@
       };
     };
 
-    nixosConfigurations.intel = mkVM "intel" {
+    nixosConfigurations.umini = mkVM "umini" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";

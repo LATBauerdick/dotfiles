@@ -2,7 +2,7 @@
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-NIXNAME ?= intel
+NIXNAME ?= umini
 
 # The name of the nixosConfiguration in the flake
 NIXM1X ?= m1mac.bauerdic.activationPackage
