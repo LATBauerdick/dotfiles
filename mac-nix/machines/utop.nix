@@ -112,6 +112,12 @@
     # { name = "hid-apple-keyboard"; patch = ./patches/kernel/hid-apple-keyboard.patch; }
   ];
 
+  # let it never sleep
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   networking.networkmanager.enable = true;
 
   sound.enable = true;
