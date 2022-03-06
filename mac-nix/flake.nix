@@ -61,6 +61,13 @@
       user   = "bauerdic";
     };
 
+    nixosConfigurations.utop = mkVM "utop" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
+
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       system = "aarch64-darwin";
       configuration.imports = [ ./users/bauerdic/home.nix ];

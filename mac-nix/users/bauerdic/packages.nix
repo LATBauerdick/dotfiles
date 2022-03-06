@@ -21,6 +21,7 @@ pkgs: withGUI: with pkgs; [
       neovim-unwrapped
       neuron-notes
       /* oh-my-posh */
+      oh-my-zsh
       pinentry-qt
       pandoc
       python
