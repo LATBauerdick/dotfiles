@@ -44,6 +44,7 @@ pkgs: withGUI: with pkgs; [
 
 
 ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+      ddcutil # monitor brightness
       mutt-with-sidebar
       bitwarden-cli
       sanoid
