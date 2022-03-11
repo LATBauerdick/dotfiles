@@ -92,17 +92,17 @@
       sddm.enable = true;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
-      defaultSession = "none+awesome";
+      /* defaultSession = "none+awesome"; */
     };
 
-    /* desktopManager.plasma5.enable = true; */
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks     # is the package manager for Lua modules
-        luadbi-mysql # Database abstraction layer
-      ];
-    };
+    desktopManager.plasma5.enable = true;
+    /* windowManager.awesome = { */
+    /*   enable = true; */
+    /*   luaModules = with pkgs.luaPackages; [ */
+    /*     luarocks     # is the package manager for Lua modules */
+    /*     luadbi-mysql # Database abstraction layer */
+    /*   ]; */
+    /* }; */
     # libinput.enable = true;
   };
   environment.variables = {
