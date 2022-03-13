@@ -14,6 +14,11 @@ macall:
 	nix build ".#${NIXM1X}"
 	./result/activate
 
+macintel:
+	nix flake lock
+	nix build ".#${NIXMAC}"
+	./result/activate
+
 switch:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 
