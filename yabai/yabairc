@@ -32,11 +32,11 @@ yabai -m config mouse_drop_action            swap
 yabai -m config layout                       bsp
 yabai -m config --space 1 layout             float
 yabai -m config --space 4 layout             stack
-yabai -m config top_padding                  4
-yabai -m config bottom_padding               1
-yabai -m config left_padding                 4
-yabai -m config right_padding                4
-yabai -m config window_gap                   4
+yabai -m config top_padding                  8
+yabai -m config bottom_padding               8
+yabai -m config left_padding                 8
+yabai -m config right_padding                8
+yabai -m config window_gap                   8
 
 # do not manages these application
 yabai -m rule --add app="^Activity Monitor$"    manage=off
@@ -48,6 +48,7 @@ yabai -m rule --add app="^Finder$"              manage=off
 yabai -m rule --add app="^Image Capture$"       manage=off
 yabai -m rule --add app="^Karabiner-Elements$"  manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
+yabai -m rule --add app="^QMK Toolbox$"         manage=off
 yabai -m rule --add app="^System Preferences$"  manage=off
 yabai -m rule --add app="^zoom.us$"             manage=off
 
