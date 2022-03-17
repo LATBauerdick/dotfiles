@@ -96,9 +96,11 @@ alt + cmd - c : yabai -m window --focus stack.next
 # alt - 0x2F  : yabai -m window --focus stack.next
 # alt - 0x2B  : yabai -m window --focus stack.prev
 # focus the next stacked window if possible; otherwise focus the next window or go back to the first window
-alt + cmd - tab : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
+#alt + cmd - tab : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
+#hyper - tab : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
 ctrl + alt + cmd - tab : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
-hyper - tab : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
+hyper - tab       : yabai-stack-navigator --prev
+alt + cmd - tab   : yabai-stack-navigator --next
 
 #swap window
 ctrl + alt + cmd - x : yabai -m window --swap recent
