@@ -193,7 +193,7 @@
   boot.supportedFilesystems = [ "zfs" ];
 
   fileSystems."/media" =
-    { device = "h10/m";
+    { device = "h/m";
       fsType = "zfs";
       options = [ "zfsutil" ];
     };
