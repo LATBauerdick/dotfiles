@@ -32,7 +32,7 @@
   # replicates the default behaviour.
   networking.useDHCP = lib.mkDefault false;
   networking.interfaces.ens1f0.useDHCP = lib.mkDefault true;
-  networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
   # networking.usePredictableInterfaceNames = lib.mkDefault false;
   # networking.interfaces.eth0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
