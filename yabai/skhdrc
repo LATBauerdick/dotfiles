@@ -257,7 +257,7 @@ hyper - b : yabai -m space --balance
 # toggle window fullscreen zoom, native
 ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen
 hyper - f : yabai -m window --toggle zoom-fullscreen
-alt + shift - f : yabai -m window --toggle native-fullscreen
+alt + cmd - f : yabai -m window --toggle native-fullscreen
 
 # float / unfloat window and restore position
 # alt - t : yabai -m window --toggle float && /tmp/yabai-restore/$(yabai -m query --windows --window | jq -re '.id').restore 2>/dev/null || true
