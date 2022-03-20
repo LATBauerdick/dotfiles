@@ -283,6 +283,10 @@ ctrl + alt + cmd - h : yabai -m space --layout $(yabai -m query --spaces --space
             jq -r 'if .type == "bsp" then "float" else "bsp" end')
 hyper - h : yabai -m space --layout $(yabai -m query --spaces --space | \
             jq -r 'if .type == "bsp" then "float" else "bsp" end')
+ctrl + alt + cmd - k : yabai -m space --layout $(yabai -m query --spaces --space | \
+            jq -r 'if .type == "stack" then "float" elif  .type == "float" then "bsp" else "stack" end')
+hyper - k : yabai -m space --layout $(yabai -m query --spaces --space | \
+            jq -r 'if .type == "stack" then "float" elif  .type == "float" then "bsp" else "stack" end')
 
 #hyper - q : yabai -m query --windows --space 2 | jq '.[].id' | xargs -I{} yabai -m window --stack {}
 hyper - q : \

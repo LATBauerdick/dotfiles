@@ -27,6 +27,7 @@ pkgs: withGUI: with pkgs; [
       pandoc
       python
       qemu
+      ranger
       ripgrep
       silver-searcher
       tmux
