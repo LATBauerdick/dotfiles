@@ -40,7 +40,7 @@ yabai -m config window_gap                   8
 
 # do not manages these application
 yabai -m rule --add app="^Activity Monitor$"    manage=off
-yabai -m rule --add app="^Bitwarden"            manage=off
+yabai -m rule --add app="^Bitwarden$"           manage=off
 yabai -m rule --add app="^Capture One"          manage=off
 yabai -m rule --add app="^Deliveries$"          manage=off
 yabai -m rule --add app="^DEVONthink 3$"        manage=off
