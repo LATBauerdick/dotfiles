@@ -69,7 +69,7 @@ yabai -m signal --add event=space_changed \
 # make sure the limelight binary is added somewhere in your $PATH
 # kill any existing limelight process if one exists, before we launch a new one
 killall limelight &> /dev/null
-limelight &> /dev/null &
+~/bin/limelight --config ~/.config/limelight/limelightrc &> /dev/null &
 
 echo "yabai configuration loaded.."
 
