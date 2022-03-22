@@ -42,12 +42,14 @@ yabai -m config window_gap                   8
 yabai -m rule --add app="^Activity Monitor$"    manage=off
 yabai -m rule --add app="^Bitwarden"            manage=off
 yabai -m rule --add app="^Capture One"          manage=off
+yabai -m rule --add app="^Deliveries$"          manage=off
 yabai -m rule --add app="^DEVONthink 3$"        manage=off
 yabai -m rule --add app="^Disk Utility$"        manage=off
 yabai -m rule --add app="^Finder$"              manage=off
 yabai -m rule --add app="^Image Capture$"       manage=off
 yabai -m rule --add app="^Karabiner-Elements$"  manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
+yabai -m rule --add app="^Reminders$"           manage=off
 yabai -m rule --add app="^QMK Toolbox$"         manage=off
 yabai -m rule --add app="^System Preferences$"  manage=off
 yabai -m rule --add app="^zoom.us$"             manage=off
@@ -55,6 +57,7 @@ yabai -m rule --add app="^zoom.us$"             manage=off
 # float settings windows
 yabai -m rule --add title='Settings$'           manage=off
 yabai -m rule --add title='Preferences$'        manage=off
+yabai -m rule --add title='Passwords$'          manage=off
 # float system preferences
 yabai -m rule --add app="^System Information$"  manage=off
 yabai -m rule --add app="^System Preferences$"  manage=off
@@ -62,6 +65,11 @@ yabai -m rule --add app="^System Preferences$"  manage=off
 # refresh my Übersicht bar when the space changes
 yabai -m signal --add event=space_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"spaces-widget\"'"
+
+# make sure the limelight binary is added somewhere in your $PATH
+# kill any existing limelight process if one exists, before we launch a new one
+killall limelight &> /dev/null
+limelight &> /dev/null &
 
 echo "yabai configuration loaded.."
 
