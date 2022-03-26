@@ -177,16 +177,12 @@
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for `services.samba`
   networking.firewall.allowedTCPPorts = [ 445 139 3389 ];
-  networking.firewall.allowedTCPPortRanges = [
-    { from = 9330; to = 9339; }
-  ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for `services.samba` and roon-server
-  networking.firewall.allowedUDPPorts = [ 137 138 9003 ];
-  /* networking.firewall.allowedTCPPorts = [ 445 139 ]; */
+  # the needed ports in the firewall for `services.samba`
+  networking.firewall.allowedUDPPorts = [ 137 1383 ];
 
 
   programs.mosh.enable = true;
@@ -225,6 +221,7 @@
 
   services.roon-server = {
     enable = true;
+    openFirewall = true;
   };
 
   services.plex = {
