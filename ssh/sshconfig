@@ -19,7 +19,7 @@ Host algo
   User root
   IdentityFile    ~/.ssh/ipad_rsa
 
-Host lmini
+Host lmini umini
   HostName 116.203.126.183
   User bauerdic
   Port 8389
