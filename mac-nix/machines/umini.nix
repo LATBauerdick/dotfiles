@@ -152,6 +152,14 @@
   services.openssh.passwordAuthentication = true;
   services.openssh.permitRootLogin = "yes";
   services.openssh.forwardX11 = true;
+
+  services.autossh.sessions = [
+    { extraArguments = " -N -R 8389:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17009;
+      name = "reverse";
+      user = "root"; }
+    ];
+
   users.users.root.initialPassword = "root";
 
   nixpkgs.config.allowUnfree = true;
@@ -218,6 +226,18 @@
   ];
 
   # appstream.enable = true;
+
+  services.transmission = {
+    enable = false;
+  };
+
+  services.deluge = {
+    enable = true;
+    openFirewall = true;
+    /* user = "bauerdic"; */
+    web.enable = true;
+    web.openFirewall = true;
+  };
 
   services.roon-server = {
     enable = true;

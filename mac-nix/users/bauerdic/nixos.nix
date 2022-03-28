@@ -13,6 +13,7 @@
       "disk"
       "audio"
       "video"
+      "deluge"
     ];
 
     shell = pkgs.zsh;
