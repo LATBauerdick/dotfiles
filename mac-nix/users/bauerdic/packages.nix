@@ -18,6 +18,7 @@ pkgs: withGUI: with pkgs; [
       htop
       imagemagick
       jq
+      mosh
       neofetch
       neovim-unwrapped
       neuron-notes
