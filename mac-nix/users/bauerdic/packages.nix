@@ -30,7 +30,6 @@ pkgs: withGUI: with pkgs; [
       qemu
       ranger
       ripgrep
-      sanoid
       silver-searcher
       tmux
       tree
