@@ -10,7 +10,7 @@ pkgs: withGUI: with pkgs; [
       fzf
       dtach
       gawk
-#      gcc
+      gcc
       git
       git-crypt
       git-lfs
@@ -19,6 +19,7 @@ pkgs: withGUI: with pkgs; [
       htop
       imagemagick
       jq
+      kitty
 #      lima
       neofetch
       neovim-unwrapped
