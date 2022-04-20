@@ -10,7 +10,7 @@ pkgs: withGUI: with pkgs; [
       fzf
       dtach
       gawk
-      gcc
+#      gcc
       git
       git-crypt
       git-lfs
