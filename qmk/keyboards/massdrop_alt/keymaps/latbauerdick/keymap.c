@@ -64,14 +64,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RAISE] = LAYOUT_65_ansi_blocker(
         KC_GRV , KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12 , _______, _______, \
         _______, KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC, XXXXXXX, KC_CIRC, KC_AMPR, KC_ASTR, KC_PLUS, KC_COLN, KC_GRV , _______, _______, \
-        _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , XXXXXXX, KC_6   , KC_7   , KC_8   , KC_9   , KC_0   ,          _______, _______, \
+        _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , XXXXXXX, KC_6   , KC_7   , KC_8   , KC_9   , KC_0   ,          KC_ENT , _______, \
         _______, KC_LBRC, KC_RBRC, KC_MINS, KC_EQL , KC_LPRN, XXXXXXX, KC_RPRN, KC_QUOT, _______, _______,          _______, _______, _______, \
         _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______  \
     ),
     [_NAV] = LAYOUT_65_ansi_blocker(
         KC_GESC, S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5), S(KC_6), S(KC_7), S(KC_8), S(KC_9), S(KC_0),S(KC_MINS),S(KC_EQL),KC_BSPC,KC_BSPC, \
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RBRC, S(KC_J), XXXXXXX, XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS, _______, \
-        _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDN, KC_END,  KC_COLN, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ENT ,          _______, KC_BRMU, \
+        _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDN, KC_END,  KC_COLN, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ENT ,          KC_ENT , KC_BRMU, \
         _______, G(KC_Z), G(KC_X), G(KC_C), G(KC_D), G(KC_V), KC_BSPC, KC_BSPC, KC_LEFT, XXXXXXX, XXXXXXX,          _______, KC_VOLU, KC_BRMD, \
         _______, _______, _______,                            _______,                            _______, _______, _______, KC_VOLD, _______  \
     ),
