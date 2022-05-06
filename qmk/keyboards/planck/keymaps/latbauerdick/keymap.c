@@ -174,17 +174,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* LSF_TAB, KC_Q,    KC_W,    KC_E,F   KC_R,P   KC_T,G   KC_Y,J   KC_U,L   KC_I,U   KC_O,Y   KC_P,;    KC_BSPC, */
   /* CTL_ESC, NAV_A,   KC_S,R   KC_D,S   KC_F,T   KC_G,D   KC_H,H   KC_J,N   KC_K,E   KC_L,I   NAV_SCLN,ORSF_RET, */
   /* KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,K   KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  RSF_RET, */
-  _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_B,    KC_LBRC, KC_Y,    KC_U,    KC_I,    KC_O,     _______,
-  _______, NAV_A,   KC_S,    KC_D,    KC_F,    KC_T,    KC_P,    KC_M,    KC_J,    KC_K,    KC_L,     NAV_SCLN,
-  _______, KC_Z,    KC_X,    KC_C,    KC_G,    KC_V,    KC_SLSH, KC_N,    KC_H,    KC_COMM, KC_DOT,   _______,
+
+  /* _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_B,    KC_LBRC, KC_Y,    KC_U,    KC_I,    KC_O,     _______, */
+  /* _______, NAV_A,   KC_S,    KC_D,    KC_F,    KC_T,    KC_P,    KC_M,    KC_J,    KC_K,    KC_L,     NAV_SCLN, */
+  /* _______, KC_Z,    KC_X,    KC_C,    KC_G,    KC_V,    KC_SLSH, KC_N,    KC_H,    KC_COMM, KC_DOT,   _______, */
+
+  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_BSLS, KC_GRV,  KC_J,    KC_L,    KC_U,    KC_Y,    KC_BSPC,
+  NAV_A,   KC_R,    KC_S,    KC_T,    KC_G,    KC_MINS, KC_QUOT, KC_M,    KC_N,    KC_E,    KC_I,    NAV_O,
+  LSF_Z  , KC_X,    KC_C,    KC_D,    KC_V,    KC_LPRN, KC_RPRN, KC_K,    KC_H,    KC_COMM, KC_DOT,  RSF_SLS,
+
   _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______
+  /* _______, _______, _______, _______, LSF_TAB, LSF_TAB, RSF_BSP, RSF_BSP, _______, _______, _______, _______ */
 ),
-/* [_COLEMAK2] = LAYOUT_planck_grid( \ */
-/*   KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_BSLS, KC_GRV,  KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, */
-/*   NAV_A,   KC_R,    KC_S,    KC_T,    KC_G,    KC_MINS, KC_QUOT, KC_M,    KC_N,    KC_E,    KC_I,    NAV_O, */
-/*   LSF_Z  , KC_X,    KC_C,    KC_D,    KC_V,    KC_LPRN, KC_RPRN, KC_K,    KC_H,    KC_COMM, KC_DOT,  RSF_SLS, */
-/*   _______, _______, _______, _______, LSF_TAB, LSF_TAB, RSF_BSP, RSF_BSP, _______, _______, _______, _______ */
-/* ), */
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.

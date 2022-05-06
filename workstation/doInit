@@ -9,7 +9,7 @@ chmod 0600 ~/.ssh/id_rsa
 
 # link dotfiles to where they're needed
 cd ~/
-git clone git@gitlab.com:latb/dotfiles .dotfiles \
+git clone git@github.com:latbauerdick/dotfiles .dotfiles \
     && mkdir -p .config                               \
     && ln -sf ../.dotfiles/karabiner .config/         \
     && ln -sf .dotfiles/git/gitconfig .gitconfig      \
