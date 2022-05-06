@@ -34,6 +34,7 @@ pkgs: withGUI: with pkgs; [
       tmux
       tree
       unzip
+      unrar
       wget
       xz
       zoxide

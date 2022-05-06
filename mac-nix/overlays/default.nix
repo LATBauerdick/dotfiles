@@ -11,12 +11,12 @@ self: super: {
         roon-server = super.roon-server.overrideAttrs (old: {
   src =
     let
-      version = "1.8-931";
+      version = "1.8-936";
       urlVersion = builtins.replaceStrings [ "." "-" ] [ "00" "00" ] version;
     in
     super.fetchurl {
       url = "http://download.roonlabs.com/builds/RoonServer_linuxx64_${urlVersion}.tar.bz2";
-      sha256 = "sha256-rdYDuiAc4N0M30KnNEq8TaBFoUg4ZSlpOhLhiG7awHI=";
+      sha256 = "sha256-7vbrXzYr3Ehnx2YL2C3T3GuaPOgwEeNmGg51uaglSr0=";
     };
 
   installPhase =
