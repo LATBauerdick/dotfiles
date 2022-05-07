@@ -70,7 +70,7 @@ in {
   home.file.".ssh/config".source = ./sshconfig;
   home.file.".oh-my-posh".source = ./oh-my-posh;
   home.file.".config/karabiner/assets".source = ./karabiner-assets;
-  home.file.".gitconfig".source = ./gitconfig;
+  home.file.".gitconfig".source = ./git/gitconfig;
   home.file.".config/yabai/yabairc".source = ./yabairc;
   home.file.".config/skhd/skhdrc".source = ./skhdrc;
   home.file.".config/limelight/limelightrc".source = ./limelightrc;
