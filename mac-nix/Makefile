@@ -11,7 +11,7 @@ NIXLIMA ?= homeManagerConfigurationsLima.bauerdic.activationPackage
 
 macall:
 	nix flake lock
-	nix build --impure ".#${NIXM1X}"
+	NIXPKGS_ALLOW_UNFREE=1 nix build --impure ".#${NIXM1X}"
 	./result/activate
 
 macintel:
