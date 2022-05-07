@@ -65,15 +65,15 @@ in {
 
   home.file.".tmux.conf".source = ./tmux.conf;
 
-  home.file.".zshrc".source = ./zshrc;
-  home.file.".p10k.zsh".source = ./p10k.zsh;
-  home.file.".ssh/config".source = ./sshconfig;
-  home.file.".oh-my-posh".source = ./oh-my-posh;
-  home.file.".config/karabiner/assets".source = ./karabiner-assets;
+  home.file.".zshrc".source = ./zsh/zshrc;
+  home.file.".p10k.zsh".source = ./zsh/p10k.zsh;
+  home.file.".ssh/config".source = ./ssh/sshconfig;
+  home.file.".oh-my-posh".source = ./zsh/oh-my-posh;
+  home.file.".config/karabiner/assets".source = ./karabiner/assets;
   home.file.".gitconfig".source = ./git/gitconfig;
-  home.file.".config/yabai/yabairc".source = ./yabairc;
-  home.file.".config/skhd/skhdrc".source = ./skhdrc;
-  home.file.".config/limelight/limelightrc".source = ./limelightrc;
+  home.file.".config/yabai/yabairc".source = ./yabai/yabairc;
+  home.file.".config/skhd/skhdrc".source = ./yabai/skhdrc;
+  home.file.".config/limelight/limelightrc".source = ./yabai/limelightrc;
 
   xdg.enable = true;
   xdg.configFile."nvim".source = ./vim;
