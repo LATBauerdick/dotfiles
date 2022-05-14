@@ -12,6 +12,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    oh-my-posh.url = "github:latbauerdick/oh-my-posh";
   };
 
   outputs = {
@@ -19,6 +20,7 @@
     home-manager,
     nixpkgs,
     utils,
+    oh-my-posh,
     ... }@inputs:
   let
 
@@ -90,7 +92,7 @@
       /*   }; */
       /*   bauerdic = self.homeConfigurations.mudrii.activationPackage; */
       /*   defaultPackage.aarch64-darwin = self.bauerdic; */
-
+      extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
     };
     homeManagerConfigurationsMac = {
       bauerdic = home-manager.lib.homeManagerConfiguration {

@@ -1,8 +1,8 @@
 { config, pkgs, specialArgs, ... }:
 
+
 #let sources = import ../../nix/sources.nix; in 
 let
-    inputs.oh-my-posh = "../../../zsh/oh-my-posh";
     pkgs0 = import (builtins.fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/12408341763b8f2f0f0a88001d9650313f6371d5.tar.gz";
         sha256 = "sha256:17vgd7a8k0rpmc1lg9lwbla6jr5ks2d35qp7ryp6j4dsy7r8rihw";
@@ -15,6 +15,7 @@ let
     packages = import ./packages.nix;
 
 in {
+
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
