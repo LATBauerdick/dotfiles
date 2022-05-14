@@ -1,1 +1,1 @@
-mac-nix/users/bauerdic/zsh
+nix/users/bauerdic/zsh

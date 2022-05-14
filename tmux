@@ -1,1 +1,1 @@
-mac-nix/users/bauerdic/tmux
+nix/users/bauerdic/tmux

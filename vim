@@ -1,1 +1,1 @@
-mac-nix/users/bauerdic/vim
+nix/users/bauerdic/vim
