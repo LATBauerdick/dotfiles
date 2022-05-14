@@ -5,8 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# [ -e $HOME/.nix-defexpr/channels ] && export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
-[ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
+# [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # vi mode
 bindkey -v
@@ -39,7 +38,9 @@ alias zl="zfs list -t all -r -o name,used,refer"
 alias icat="kitty +kitten icat"
 alias d="kitty +kitten diff"
 
-alias l='ls -alh'
+alias l=exa #'ls -alh'
+alias ll='exa -alh' #'ls -alh'
+alias tree='exa --tree'
 
 alias nv='nvim'
 
@@ -92,8 +93,8 @@ export GREP_OPTIONS='--color=auto'
 ###echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
 [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PATH=~/bin:~/.nix-profile/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:$PATH
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+# export PATH=~/bin:~/.nix-profile/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:$PATH
 
 # }}}
 #

@@ -5,6 +5,7 @@ pkgs: withGUI: with pkgs; [
       bat
       coreutils
       ctags
+      exa
       exiftool
       fd
       fzf
