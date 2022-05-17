@@ -1,4 +1,4 @@
-{ config, pkgs, specialArgs, ... }:
+{ config, pkgs, specialArgs, oh-my-posh, ... }:
 
 
 #let sources = import ../../nix/sources.nix; in 
@@ -36,7 +36,7 @@ in {
   #####LATB???? home.stateVersion = "21.05";
 
 
-  home.packages = packages pkgs withGUI;
+  home.packages =  [ oh-my-posh ] ++ ( packages pkgs withGUI );
   /* home.packages = with pkgs; [ */
   /* ]; */
 

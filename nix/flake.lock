@@ -22,17 +22,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1647297614,
-        "narHash": "sha256-ulGq3W5XsrBMU/u5k9d4oPy65pQTkunR4HKKtTq0RwY=",
-        "owner": "NixOS",
+        "lastModified": 1652378906,
+        "narHash": "sha256-DeV2myAMArPvyqxp0M6z30kuXb2L9SO2QXjxbbsZQyY=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "73ad5f9e147c0d2a2061f1d4bd91e05078dc0b58",
+        "rev": "d89d7af1ba23bd8a5341d00bdd862e8e9a808f56",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "nixos",
         "ref": "nixos-unstable",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-unstable": {
@@ -72,17 +73,17 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1646105278,
-        "narHash": "sha256-4d45afV4nrfn0gMheir6vuK2s95Cw+zJbEqNnN/UDQw=",
-        "owner": "latbauerdick",
-        "repo": "oh-my-posh",
-        "rev": "ee50cc3734cdb26d4f45ee328a2d6ba3fd900041",
-        "type": "github"
+        "lastModified": 1652758075,
+        "narHash": "sha256-a3o3gvBtRoOVEyiO03v9ioScjxaBDzHgN+aid5zm948=",
+        "ref": "master",
+        "rev": "1509850a7fc3e8d83fa56ea8f0cad19bc15fdc9d",
+        "revCount": 8,
+        "type": "git",
+        "url": "file:///data/dev/Dev/oh-my-posh"
       },
       "original": {
-        "owner": "latbauerdick",
-        "repo": "oh-my-posh",
-        "type": "github"
+        "type": "git",
+        "url": "file:///data/dev/Dev/oh-my-posh"
       }
     },
     "root": {

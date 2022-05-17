@@ -3,16 +3,18 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    /* nixpkgs.url = "github:nixos/nixpkgs/release-21.11"; */
-    /* nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; */
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    /* nixpkgs.url = "nixpkgs/nixos-unstable"; */
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      # url = "github:nix-community/home-manager/release-21.05";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    oh-my-posh.url = "github:latbauerdick/oh-my-posh";
+    oh-my-posh = {
+      /* url = "github:latbauerdick/oh-my-posh"; */
+      url = "/data/dev/Dev/oh-my-posh";
+      inputs.oh-my-posh.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -75,25 +77,26 @@
       system = "aarch64-darwin";
       homeDirectory = "/home/bauerdic";
       username = "bauerdic";
-      configuration.imports = [ ./users/bauerdic/home.nix ];
-      /* configuration = { config, pkgs, ... }: */
-      /*   let */
-      /*     overlay-unstable = final: prev: { */
-      /*       unstable = inputs.nixpkgs-unstable.legacyPackages.aarch64-darwin; */
-      /*     }; */
-      /*   in */
-      /*   { */
-      /*     nixpkgs.overlays = [ overlay-unstable ]; */
-      /*     nixpkgs.config = { */
-      /*       allowUnfree = true; */
-      /*       allowBroken = true; */
-      /*     }; */
-      /*     imports = [ ./users/bauerdic/home.nix ]; */
-      /*   }; */
-      /*   bauerdic = self.homeConfigurations.mudrii.activationPackage; */
-      /*   defaultPackage.aarch64-darwin = self.bauerdic; */
+      /* configuration.imports = [ ./users/bauerdic/home.nix ]; */
       extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
+      configuration = { config, pkgs, oh-my-posh, ... }:
+        /* let */
+        /*   overlay-unstable = final: prev: { */
+        /*     unstable = inputs.nixpkgs-unstable.legacyPackages.aarch64-darwin; */
+        /*   }; */
+        /* in */
+        {
+          /* nixpkgs.overlays = [ overlay-unstable ]; */
+          nixpkgs.config = {
+            allowUnfree = true;
+            allowBroken = true;
+          };
+          /* inherit oh-my-posh; */
+          imports = [ ./users/bauerdic/home.nix ];
+        };
     };
+    bauerdic = self.homeConfigurations.bauerdic.activationPackage;
+    defaultPackage.aarch64-darwin = self.bauerdic;
     homeManagerConfigurationsMac = {
       bauerdic = home-manager.lib.homeManagerConfiguration {
         system = "x86_64-darwin";
