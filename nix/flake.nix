@@ -80,7 +80,7 @@
       /* configuration.imports = [ ./users/bauerdic/home.nix ]; */
       extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
       extraModules = [
-        ./users/bauerdic/packages.nix
+        ./users/bauerdic/extraPackages.nix
       ];
       configuration = {
         imports = [ ./users/bauerdic/home.nix ];

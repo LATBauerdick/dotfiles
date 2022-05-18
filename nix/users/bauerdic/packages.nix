@@ -1,9 +1,9 @@
-{ config, pkgs, nixpkgs, eww, ... }:
-let
-in {
-  home.packages = with pkgs; [
+/* { config, pkgs, nixpkgs, eww, ... }: */
+/* let */
+/* in { */
+/*   home.packages = with pkgs; [ */
+  pkgs: withGUI: with pkgs; [
   # these files are meant to be installed in all scenarios
-      nix
       abduco
       bat
       coreutils
@@ -64,5 +64,5 @@ in {
       thunderbird
       vlc
       zoom-us
-  ];
-}
+  ]
+  /* ];} */

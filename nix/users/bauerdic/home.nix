@@ -12,7 +12,7 @@ let
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
     withGUI = true;
-    /* packages = import ./packages.nix; */
+    myPackages = import ./packages.nix;
     /* packages = xxx: yyy [ xxx ]*/
 
 in {
@@ -37,7 +37,7 @@ in {
   #####LATB???? home.stateVersion = "21.05";
 
 
-  /* home.packages =  [ ] ++ ( packages pkgs withGUI ); */
+  home.packages =  [ ] ++ ( myPackages pkgs withGUI );
 
 # Tex installation
   fonts.fontconfig.enable = true;
