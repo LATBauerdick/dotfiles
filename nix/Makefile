@@ -23,6 +23,12 @@ macintel:
 switch:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 
+umini:
+	nix flake lock
+	NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#umini.bauerdic.activationPackage
+	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
+	./result/activate
+
 test:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test --flake ".#${NIXNAME}"
 

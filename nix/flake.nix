@@ -104,20 +104,32 @@
     };
     bauerdic = self.homeConfigurations.bauerdic.activationPackage;
     defaultPackage.aarch64-darwin = self.bauerdic;
-    homeManagerConfigurationsMac = {
-      bauerdic = home-manager.lib.homeManagerConfiguration {
+
+    umini.bauerdic = home-manager.lib.homeManagerConfiguration {
+      system = "x86_64-linux";
+      homeDirectory = "/home/bauerdic";
+      username = "bauerdic";
+      extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
+      extraModules = [
+        ./users/bauerdic/extraPackages.nix
+      ];
+      configuration = {
+        imports = [ ./users/bauerdic/home.nix ];
+      };
+    };
+
+    homeManagerConfigurationsMac.bauerdic = home-manager.lib.homeManagerConfiguration {
+      system = "x86_64-darwin";
+      pkgs = import nixpkgs {
         system = "x86_64-darwin";
-        pkgs = import nixpkgs {
-          system = "x86_64-darwin";
-          config = { allowUnfree = true; };
-        };
-        username = "bauerdic";
-        homeDirectory = "/home/bauerdic";
-        configuration = {
-          imports = [
-            ./users/bauerdic/home.nix
-          ];
-        };
+        config = { allowUnfree = true; };
+      };
+      username = "bauerdic";
+      homeDirectory = "/home/bauerdic";
+      configuration = {
+        imports = [
+          ./users/bauerdic/home.nix
+        ];
       };
     };
     homeManagerConfigurationsLima = {
