@@ -127,8 +127,12 @@
   /* }; */
 
   # use unstable nix so we can access flakes
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix = {
+      /* package = pkgs.nixUnstable; */
+      package = pkgs.nixFlakes;
+      extraOptions = "experimental-features = nix-command flakes";
+  };
+
 
   networking.hostName = "utop"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
