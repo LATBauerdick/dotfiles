@@ -11,8 +11,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     oh-my-posh = {
-      /* url = "github:latbauerdick/oh-my-posh"; */
-      url = "/data/dev/Dev/oh-my-posh";
+      url = "github:latbauerdick/oh-my-posh";
+      /* url = "/data/dev/Dev/oh-my-posh"; */
       inputs.oh-my-posh.follows = "nixpkgs";
     };
   };
@@ -79,21 +79,28 @@
       username = "bauerdic";
       /* configuration.imports = [ ./users/bauerdic/home.nix ]; */
       extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
-      configuration = { config, pkgs, oh-my-posh, ... }:
+      extraModules = [
+        ./users/bauerdic/packages.nix
+      ];
+      configuration = {
+        imports = [ ./users/bauerdic/home.nix ];
+        /* home.packages = [ inputs.nixpkgs.cargo ]; */
+      };
+      /* configuration = { config, pkgs, oh-my-posh, ... }: */
         /* let */
         /*   overlay-unstable = final: prev: { */
         /*     unstable = inputs.nixpkgs-unstable.legacyPackages.aarch64-darwin; */
         /*   }; */
         /* in */
-        {
-          /* nixpkgs.overlays = [ overlay-unstable ]; */
-          nixpkgs.config = {
-            allowUnfree = true;
-            allowBroken = true;
-          };
-          /* inherit oh-my-posh; */
-          imports = [ ./users/bauerdic/home.nix ];
-        };
+        /* { */
+        /*   home.packages = [ oh-my-posh ]; */
+        /*   /1* nixpkgs.overlays = [ overlay-unstable ]; *1/ */
+        /*   nixpkgs.config = { */
+        /*     allowUnfree = true; */
+        /*     allowBroken = true; */
+        /*   }; */
+        /*   imports = [ ./users/bauerdic/home.nix ]; */
+        /* }; */
     };
     bauerdic = self.homeConfigurations.bauerdic.activationPackage;
     defaultPackage.aarch64-darwin = self.bauerdic;

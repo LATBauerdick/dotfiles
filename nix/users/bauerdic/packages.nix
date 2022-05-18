@@ -1,4 +1,7 @@
-pkgs: withGUI: with pkgs; [
+{ config, pkgs, nixpkgs, eww, ... }:
+let
+in {
+  home.packages = with pkgs; [
   # these files are meant to be installed in all scenarios
       nix
       abduco
@@ -23,7 +26,6 @@ pkgs: withGUI: with pkgs; [
       neofetch
       neovim-unwrapped
       neuron-notes
-      /* oh-my-posh */
       oh-my-zsh
       pinentry-qt
       pandoc
@@ -48,7 +50,7 @@ pkgs: withGUI: with pkgs; [
 #####      texlive.combined.scheme-full
 
 
-] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       ddcutil # monitor brightness
       mutt-with-sidebar
       bitwarden-cli
@@ -62,5 +64,5 @@ pkgs: withGUI: with pkgs; [
       thunderbird
       vlc
       zoom-us
-]
-
+  ];
+}

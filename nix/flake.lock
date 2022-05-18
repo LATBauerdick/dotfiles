@@ -75,15 +75,15 @@
       "locked": {
         "lastModified": 1652758075,
         "narHash": "sha256-a3o3gvBtRoOVEyiO03v9ioScjxaBDzHgN+aid5zm948=",
-        "ref": "master",
+        "owner": "latbauerdick",
+        "repo": "oh-my-posh",
         "rev": "1509850a7fc3e8d83fa56ea8f0cad19bc15fdc9d",
-        "revCount": 8,
-        "type": "git",
-        "url": "file:///data/dev/Dev/oh-my-posh"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///data/dev/Dev/oh-my-posh"
+        "owner": "latbauerdick",
+        "repo": "oh-my-posh",
+        "type": "github"
       }
     },
     "root": {

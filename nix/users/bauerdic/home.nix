@@ -1,4 +1,4 @@
-{ config, pkgs, specialArgs, oh-my-posh, ... }:
+{ config, pkgs, specialArgs, ... }:
 
 
 #let sources = import ../../nix/sources.nix; in 
@@ -12,7 +12,8 @@ let
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
     withGUI = true;
-    packages = import ./packages.nix;
+    /* packages = import ./packages.nix; */
+    /* packages = xxx: yyy [ xxx ]*/
 
 in {
 
@@ -36,9 +37,7 @@ in {
   #####LATB???? home.stateVersion = "21.05";
 
 
-  home.packages =  [ oh-my-posh ] ++ ( packages pkgs withGUI );
-  /* home.packages = with pkgs; [ */
-  /* ]; */
+  /* home.packages =  [ ] ++ ( packages pkgs withGUI ); */
 
 # Tex installation
   fonts.fontconfig.enable = true;
