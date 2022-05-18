@@ -122,6 +122,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    silver-searcher  # ag
+    git
     gnumake
 #    killall
     psmisc # things like killall
@@ -249,6 +251,7 @@
     openFirewall = true;
     user = "plex";
     group = "plex";
+    dataDir = "/data/plex";
   };
 
 # SMB file sharing
