@@ -2,16 +2,14 @@
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-NIXNAME ?= umini
 
 # The name of the nixosConfiguration in the flake
-NIXM1X ?= m1mac.bauerdic.activationPackage
-NIXMAC ?= homeManagerConfigurationsMac.bauerdic.activationPackage
-NIXLIMA ?= homeManagerConfigurationsLima.bauerdic.activationPackage
+NIXNAME ?= umini
+MACNAME ?= m1mac  # umini intelmac  lima
 
 macall:
 	nix flake lock
-	NIXPKGS_ALLOW_UNFREE=1 nix build --impure ".#${NIXM1X}"
+	NIXPKGS_ALLOW_UNFREE=1 nix build --impure ".#${MACNAME}.bauerdic.activationPackage"
 	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
 
@@ -23,23 +21,14 @@ macintel:
 switch:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 
-umini:
-	nix flake lock
-	NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#umini.bauerdic.activationPackage
-	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
-	./result/activate
-
 test:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test --flake ".#${NIXNAME}"
 
 update:
 	nix flake lock
 
-macbuild:
-	nix build ".#${NIXMAC}"
-
-limabuild:
-	nix build ".#${NIXLIMA}"
+build:
+	NIXPKGS_ALLOW_UNFREE=1 nix build --impure ".#${MACNAME}.bauerdic.activationPackage"
 
 activate:
 	./result/activate
