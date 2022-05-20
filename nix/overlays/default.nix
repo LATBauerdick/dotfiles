@@ -11,7 +11,7 @@ self: super: {
         roon-server = super.roon-server.overrideAttrs (old: {
   src =
     let
-      version = "1.8-936";
+      version = "1.8-943";
       urlVersion = builtins.replaceStrings [ "." "-" ] [ "00" "00" ] version;
     in
     super.fetchurl {
