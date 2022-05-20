@@ -12,6 +12,7 @@ macall:
 	NIXPKGS_ALLOW_UNFREE=1 nix build --impure ".#${MACNAME}.bauerdic.activationPackage"
 	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
+	nix profile install github:latbauerdick/oh-my-posh
 
 macintel:
 	nix flake lock
