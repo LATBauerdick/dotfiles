@@ -25,7 +25,7 @@ Host lmini umini
   Port 8389
   IdentityFile   ~/.ssh/id_ed25519
 
-Host ltop
+Host usrv utop ltop
 HostName 116.203.126.183
   User bauerdic
   Port 8388

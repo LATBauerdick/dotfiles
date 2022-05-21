@@ -134,7 +134,7 @@
       extraOptions = "experimental-features = nix-command flakes";
   };
 
-  networking.hostName = "utop"; # Define your hostname.
+  networking.hostName = "usrv"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -289,8 +289,8 @@
     securityType = "user";
     extraConfig = ''
       workgroup = LATB
-      server string = utop
-      netbios name = utop
+      server string = ursv
+      netbios name = usrv
       security = user
       #use sendfile = yes
       #max protocol = smb2

@@ -66,7 +66,7 @@
       user   = "bauerdic";
     };
 
-    nixosConfigurations.utop = mkVM "utop" {
+    nixosConfigurations.usrv = mkVM "usrv" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";
