@@ -16,7 +16,7 @@ self: super: {
     in
     super.fetchurl {
       url = "http://download.roonlabs.com/builds/RoonServer_linuxx64_${urlVersion}.tar.bz2";
-      sha256 = "sha256-7vbrXzYr3Ehnx2YL2C3T3GuaPOgwEeNmGg51uaglSr0=";
+      sha256 = "sha256-osQ0/HhcSO6pirUDjOnw0yUsGUsxZI62ViHc6Lb/rT4=";
     };
 
   installPhase =

@@ -229,6 +229,12 @@
   # umini networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
   boot.supportedFilesystems = [ "zfs" ];
 
+  fileSystems."/media" =
+    { device = "h/m";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
+
   fileSystems."/mnt" =
     { device = "z/d";
       fsType = "zfs";
@@ -276,10 +282,27 @@
 
   # appstream.enable = true;
 
-  /* services.plex = { */
-  /*   enable = true; */
-  /*   openFirewall = true; */
-  /* }; */
+  services.deluge = {
+    enable = true;
+    openFirewall = true;
+    /* user = "bauerdic"; */
+    dataDir = "/data/deluge";
+    web.enable = true;
+    web.openFirewall = true;
+  };
+
+  services.roon-server = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+    user = "plex";
+    group = "plex";
+    dataDir = "/data/plex";
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;

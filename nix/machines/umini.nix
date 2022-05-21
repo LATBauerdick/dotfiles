@@ -200,7 +200,7 @@
   programs.mosh.enable = true;
 
 # zfs setup
-#  networking.hostId = "41ca8470";
+  # usrv  networking.hostId = "41ca8470";
   networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
   boot.supportedFilesystems = [ "zfs" ];
 
@@ -231,9 +231,9 @@
 
   # appstream.enable = true;
 
-  services.transmission = {
-    enable = false;
-  };
+  /* services.transmission = { */
+  /*   enable = false; */
+  /* }; */
 
   services.deluge = {
     enable = true;
