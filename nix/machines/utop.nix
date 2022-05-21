@@ -86,7 +86,8 @@
 
   services.xserver = {
     enable = true;
-    dpi=219;
+    dpi=130;
+    # dpi=219;
     # dpi=329;
     displayManager = {
       sddm.enable = true;
@@ -128,11 +129,10 @@
 
   # use unstable nix so we can access flakes
   nix = {
-      /* package = pkgs.nixUnstable; */
-      package = pkgs.nixFlakes;
+      package = pkgs.nixUnstable;
+      /* package = pkgs.nixFlakes; */
       extraOptions = "experimental-features = nix-command flakes";
   };
-
 
   networking.hostName = "utop"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
@@ -150,6 +150,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    silver-searcher  # ag
+    git
     gnumake
 #    killall
     psmisc # things like killall
@@ -182,6 +184,13 @@
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
+  services.autossh.sessions = [
+    { extraArguments = " -N -R 8388:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17008;
+      name = "reverse";
+      user = "root"; }
+    ];
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
@@ -210,8 +219,7 @@
     { from = 60001; to = 61000; }
   ];
   # the needed ports in the firewall for `services.samba`
-  networking.firewall.allowedUDPPorts = [ 137 138 ];
-  /* networking.firewall.allowedTCPPorts = [ 445 139 ]; */
+  networking.firewall.allowedUDPPorts = [ 137 1383 ];
 
 
   programs.mosh.enable = true;
@@ -268,10 +276,10 @@
 
   # appstream.enable = true;
 
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-  };
+  /* services.plex = { */
+  /*   enable = true; */
+  /*   openFirewall = true; */
+  /* }; */
 
 # SMB file sharing
   services.gvfs.enable = true;

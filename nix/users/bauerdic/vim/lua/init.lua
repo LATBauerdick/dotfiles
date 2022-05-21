@@ -129,7 +129,7 @@ require('lsp')
 -- Key mappings
 require('keymappings')
 
-require('toggleterm')
+-- require('toggleterm')
 
 vim.cmd 'source ~/.config/nvim/oldinit.vim'
 

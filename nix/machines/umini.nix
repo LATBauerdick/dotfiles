@@ -103,8 +103,11 @@
   /* }; */
 
   # use unstable nix so we can access flakes
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix = {
+      package = pkgs.nixUnstable;
+      /* package = pkgs.nixFlakes; */
+      extraOptions = "experimental-features = nix-command flakes";
+  };
 
   networking.hostName = "umini"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
@@ -154,6 +157,7 @@
   services.openssh.passwordAuthentication = true;
   services.openssh.permitRootLogin = "yes";
   services.openssh.forwardX11 = true;
+  users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
     { extraArguments = " -N -R 8389:127.0.0.1:22 116.203.126.183 sleep 99999999999";
@@ -161,8 +165,6 @@
       name = "reverse";
       user = "root"; }
     ];
-
-  users.users.root.initialPassword = "root";
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;

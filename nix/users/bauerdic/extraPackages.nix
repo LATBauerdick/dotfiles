@@ -6,5 +6,6 @@ in {
     duf
     du-dust
     ncdu
+    procs
 
   ];}
