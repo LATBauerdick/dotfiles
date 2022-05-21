@@ -14,11 +14,6 @@ macall:
 	./result/activate
 	nix profile install github:latbauerdick/oh-my-posh
 
-macintel:
-	nix flake lock
-	nix build ".#${NIXMAC}"
-	./result/activate
-
 switch:
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 
