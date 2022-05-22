@@ -284,8 +284,6 @@
 
   services.deluge = {
     enable = true;
-    openFirewall = true;
-    /* user = "bauerdic"; */
     dataDir = "/data/deluge";
     web.enable = true;
     web.openFirewall = true;
