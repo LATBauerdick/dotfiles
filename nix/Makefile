@@ -4,8 +4,9 @@
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # The name of the nixosConfiguration in the flake
-NIXNAME ?= umini
-MACNAME ?= m1mac  # umini intelmac  lima
+NIXNAME ?= usrv
+MACNAME ?= m1mac
+# umini intelmac  lima
 
 macall:
 	nix flake lock

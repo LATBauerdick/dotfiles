@@ -5,6 +5,7 @@ in {
   # add some more, etc
     duf
     du-dust
+    entr
     ncdu
     procs
 
