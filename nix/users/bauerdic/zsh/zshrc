@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+###echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 # [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # vi mode
@@ -13,7 +17,6 @@ export MYPOSHTHEME=~/.oh-my-posh/powerlevel10k_rainbow.omp.json
 # clean-detailed.omp.json
 # powerlevel10k_classic.omp.json
 eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
-# eval "$(~/.oh-my-posh/oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
 
 # oh-my-zsh {{{
 # Path to your oh-my-zsh installation.
@@ -90,11 +93,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # Tell grep to highlight matches
 export GREP_OPTIONS='--color=auto'
 
-###echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
-[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
-# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-# export PATH=~/bin:~/.nix-profile/bin:~/.local/bin:~/.npm-global/bin:~/Library/Python/3.9/bin:/Library/TeX/texbin:$PATH
 
 # }}}
 #

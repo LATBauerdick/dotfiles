@@ -8,5 +8,8 @@ in {
     entr
     ncdu
     procs
+    autossh
+    qemu
+    lima
 
   ];}
