@@ -11,5 +11,6 @@ in {
     autossh
     qemu
     lima
+    skhd
 
   ];}

@@ -152,6 +152,22 @@
             { "set_variable": { "name": "vi_mode", "value": 1 } },
             { "key_code": "right_arrow", "modifiers": [ ] }
           ]
+        },
+        { "type": "basic",
+          "from": { "key_code": "quote", "modifiers": { "optional": [ "any" ] } },
+          "to": [ { "key_code": "return_or_enter", "modifiers": [ ] } ],
+          "conditions": [ { "type": "variable_if", "name": "vi_mode", "value": 1 } ]
+        },
+        { "type": "basic",
+          "from": {
+            "simultaneous": [ { "key_code": "a" }, { "key_code": "quote" } ],
+            "simultaneous_options": { "key_down_order": "strict", "key_up_order": "strict_inverse", "detect_key_down_uninterruptedly": true, "to_after_key_up": [ { "set_variable": { "name": "vi_mode", "value": 0 } } ] },
+            "modifiers": { "optional": [ "any" ] }
+          },
+          "to": [
+            { "set_variable": { "name": "vi_mode", "value": 1 } },
+            { "key_code": "return_or_enter", "modifiers": [ ] }
+          ]
         }
       ]
     },
