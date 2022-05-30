@@ -201,14 +201,14 @@
 
 # zfs setup
   # usrv  networking.hostId = "41ca8470";
-  /* networking.hostId = "af58841e"; # head -c 8 /etc/machine-id */
-  /* boot.supportedFilesystems = [ "zfs" ]; */
+  networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
+  boot.supportedFilesystems = [ "zfs" ];
 
-  /* fileSystems."/media" = */
-  /*   { device = "h/m"; */
-  /*     fsType = "zfs"; */
-  /*     options = [ "zfsutil" ]; */
-  /*   }; */
+  fileSystems."/media" =
+    { device = "h/m";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -235,26 +235,26 @@
   /*   enable = false; */
   /* }; */
 
-  /* services.deluge = { */
-  /*   enable = true; */
-  /*   openFirewall = true; */
-  /*   /1* user = "bauerdic"; *1/ */
-  /*   web.enable = true; */
-  /*   web.openFirewall = true; */
-  /* }; */
+  services.deluge = {
+    enable = true;
+    openFirewall = true;
+    /* user = "bauerdic"; */
+    web.enable = true;
+    web.openFirewall = true;
+  };
 
-  /* services.roon-server = { */
-  /*   enable = true; */
-  /*   openFirewall = true; */
-  /* }; */
+  services.roon-server = {
+    enable = true;
+    openFirewall = true;
+  };
 
-  /* services.plex = { */
-  /*   enable = true; */
-  /*   openFirewall = true; */
-  /*   user = "plex"; */
-  /*   group = "plex"; */
-  /*   dataDir = "/data/plex"; */
-  /* }; */
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+    user = "plex";
+    group = "plex";
+    dataDir = "/data/plex";
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;
