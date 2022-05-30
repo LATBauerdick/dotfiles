@@ -202,13 +202,18 @@
 # zfs setup
   # usrv  networking.hostId = "41ca8470";
   networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
+  boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
+  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
 
-  fileSystems."/media" =
-    { device = "h/m";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
+  /* fileSystems."/media" = */
+  /*   { device = "h/m"; */
+  /*     fsType = "zfs"; */
+  /*     options = [ "zfsutil" ]; */
+  /*   }; */
+  boot.zfs.extraPools = [  "h" "z2" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -231,14 +236,9 @@
 
   # appstream.enable = true;
 
-  /* services.transmission = { */
-  /*   enable = false; */
-  /* }; */
-
   services.deluge = {
     enable = true;
-    openFirewall = true;
-    /* user = "bauerdic"; */
+    dataDir = "/data/deluge";
     web.enable = true;
     web.openFirewall = true;
   };
