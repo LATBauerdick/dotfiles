@@ -19,13 +19,7 @@
     ... }@inputs:
   let
 
-    localOverlay = _: _: { };
-    pkgsForSystem = system: import nixpkgs {
-      overlays = [
-        localOverlay
-      ];
-      inherit system;
-    };
+    pkgsForSystem = system: import nixpkgs { inherit system; };
 
     mkMachine = name: { nixpkgs, home-manager, system, user }: nixpkgs.lib.nixosSystem rec {
       inherit system;
@@ -43,17 +37,13 @@
     };
 
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
-      legacyPackages = pkgsForSystem system;
+      legacyPackages = import nixpkgs { inherit system; };
   }) // {
-    # non-system suffixed items should go here
-    overlay = localOverlay;
-
     nixosConfigurations.umini = mkMachine "umini" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";
       user   = "bauerdic";
     };
-
   };
 }
