@@ -80,7 +80,7 @@
       /* configuration.imports = [ ./users/bauerdic/home.nix ]; */
       extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
       extraModules = [
-        ./users/bauerdic/extraPackages.nix
+        /* ./users/bauerdic/extraPackages.nix */
       ];
       configuration = {
         imports = [ ./users/bauerdic/home.nix ];
@@ -111,7 +111,7 @@
       username = "bauerdic";
       extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
       extraModules = [
-        ./users/bauerdic/extraPackages.nix
+        /* ./users/bauerdic/extraPackages.nix */
       ];
       configuration = {
         imports = [ ./users/bauerdic/home.nix ];

@@ -1,16 +1,20 @@
-{ config, pkgs, ... }:
-let
-in {
-  home.packages = with pkgs; [
+/* { pkgs, ... }: */
+
+/* { */
+/*   home.packages = with pkgs; [ */
+  pkgs: with pkgs; [
   # add some more, etc
+    autossh
     duf
     du-dust
     entr
+    lima
     ncdu
     procs
-    autossh
     qemu
-    lima
-    skhd
-
-  ];}
+    sd
+    tealdeer
+    /* vifs */
+    /* ytop */
+]
+  /* ];} */

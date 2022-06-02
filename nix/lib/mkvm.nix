@@ -8,7 +8,12 @@ nixpkgs.lib.nixosSystem rec {
   modules = [
     ../hardware/${name}.nix
     ../machines/${name}.nix
-    ../users/${user}/nixos.nix
+    ../users/${user}/user.nix
+    {
+      nixpkgs.overlays = import ./overlays.nix ++ [
+        ( self: super: { oh-my-posh = super.callPackage ../../pkgs {  }; })
+      ];
+    }
     home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
