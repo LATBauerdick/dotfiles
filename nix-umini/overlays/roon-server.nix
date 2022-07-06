@@ -4,12 +4,12 @@ self: super: {
 roon-server = super.roon-server.overrideAttrs (old: {
   src =
    let
-      version = "1.8-943";
+      version = "1.8-970";
       urlVersion = builtins.replaceStrings [ "." "-" ] [ "00" "00" ] version;
     in
     super.fetchurl {
       url = "http://download.roonlabs.com/builds/RoonServer_linuxx64_${urlVersion}.tar.bz2";
-      sha256 = "sha256-osQ0/HhcSO6pirUDjOnw0yUsGUsxZI62ViHc6Lb/rT4=";
+      sha256 = "sha256-A1DT3cVdUksszp+25D5JYHrxIGFPXJ/J14oQOfShbak=";
     };
 
   installPhase =
@@ -51,7 +51,7 @@ roon-server = super.roon-server.overrideAttrs (old: {
 
       # This is unused and depends on an ancient version of lttng-ust, so we
       # just patch it out
-      patchelf --remove-needed liblttng-ust.so.0 $out/RoonDotnet/shared/Microsoft.NETCore.App/6.0.0/libcoreclrtraceptprovider.so
+      patchelf --remove-needed liblttng-ust.so.0 $out/RoonDotnet/shared/Microsoft.NETCore.App/6.0.5/libcoreclrtraceptprovider.so
 
       runHook postInstall
     '';

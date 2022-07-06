@@ -52,15 +52,52 @@
         "type": "github"
       }
     },
+    "oh-my-posh": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1653090404,
+        "narHash": "sha256-89X5eUDLOqCMBtN3vosS7yf9KNgsWDjHJxcawTizQHw=",
+        "owner": "latbauerdick",
+        "repo": "oh-my-posh",
+        "rev": "8228cc997e7cd8676f918811ab8f76100b5d9d3e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "latbauerdick",
+        "repo": "oh-my-posh",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "utils": "utils"
+        "oh-my-posh": "oh-my-posh",
+        "utils": "utils_2"
       }
     },
     "utils": {
+      "locked": {
+        "lastModified": 1644229661,
+        "narHash": "sha256-1YdnJAsNy69bpcjuoKdOYQX0YxZBiCYZo4Twxerqv7k=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "3cecb5b042f7f209c56ffd8371b2711a290ec797",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "utils_2": {
       "locked": {
         "lastModified": 1653893745,
         "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",

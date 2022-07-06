@@ -9,6 +9,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    oh-my-posh = {
+      url = "github:latbauerdick/oh-my-posh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
