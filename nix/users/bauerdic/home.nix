@@ -13,6 +13,7 @@ let
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
     withGUI = true;
     myPackages = import ./packages.nix;
+    extraPackages = import ./extraPackages.nix;
     /* packages = xxx: yyy [ xxx ]*/
 
 in {
@@ -37,7 +38,7 @@ in {
   #####LATB???? home.stateVersion = "21.05";
 
 
-  home.packages =  [ ] ++ ( myPackages pkgs withGUI );
+  home.packages =  [ ] ++ ( myPackages pkgs withGUI ) ++ ( extraPackages pkgs );
 
 # Tex installation
   fonts.fontconfig.enable = true;
