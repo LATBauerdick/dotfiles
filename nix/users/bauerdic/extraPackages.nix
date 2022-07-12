@@ -8,7 +8,7 @@
     duf
     du-dust
     entr
-    lima
+    /* lima */
     ncdu
     procs
     qemu
