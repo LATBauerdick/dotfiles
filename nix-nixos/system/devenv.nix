@@ -7,7 +7,7 @@
   # $ nix search wget
   # Install some packages
   environment.systemPackages = with pkgs; [
-      wireguard
+      wireguard-tools
       sshfs
       mosh
       networkmanager

@@ -184,7 +184,7 @@
     user = "bauerdic";
   };
 
-  nix.trustedUsers = [ "root" "bauerdic" ];
+  nix.settings.trusted-users = [ "root" "bauerdic" ];
 
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [

@@ -2,9 +2,11 @@
   description = "NixOS System Config by LATB";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
+    # nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-21.05";
+      # url = "github:nix-community/home-manager/release-21.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -20,7 +22,6 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
-      config = { allowUnfree = true; };
     };
 
     lib = nixpkgs.lib;
@@ -28,14 +29,25 @@
   in {
     homeManagerConfigurations = {
       bauerdic = home-manager.lib.homeManagerConfiguration {
-        inherit system pkgs;
-        username = "bauerdic";
-        homeDirectory = "/home/bauerdic";
-        configuration = {
-          imports = [
-            ./users/bauerdic/home.nix
-          ];
-        };
+#        inherit system pkgs;
+        pkgs = nixpkgs.legacyPackages.${system};
+	modules = [
+          ./users/bauerdic/home.nix
+	  {
+	    home = {
+              username = "bauerdic";
+              homeDirectory = "/home/bauerdic";
+              stateVersion = "22.05";
+            };
+          }
+	];
+#        username = "bauerdic";
+#        homeDirectory = "/home/bauerdic";
+#        configuration = {
+#          imports = [
+#            ./users/bauerdic/home.nix
+#          ];
+#        };
       };
     };
 

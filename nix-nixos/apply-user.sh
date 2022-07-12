@@ -1,4 +1,4 @@
 #!/bin/sh
 # home-manager switch -f ./users/bauerdic/home.nix
-nix build .#homeManagerConfigurations.bauerdic.activationPackage
+NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#homeManagerConfigurations.bauerdic.activationPackage
 ./result/activate
