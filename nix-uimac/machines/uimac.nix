@@ -61,9 +61,9 @@
 
   services.xserver = {
     enable = true;
-    dpi=130;
+    # dpi=130;
     # dpi=219;
-    # dpi=329;
+    dpi=329;
     displayManager = {
       sddm.enable = true;
       /* lightdm.enable = true; */
