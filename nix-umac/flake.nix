@@ -43,7 +43,7 @@
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
       legacyPackages = import nixpkgs { inherit system; };
   }) // {
-    nixosConfigurations.uimac = mkMachine "uimac" {
+    nixosConfigurations.umac = mkMachine "umac" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";

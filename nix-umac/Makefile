@@ -1,6 +1,6 @@
 
 # The name of the nixosConfiguration in the flake
-NIXNAME ?= uimac
+NIXNAME ?= umac
 
 switch:
 	nix flake lock

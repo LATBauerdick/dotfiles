@@ -56,35 +56,36 @@
 #  '';
 
   services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "awesome-x11";
-#  services.xrdp.defaultWindowManager = "startplasma-x11";
+  /* services.xrdp.defaultWindowManager = "awesome-x11"; */
+  services.xrdp.defaultWindowManager = "startplasma-x11";
 
   services.xserver = {
     enable = true;
     # dpi=130;
-    # dpi=219;
-    dpi=329;
+    dpi=218;
+    # dpi=329;
     displayManager = {
       sddm.enable = true;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
-      defaultSession = "none+awesome";
+      /* defaultSession = "none+awesome"; */
     };
 
-    /* desktopManager.plasma5.enable = true; */
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks     # is the package manager for Lua modules
-        luadbi-mysql # Database abstraction layer
-      ];
-    };
+    desktopManager.plasma5.enable = true;
+    /* windowManager.awesome = { */
+    /*   enable = true; */
+    /*   luaModules = with pkgs.luaPackages; [ */
+    /*     luarocks     # is the package manager for Lua modules */
+    /*     luadbi-mysql # Database abstraction layer */
+    /*   ]; */
+    /* }; */
     # libinput.enable = true;
   };
   environment.variables = {
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.5";
-    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
+    PLASMA_USE_QT_SCALING = "1";
+    /* GDK_SCALE = "2"; */
+    /* GDK_DPI_SCALE = "0.5"; */
+    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
   };
 
   # setup i3 windowing environment
@@ -109,7 +110,7 @@
       extraOptions = "experimental-features = nix-command flakes";
   };
 
-  networking.hostName = "uimac"; # Define your hostname.
+  networking.hostName = "umac"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
