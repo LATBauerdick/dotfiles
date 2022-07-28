@@ -160,12 +160,12 @@
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
-#  services.autossh.sessions = [
-#    { extraArguments = " -N -R 8389:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-#      monitoringPort = 17009;
-#      name = "reverse";
-#      user = "root"; }
-#    ];
+  services.autossh.sessions = [
+    { extraArguments = " -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17007;
+      name = "reverse";
+      user = "root"; }
+  ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
@@ -214,7 +214,7 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  # boot.zfs.extraPools = [  "h""z2" ];
+  boot.zfs.extraPools = [ "z3" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -234,6 +234,81 @@
   nixpkgs.config.permittedInsecurePackages = [
                 "electron-13.6.9"
   ];
+
+  # appstream.enable = true;
+
+  services.deluge = {
+    enable = true;
+    dataDir = "/data/deluge";
+    web.enable = true;
+    web.openFirewall = true;
+  };
+
+  services.roon-server = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+    user = "plex";
+    group = "plex";
+    dataDir = "/data/plex";
+  };
+
+# SMB file sharing
+  services.gvfs.enable = true;
+  services.samba.openFirewall = true;
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    extraConfig = ''
+      workgroup = LATB
+      server string = umac
+      netbios name = umac
+      security = user
+      #use sendfile = yes
+      #max protocol = smb2
+      hosts allow = 192.168.0  localhost
+      hosts deny = 0.0.0.0/0
+      guest account = nobody
+      map to guest = bad user
+      #browseable = yes
+      #smb encrypt = required
+    '';
+
+    # You will still need to set up the user accounts to begin with:
+    # $ sudo smbpasswd -a yourusername
+
+    shares = {
+      public = {
+        path = "/media";
+        browseable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "bauerdic";
+        "force group" = "users";
+      };
+      private = {
+        path = "/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "bauerdic";
+        "force group" = "users";
+      };
+      homes = {
+        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
+        "read only" = "no";
+        "guest ok" = "no";
+      };
+    };
+  };
 
   # mDNS, avahi
   services.avahi = {
