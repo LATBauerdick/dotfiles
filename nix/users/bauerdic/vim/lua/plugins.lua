@@ -102,7 +102,11 @@ return require('packer').startup(
     -- use 'oberblastmeister/neuron.nvim'
     use 'nvim-lua/popup.nvim'
 
-    use 'nvim-treesitter/nvim-treesitter' --  We recommend updating the parsers on update
+    -- use 'nvim-treesitter/nvim-treesitter' --  We recommend updating the parsers on update
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
     use 'neovim/nvim-lspconfig'
   end
 )
