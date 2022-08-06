@@ -47,7 +47,7 @@
 #      cabal2nix
 
 # tex
-#####      texlive.combined.scheme-full
+#      texlive.combined.scheme-full
 
 
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
