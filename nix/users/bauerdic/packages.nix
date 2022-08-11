@@ -13,6 +13,7 @@
       fd
       fzf
       dtach
+      dvtm
       gawk
       git
       git-crypt
