@@ -19,13 +19,13 @@ Host algo
   User root
   IdentityFile    ~/.ssh/ipad_rsa
 
-Host lmini umini
+Host lmini
   HostName 116.203.126.183
   User bauerdic
   Port 8389
   IdentityFile   ~/.ssh/id_ed25519
 
-Host usrv utop ltop
+Host usrv
 HostName 116.203.126.183
   User bauerdic
   Port 8388
@@ -57,7 +57,7 @@ HostName 138.3.240.109
   Port 22
   IdentityFile   ~/.ssh/ipad_rsa
 
-Host borg
+Host umac
   HostName 116.203.126.183
   User bauerdic
   Port 8387
@@ -65,11 +65,6 @@ Host borg
 
 Host lpro
   HostName lpro.local
-  User bauerdic
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host iml
-  HostName mac-126620.local
   User bauerdic
   IdentityFile   ~/.ssh/id_ed25519
 
