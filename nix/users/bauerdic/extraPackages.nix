@@ -10,6 +10,7 @@
     entr
     /* lima */
     ncdu
+    nodejs
     procs
     qemu
     sd
