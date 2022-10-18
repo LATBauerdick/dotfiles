@@ -30,6 +30,7 @@
       oh-my-zsh
       pinentry-qt
       pandoc
+      python310Packages.pandoc-xnos
       python
       qemu
       ranger
