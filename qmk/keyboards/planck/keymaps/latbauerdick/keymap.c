@@ -179,9 +179,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* _______, NAV_A,   KC_S,    KC_D,    KC_F,    KC_T,    KC_P,    KC_M,    KC_J,    KC_K,    KC_L,     NAV_SCLN, */
   /* _______, KC_Z,    KC_X,    KC_C,    KC_G,    KC_V,    KC_SLSH, KC_N,    KC_H,    KC_COMM, KC_DOT,   _______, */
 
-  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_BSLS, KC_GRV,  KC_J,    KC_L,    KC_U,    KC_Y,    KC_BSPC,
-  NAV_A,   KC_R,    KC_S,    KC_T,    KC_G,    KC_MINS, KC_QUOT, KC_M,    KC_N,    KC_E,    KC_I,    NAV_O,
-  LSF_Z  , KC_X,    KC_C,    KC_D,    KC_V,    KC_LPRN, KC_RPRN, KC_K,    KC_H,    KC_COMM, KC_DOT,  RSF_SLS,
+  /* KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_BSLS, KC_GRV,  KC_J,    KC_L,    KC_U,    KC_Y,    KC_BSPC, */
+  /* NAV_A,   KC_R,    KC_S,    KC_T,    KC_G,    KC_MINS, KC_QUOT, KC_M,    KC_N,    KC_E,    KC_I,    NAV_O, */
+  /* LSF_Z  , KC_X,    KC_C,    KC_D,    KC_V,    KC_LPRN, KC_RPRN, KC_K,    KC_H,    KC_COMM, KC_DOT,  RSF_SLS, */
+
+  _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_G,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______,
+  _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_D,    KC_SCLN, KC_H,    KC_N,    KC_E,    KC_I,    KC_O   ,
+  _______, LSF_Z  , KC_X,    KC_C,     KC_V,    KC_B,    KC_SLSH, KC_K,    KC_M,    KC_COMM, KC_DOT,  _______,
 
   _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______
   /* _______, _______, _______, _______, LSF_TAB, LSF_TAB, RSF_BSP, RSF_BSP, _______, _______, _______, _______ */

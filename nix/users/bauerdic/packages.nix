@@ -20,6 +20,7 @@
       git-lfs
       gnupg
       gnumake
+      helix
       htop
       imagemagick
       jq
