@@ -33,6 +33,8 @@ Plug ('mg979/vim-visual-multi', {branch = 'master'})
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'mhinz/vim-signify'
 Plug 'int3/vim-extradite'
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'

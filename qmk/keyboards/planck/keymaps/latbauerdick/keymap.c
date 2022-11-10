@@ -54,6 +54,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define NAV_A    LT(_NAV, KC_A)
+#define NAV_C    LT(_NAV, KC_C)
 #define NAV_O    LT(_NAV, KC_O)
 #define NAV_SCLN LT(_NAV, KC_SCLN)
 #define RSE_RGHT LT(_RAISE, KC_RGHT)
@@ -142,9 +143,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK1] = LAYOUT_planck_grid( \
-  _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_B,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______,
-  _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_G,    KC_SCLN, KC_M,    KC_N,    KC_E,    KC_I,    KC_O   ,
-  _______, LSF_Z  , KC_X,    KC_C,     KC_D,    KC_V,    KC_SLSH, KC_K,    KC_H,    KC_COMM, KC_DOT,  _______,
+  _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_G,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______,
+  _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_D,    KC_SCLN, KC_H,    KC_N,    KC_E,    KC_I,    KC_O   ,
+  _______, LSF_Z  , KC_X,    KC_C,     KC_V,    KC_B,    KC_SLSH, KC_K,    KC_M,    KC_COMM, KC_DOT,  _______,
   _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______
 ),
 /* Colemak2
@@ -171,6 +172,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK2] = LAYOUT_planck_grid( \
+  _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_B,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______,
+  _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_G,    KC_SCLN, KC_M,    KC_N,    KC_E,    KC_I,    KC_O   ,
+  _______, LSF_Z  , KC_X,    KC_C,     KC_D,    KC_V,    KC_SLSH, KC_K,    KC_H,    KC_COMM, KC_DOT,  _______,
+
   /* LSF_TAB, KC_Q,    KC_W,    KC_E,F   KC_R,P   KC_T,G   KC_Y,J   KC_U,L   KC_I,U   KC_O,Y   KC_P,;    KC_BSPC, */
   /* CTL_ESC, NAV_A,   KC_S,R   KC_D,S   KC_F,T   KC_G,D   KC_H,H   KC_J,N   KC_K,E   KC_L,I   NAV_SCLN,ORSF_RET, */
   /* KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,K   KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  RSF_RET, */
@@ -183,9 +188,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* NAV_A,   KC_R,    KC_S,    KC_T,    KC_G,    KC_MINS, KC_QUOT, KC_M,    KC_N,    KC_E,    KC_I,    NAV_O, */
   /* LSF_Z  , KC_X,    KC_C,    KC_D,    KC_V,    KC_LPRN, KC_RPRN, KC_K,    KC_H,    KC_COMM, KC_DOT,  RSF_SLS, */
 
-  _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_G,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______,
-  _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_D,    KC_SCLN, KC_H,    KC_N,    KC_E,    KC_I,    KC_O   ,
-  _______, LSF_Z  , KC_X,    KC_C,     KC_V,    KC_B,    KC_SLSH, KC_K,    KC_M,    KC_COMM, KC_DOT,  _______,
+  /* _______, KC_Q   , KC_W,    KC_F,     KC_P,    KC_G,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    _______, */
+  /* _______, NAV_A,   KC_R,    KC_S,     KC_T,    KC_D,    KC_SCLN, KC_H,    KC_N,    KC_E,    KC_I,    KC_O   , */
+  /* _______, LSF_Z  , KC_X,    KC_C,     KC_V,    KC_B,    KC_SLSH, KC_K,    KC_M,    KC_COMM, KC_DOT,  _______, */
+
+  /* _______, KC_W   , KC_L,    KC_Y,     KC_P,    KC_B,    KC_QUOT, KC_Z,    KC_F,    KC_O,    KC_U,    _______, */
+  /* _______, NAV_C,   KC_R,    KC_S,     KC_T,    KC_G,    KC_SCLN, KC_M,    KC_N,    KC_E,    KC_I,    KC_A   , */
+  /* _______, LSF_Q  , KC_J,    KC_V,     KC_D,    KC_K,    KC_SLSH, KC_X,    KC_H,    KC_COMM, KC_DOT,  _______, */
 
   _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______
   /* _______, _______, _______, _______, LSF_TAB, LSF_TAB, RSF_BSP, RSF_BSP, _______, _______, _______, _______ */
