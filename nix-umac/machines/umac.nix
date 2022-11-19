@@ -257,6 +257,8 @@
     dataDir = "/data/plex";
   };
 
+  services.slimserver.enable = true;
+
 # SMB file sharing
   services.gvfs.enable = true;
   services.samba.openFirewall = true;
