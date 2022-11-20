@@ -3,9 +3,9 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    /* nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05"; */
+    /* nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; */
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    /* nixpkgs.url = "/home/bauerdic/nixpkgs"; */
+    nixpkgs.url = "/home/bauerdic/nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
