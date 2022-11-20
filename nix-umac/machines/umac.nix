@@ -188,14 +188,14 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for `services.samba`
-  networking.firewall.allowedTCPPorts = [ 445 139 3389 ];
+  # and the needed ports in the firewall for `services.samba`, slimserver
+  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for `services.samba`
-  networking.firewall.allowedUDPPorts = [ 137 1383 ];
+  # the needed ports in the firewall for `services.samba`, slimserver
+  networking.firewall.allowedUDPPorts = [ 137 1383 3483 ];
 
 
   programs.mosh.enable = true;
@@ -244,10 +244,10 @@
     web.openFirewall = true;
   };
 
-  services.roon-server = {
-    enable = true;
-    openFirewall = true;
-  };
+  /* services.roon-server = { */
+  /*   enable = true; */
+  /*   openFirewall = true; */
+  /* }; */
 
   services.plex = {
     enable = true;
@@ -257,7 +257,9 @@
     dataDir = "/data/plex";
   };
 
-  services.slimserver.enable = true;
+  services.slimserver = {
+    enable = true;
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;
