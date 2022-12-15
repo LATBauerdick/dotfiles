@@ -244,10 +244,10 @@
     web.openFirewall = true;
   };
 
-  /* services.roon-server = { */
-  /*   enable = true; */
-  /*   openFirewall = true; */
-  /* }; */
+  services.roon-server = {
+    enable = true;
+    openFirewall = true;
+  };
 
   services.plex = {
     enable = true;
