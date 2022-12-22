@@ -188,14 +188,14 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for `services.samba`, slimserver
-  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 ];
+  # and the needed ports in the firewall for `services.samba`, slimserver, roon ARC
+  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 55000 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
   # the needed ports in the firewall for `services.samba`, slimserver
-  networking.firewall.allowedUDPPorts = [ 137 1383 3483 ];
+  networking.firewall.allowedUDPPorts = [ 137 1383 3483 55000 ];
 
 
   programs.mosh.enable = true;
@@ -263,9 +263,9 @@
 
 # SMB file sharing
   services.gvfs.enable = true;
-  services.samba.openFirewall = true;
   services.samba = {
     enable = true;
+    openFirewall = true;
     securityType = "user";
     extraConfig = ''
       workgroup = LATB
@@ -303,7 +303,7 @@
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic";
+        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
         "force group" = "users";
       };
       homes = {
