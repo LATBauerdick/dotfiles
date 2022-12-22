@@ -194,7 +194,7 @@
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for `services.samba`, slimserver
+  # the needed ports in the firewall for `services.samba`, slimserver, roon ARC
   networking.firewall.allowedUDPPorts = [ 137 1383 3483 55000 ];
 
 
