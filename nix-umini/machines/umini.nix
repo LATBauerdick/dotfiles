@@ -56,35 +56,36 @@
 #  '';
 
   services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "awesome-x11";
-#  services.xrdp.defaultWindowManager = "startplasma-x11";
+  /* services.xrdp.defaultWindowManager = "awesome-x11"; */
+  services.xrdp.defaultWindowManager = "startplasma-x11";
 
   services.xserver = {
     enable = true;
-    dpi=130;
-    # dpi=219;
+    # dpi=130;
+    dpi=218;
     # dpi=329;
     displayManager = {
       sddm.enable = true;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
-      defaultSession = "none+awesome";
+      /* defaultSession = "none+awesome"; */
     };
 
-    /* desktopManager.plasma5.enable = true; */
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks     # is the package manager for Lua modules
-        luadbi-mysql # Database abstraction layer
-      ];
-    };
+    desktopManager.plasma5.enable = true;
+    /* windowManager.awesome = { */
+    /*   enable = true; */
+    /*   luaModules = with pkgs.luaPackages; [ */
+    /*     luarocks     # is the package manager for Lua modules */
+    /*     luadbi-mysql # Database abstraction layer */
+    /*   ]; */
+    /* }; */
     # libinput.enable = true;
   };
   environment.variables = {
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.5";
-    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
+    PLASMA_USE_QT_SCALING = "1";
+    /* GDK_SCALE = "2"; */
+    /* GDK_DPI_SCALE = "0.5"; */
+    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
   };
 
   # setup i3 windowing environment
@@ -187,21 +188,21 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for `services.samba`
-  networking.firewall.allowedTCPPorts = [ 445 139 3389 ];
+  # and the needed ports in the firewall for `services.samba`, slimserver
+  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for `services.samba`
-  networking.firewall.allowedUDPPorts = [ 137 1383 ];
+  # the needed ports in the firewall for `services.samba`, slimserver
+  networking.firewall.allowedUDPPorts = [ 137 1383 3483 ];
 
 
   programs.mosh.enable = true;
 
 # zfs setup
   # usrv  networking.hostId = "41ca8470";
-  networking.hostId = "af58841e"; # head -c 8 /etc/machine-id
+  networking.hostId = "28c80f12"; # head -c 8 /etc/machine-id
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
@@ -213,7 +214,7 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [  "h" "z2" ];
+  boot.zfs.extraPools = [  ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
