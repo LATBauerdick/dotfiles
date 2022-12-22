@@ -3,10 +3,11 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+#    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager";
+#      url = "github:nix-community/home-manager";
+      url = "/home/bauerdic/home-manager"; # sudo git config --global --add safe.directory /home/bauerdic/home-manager
       inputs.nixpkgs.follows = "nixpkgs";
     };
     oh-my-posh = {

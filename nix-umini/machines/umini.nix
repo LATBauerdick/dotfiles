@@ -60,18 +60,18 @@
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
   services.xserver = {
-    enable = true;
-    # dpi=130;
-    dpi=218;
+    enable = false;
+    dpi=130;
+    # dpi=218;
     # dpi=329;
     displayManager = {
-      sddm.enable = true;
+      sddm.enable = false;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
       /* defaultSession = "none+awesome"; */
     };
 
-    desktopManager.plasma5.enable = true;
+    desktopManager.plasma5.enable = false;
     /* windowManager.awesome = { */
     /*   enable = true; */
     /*   luaModules = with pkgs.luaPackages; [ */
@@ -141,6 +141,7 @@
     acpi
 
     vim
+    neovim
     curl
     # gui apps
     firefox
@@ -214,7 +215,7 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [  ];
+  boot.zfs.extraPools = [  "z3" "z2" "z1" "h" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -254,7 +255,7 @@
     openFirewall = true;
     user = "plex";
     group = "plex";
-    dataDir = "/data/plex";
+    dataDir = "/data/plex-umini";
   };
 
 # SMB file sharing
