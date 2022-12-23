@@ -24,7 +24,7 @@
     "nixpkgs": {
       "locked": {
         "lastModified": 1668765800,
-        "narHash": "sha256-3v5xGkFvMEnQRtvyqFm2e/D6IS/XCjAwmfz6LKlh030=",
+        "narHash": "sha256-vvxotoRuoNrzTMrgmM6VMVyeykeaDYtOWuZMLJF5wLg=",
         "type": "git",
         "url": "file:///home/bauerdic/nixpkgs"
       },

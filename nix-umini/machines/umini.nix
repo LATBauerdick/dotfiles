@@ -240,7 +240,7 @@
 
   services.deluge = {
     enable = true;
-    dataDir = "/data/deluge";
+    dataDir = "/data/deluge-umini";
     web.enable = true;
     web.openFirewall = true;
   };
