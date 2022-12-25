@@ -78,7 +78,9 @@ in {
   home.file.".config/limelight/limelightrc".source = ./yabai/limelightrc;
 
   xdg.enable = true;
-  xdg.configFile."nvim".source = ./vim;
+  xdg.configFile."nvim/lua".source = ./vim/lua;
+  xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
+  # xdg.configFile."nvim".source = ./vim;
   xdg.configFile."kitty".source = ./kitty;
   xdg.configFile."awesome".source = ./awesome;
 
