@@ -39,6 +39,32 @@ end
 -- sensible defaults
 require('settings')
 
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+-- local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+-- vim.api.nvim_create_autocmd('TextYankPost', {
+--   callback = function()
+--     vim.highlight.on_yank()
+--   end,
+--   group = highlight_group,
+--   pattern = '*',
+-- })
+
+-- Set lualine as statusline
+-- See `:help lualine.txt`
+-- require('lualine').setup {
+--   options = {
+--     icons_enabled = false,
+--     -- theme = 'onedark',
+--     theme = 'solarized',
+--     component_separators = '|',
+--     section_separators = '',
+--   },
+-- }
+
+-- Enable Comment.nvim
+require('Comment').setup()
+
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
 require('indent_blankline').setup {
@@ -46,60 +72,24 @@ require('indent_blankline').setup {
   show_trailing_blankline_indent = false,
 }
 
-require('compe-config')
-
-require('telescope').setup{
-  defaults = {
-    vimgrep_arguments = {
-      'rg',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case'
-    },
-    prompt_prefix = "> ",
-    selection_caret = "> ",
-    entry_prefix = "  ",
-    initial_mode = "insert",
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    layout_strategy = "horizontal",
-    layout_config = {
-      horizontal = {
-        mirror = false,
-      },
-      vertical = {
-        mirror = false,
-      },
-    },
-    file_sorter =  require'telescope.sorters'.get_fuzzy_file,
-    file_ignore_patterns = {},
-    generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
-    winblend = 0,
-    border = {},
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-    color_devicons = true,
-    use_less = true,
-    path_display = {},
-    set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-    file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-    qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-
-    -- Developer configurations: Not meant for general override
-    buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
-  }
+-- Gitsigns
+-- See `:help gitsigns.txt`
+require('gitsigns').setup {
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '_' },
+    topdelete = { text = '‾' },
+    changedelete = { text = '~' },
+  },
 }
 
-require'telescope'.load_extension('zoxide')
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>cd",
-  ":lua require'telescope'.extensions.zoxide.list{}<CR>",
-  {noremap = true, silent = true}
-)
+require('telescope-config')
+
+require('treesitter-config')
+
+require('compe-config')
+-- require('cmp-config')
 
 require('colors')
 
@@ -113,52 +103,36 @@ require('colors')
 --     leader = "gz", -- the leader key to for all mappings, remember with 'go zettel'
 -- }
 
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-  ensure_installed = { "c", "lua", "rust", "haskell" }, -- one of "all" or a list of languages
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- Automatically install missing parsers when entering buffer
-  auto_install = true,
-
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { "javascript" },
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = false,
-    disable = { "c", "rust" },
-    additional_vim_regex_highlighting = false,
-  },
-}
-
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 -- Send diagnostics to quickfix list
-do
-  local method = "textDocument/publishDiagnostics"
-  local default_handler = vim.lsp.handlers[method]
-  vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
-                                      config)
-    default_handler(err, method, result, client_id, bufnr, config)
-    local diagnostics = vim.lsp.diagnostic.get_all()
-    local qflist = {}
-    for bufnr, diagnostic in pairs(diagnostics) do
-      for _, d in ipairs(diagnostic) do
-        d.bufnr = bufnr
-        d.lnum = d.range.start.line + 1
-        d.col = d.range.start.character + 1
-        d.text = d.message
-        table.insert(qflist, d)
-      end
-    end
-    vim.lsp.util.set_qflist(qflist)
-  end
-end
+-- do
+--   local method = "textDocument/publishDiagnostics"
+--   local default_handler = vim.lsp.handlers[method]
+--   vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
+--                                       config)
+--     default_handler(err, method, result, client_id, bufnr, config)
+--     local diagnostics = vim.lsp.diagnostic.get_all()
+--     local qflist = {}
+--     for bufnr, diagnostic in pairs(diagnostics) do
+--       for _, d in ipairs(diagnostic) do
+--         d.bufnr = bufnr
+--         d.lnum = d.range.start.line + 1
+--         d.col = d.range.start.character + 1
+--         d.text = d.message
+--         table.insert(qflist, d)
+--       end
+--     end
+--     vim.lsp.util.set_qflist(qflist)
+--   end
+-- end
 
 
 --language server protocol
-require('lsp')
+require('lsp-config')
 
 -- Key mappings
 require('keymappings')

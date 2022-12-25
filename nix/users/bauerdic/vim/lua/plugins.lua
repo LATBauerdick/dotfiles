@@ -8,118 +8,11 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- vim-plug {{{
--- alternative vim-plug version
-vim.cmd [[
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-call plug#begin(stdpath('data') . '/plugged')
-]]
-local Plug = vim.fn['plug#']
--- vim.call('plug#begin', stdpath('data') . '/plugged')
-
--- Plug 'jgdavey/tslime.vim'
--- Plug ('Shougo/vimproc.vim', { ['do'] = vim.fn['make']})
--- Plug 'scrooloose/nerdcommenter'
--- Plug 'jiangmiao/auto-pairs'
--- Plug 'benekastah/neomake'
--- Plug 'moll/vim-bbye'
--- Plug 'nathanaelkane/vim-indent-guides'
--- Plug 'vim-scripts/gitignore'
--- Plug ('mg979/vim-visual-multi', {branch = 'master'})
--- Plug 'junegunn/fzf.vim'
--- Plug 'mhinz/vim-grepper'
--- Plug 'mhinz/vim-signify'
--- Plug 'int3/vim-extradite'
--- Plug 'scrooloose/nerdtree'
--- Plug 'majutsushi/tagbar'
--- Plug 'vim-scripts/Align'
--- Plug 'simnalamburt/vim-mundo'
--- Plug 'godlygeek/tabular'
--- Plug 'michaeljsmith/vim-indent-object'
--- Plug 'easymotion/vim-easymotion'
--- Plug 'christoomey/vim-tmux-navigator'
--- Plug 'sbdchd/neoformat'
--- Plug 'ujihisa/unite-haskellimport'
--- Plug 'Shougo/unite.vim'
--- Plug 'neovimhaskell/haskell-vim'
--- Plug 'enomsg/vim-haskellConcealPlus'
--- Plug 'Twinside/vim-hoogle'
--- Plug 'raichoo/purescript-vim'
--- Plug 'rust-lang/rust.vim'
--- Plug 'ledger/vim-ledger'
--- Plug 'terryma/vim-smooth-scroll'
--- Plug 'rakr/vim-one'
--- Plug 'guns/vim-sexp'
--- Plug 'mvandiemen/ghostbuster'
--- Plug 'radenling/vim-dispatch-neovim'
--- Plug 'knubie/vim-kitty-navigator'
--- Plug 'akinsho/toggleterm.nvim' --, tag = 'v1.*'
-
--- Plug 'tpope/vim-dispatch'
--- Plug 'tpope/vim-fugitive'
--- Plug 'tpope/vim-rhubarb'
--- Plug 'tpope/vim-commentary'
--- Plug 'tpope/vim-eunuch'
--- Plug 'tpope/vim-vinegar'
--- Plug 'tpope/vim-fireplace'
--- Plug 'tpope/vim-unimpaired'
--- Plug 'tpope/vim-sexp-mappings-for-regular-people'
--- Plug 'tpope/vim-repeat'
--- Plug 'tpope/vim-surround'
--- Plug 'tpope/vim-dispatch'
-
--- Plug 'bling/vim-airline'
--- Plug 'vim-airline/vim-airline-themes'
---
--- -------------------------------------------------------------
---
--- Plug ('mg979/vim-visual-multi', {branch = 'master'})
--- Plug ('Shougo/deoplete.nvim', { do = ':UpdateRemotePlugins' })
-
--- Plug 'sdothum/vim-colors-duochrome'
--- Plug 'altercation/vim-colors-solarized'
--- Plug 'frankier/neovim-colors-solarized-truecolor-only'
--- Plug 'lifepillar/vim-solarized8'
---
--- Plug 'vim-syntastic/syntastic'
--- Plug ('neoclide/coc.nvim', {branch = 'release'})
--- Plug 'dense-analysis/ale'
--- -------------------------------------------------------------
-
-vim.call('plug#end')
 -- }}}
 
 vim.cmd [[
 let hscoptions="𝐌𝐄𝐓𝐒iBQZDC*"
 ]]
-
-
--- return require('packer').startup(
---   function()
---     use 'hrsh7th/nvim-compe'
---     use 'wbthomason/packer.nvim'
--- -- telescope
---     use {
---         'nvim-telescope/telescope.nvim',
---       requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
---     }
---     use 'jvgrootveld/telescope-zoxide'
---     use 'sudormrfbin/cheatsheet.nvim'
---     -- use 'oberblastmeister/neuron.nvim'
---     use 'nvim-lua/popup.nvim'
-
---     -- use 'nvim-treesitter/nvim-treesitter' --  We recommend updating the parsers on update
---     use {
---         'nvim-treesitter/nvim-treesitter',
---         run = ':TSUpdate'
---     }
---     use 'neovim/nvim-lspconfig'
---   end
--- )
-
 
 return require('packer').startup(
   function(use)
@@ -224,21 +117,23 @@ return require('packer').startup(
     use 'radenling/vim-dispatch-neovim'
     use 'knubie/vim-kitty-navigator'
     use 'akinsho/toggleterm.nvim'
+
+    use 'jvgrootveld/telescope-zoxide'
+    use 'sudormrfbin/cheatsheet.nvim'
+    use 'nvim-lua/popup.nvim'
+
     -- Fuzzy Finder (files, lsp, etc)
     use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
 
     -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
-    -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
-    local has_plugins, plugins = pcall(require, 'custom.plugins')
-    if has_plugins then
-      plugins(use)
-    end
+    -- -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
+    -- local has_plugins, plugins = pcall(require, 'custom.plugins')
+    -- if has_plugins then
+    --   plugins(use)
+    -- end
 
-    use 'jvgrootveld/telescope-zoxide'
-    use 'sudormrfbin/cheatsheet.nvim'
-    use 'nvim-lua/popup.nvim'
   end
 )
 
