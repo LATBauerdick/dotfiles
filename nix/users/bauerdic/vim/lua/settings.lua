@@ -35,7 +35,6 @@ endif
 -- set listchars=tab:▸\ ,eol:¬
 
 vim.opt.hidden = true
-vim.opt.ignorecase = true
 
 -- set system clipboard to be default
 vim.opt.clipboard = { 'unnamed', 'unnamedplus' } -- was unnamedplus
@@ -65,11 +64,12 @@ vim.opt.mouse = 'a'
 vim.opt.gdefault = true
 
 -- search options
+vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.showmatch = true
--- see h: icm
+-- see :h icm
 vim.opt.icm = 'split'
 
 
@@ -113,4 +113,34 @@ vim.opt.splitright = true
 vim.opt.scrolloff=8
 vim.opt.sidescrolloff=15
 vim.opt.sidescroll=1
+
+-- persistent undofiles
+vim.opt.undofile = true
+vim.cmd [[
+let s:undodir = "/tmp/.undodir_" . $USER
+if !isdirectory(s:undodir)
+    call mkdir(s:undodir, "", 0700)
+endif
+let &undodir=s:undodir
+set undofile
+]]
+
+-- comments italic
+vim.cmd [[ highlight Comment cterm=italic ]]
+-- redefine italics terminal codes so this works well in tmux
+vim.cmd [[
+set t_ZH=[3m
+set t_ZR=[23m
+]]
+
+-- Configure backspace so it acts as it should act
+vim.cmd [[
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+]]
+
+-- update dir to current file
+vim.cmd [[
+autocmd BufEnter * silent! cd %:p:h
+]]
 
