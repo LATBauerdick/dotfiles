@@ -126,6 +126,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nextdns
     silver-searcher  # ag
     git
     gnumake
@@ -189,14 +190,28 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 55000 ];
+  # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedUDPPorts = [ 137 1383 3483 55000 ];
+  # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
+  networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+# NextDNS config
+  networking = {
+    # firewall = {
+    #   allowedTCPPorts = [ 53 ];
+    #   allowedUDPPorts = [ 53 ];
+    # };
+    nameservers = [ "45.90.28.239" "45.90.30.239" ];
+  };
+  services.nextdns = {
+    enable = true;
+    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
+  };
+
+
 
 
   programs.mosh.enable = true;
