@@ -1,6 +1,6 @@
 
   let
-    version = "2.0-1182";
+    version = "2.0-1193";
     vhash = "sha256-2mo45+cbOyej5stJ8DFobvqECTTMLandcoPFnD4nY7s=";
     urlVersion = builtins.replaceStrings [ "." "-" ] [ "00" "0" ] version;
   in
