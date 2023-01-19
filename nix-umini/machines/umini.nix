@@ -157,7 +157,7 @@
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = true;
+  services.openssh.passwordAuthentication = false;
   services.openssh.permitRootLogin = "yes";
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
@@ -314,6 +314,16 @@
       };
       private = {
         path = "/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force group" = "users";
+      };
+      arq = {
+        path = "/arq";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
