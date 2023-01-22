@@ -302,16 +302,16 @@
     # $ sudo smbpasswd -a yourusername
 
     shares = {
-      public = {
-        path = "/media";
-        browseable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "bauerdic";
-        "force group" = "users";
-      };
+      # public = {
+      #   path = "/media";
+      #   browseable = "yes";
+      #   "read only" = "yes";
+      #   "guest ok" = "yes";
+      #   "create mask" = "0644";
+      #   "directory mask" = "0755";
+      #   "force user" = "bauerdic";
+      #   "force group" = "users";
+      # };
       private = {
         path = "/media";
         browseable = "yes";
@@ -321,6 +321,16 @@
         "directory mask" = "0755";
         "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
         "force group" = "users";
+      };
+      tm = { # configured for time machine backups
+          path = "/arq/tm";
+          "valid users" = "bauerdic";
+          public = "no";
+          writeable = "yes";
+          "force user" = "bauerdic";
+          "fruit:aapl" = "yes";
+          "fruit:time machine" = "yes";
+          "vfs objects" = "catia fruit streams_xattr";
       };
       arq = {
         path = "/arq";
