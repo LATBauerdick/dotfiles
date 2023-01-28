@@ -47,7 +47,8 @@ Host nix
 HostName 116.203.126.183
   User bauerdic
   Port 22
-  IdentityFile   ~/.ssh/id_rsa
+  IdentityFile   ~/.ssh/id_ed25519
+  # IdentityFile   ~/.ssh/id_rsa
   LocalForward   *:8389  127.0.0.1:8384
   LocalForward   *:8089  127.0.0.1:8080
 
@@ -57,7 +58,7 @@ HostName 138.3.240.109
   Port 22
   IdentityFile   ~/.ssh/ipad_rsa
 
-Host umac
+Host umini
   HostName 116.203.126.183
   User bauerdic
   Port 8387
