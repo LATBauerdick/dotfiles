@@ -2,10 +2,14 @@
 # UseKeychain yes
 AddKeysToAgent yes
 
-# Host *
+Host *
 #   AddKeysToAgent yes
 #   UseKeychain yes
 #   IdentityFile ~/.ssh/id_rsa
+ForwardX11 yes
+ForwardX11Trusted yes
+GSSAPIAuthentication yes
+GSSAPIDelegateCredentials yes
 
 Host lnix
   Hostname 192.168.64.2
@@ -59,9 +63,9 @@ HostName 138.3.240.109
   IdentityFile   ~/.ssh/ipad_rsa
 
 Host umini
-  HostName 116.203.126.183
+  HostName 116.203.126.161
   User bauerdic
-  Port 8387
+  Port 8389
   IdentityFile   ~/.ssh/id_ed25519
 
 Host lpro
