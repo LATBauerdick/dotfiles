@@ -65,7 +65,7 @@ HostName 138.3.240.109
 Host umini
   HostName 116.203.126.161
   User bauerdic
-  Port 8389
+  Port 8387
   IdentityFile   ~/.ssh/id_ed25519
 
 Host lpro
