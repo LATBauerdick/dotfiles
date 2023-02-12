@@ -24,13 +24,15 @@
       htop
       imagemagick
       jq
+      lzop
       mosh
       neofetch
       neovim-unwrapped
       neuron-notes
       oh-my-zsh
-      pinentry-qt
       pandoc
+      pinentry-qt
+      pv
       python310Packages.pandoc-xnos
       python
       qemu
