@@ -133,6 +133,10 @@
 #    killall
     psmisc # things like killall
     lshw
+    lzop
+    mbuffer
+    sanoid
+    pv
     usbutils
     thunderbolt
 
