@@ -23,6 +23,11 @@
       fsType = "vfat";
     };
 
+  fileSystems."/mnt/drobo" =
+    { device = "/dev/disk/by-label/Drobo";
+      fsType = "hfsplus";
+    };
+
   swapDevices = [ { device = "/.swapfile"; } ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -36,5 +41,5 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   	
   # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
+  # hardware.video.hidpi.enable = lib.mkDefault true;
 }
