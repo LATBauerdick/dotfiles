@@ -168,7 +168,7 @@
 
   services.autossh.sessions = [
     { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17008;
+      monitoringPort = 17007;
       name = "reverse";
       user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
   ];
