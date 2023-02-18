@@ -30,12 +30,6 @@ Host lmini
   Port 8389
   IdentityFile   ~/.ssh/id_ed25519
 
-Host usrv
-HostName 116.203.126.183
-  User bauerdic
-  Port 8388
-  IdentityFile   ~/.ssh/id_ed25519
-
 Host loff
 HostName 116.203.126.183
   User bauerdic
@@ -86,9 +80,16 @@ Host lal
 
 Host 192.168.1.1 10.8.0.1 homer borgtom
 
-Host latbtop mac-123210 ltl
+Host latbtop ltl
   Hostname latbtop.local
+  port 8328
   User bauerdic
+  IdentityFile   ~/.ssh/id_ed25519
+
+Host ltop
+  HostName 116.203.126.183
+  User bauerdic
+  Port 8388
   IdentityFile   ~/.ssh/id_ed25519
 
 Host mac-126620 lim
