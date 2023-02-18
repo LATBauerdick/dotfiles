@@ -3,13 +3,14 @@
 AddKeysToAgent yes
 
 Host *
+  Port 22
 #   AddKeysToAgent yes
 #   UseKeychain yes
 #   IdentityFile ~/.ssh/id_rsa
-ForwardX11 yes
-ForwardX11Trusted yes
-GSSAPIAuthentication yes
-GSSAPIDelegateCredentials yes
+  ForwardX11 yes
+  ForwardX11Trusted yes
+  GSSAPIAuthentication yes
+  GSSAPIDelegateCredentials yes
 
 Host lnix
   Hostname 192.168.64.2
