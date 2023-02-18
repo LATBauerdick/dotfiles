@@ -41,11 +41,11 @@ Host mac-126620 lim
 
 Host gitlab.com
   Preferredauthentications publickey
-  IdentityFile ~/.ssh/ipad_rsa
+  IdentityFile ~/.ssh/id_rsa
 
 Host gitlab.cern.ch
   Preferredauthentications publickey
-  IdentityFile ~/.ssh/ipad_rsa
+  IdentityFile ~/.ssh/id_rsa
 
 Host cmslpc*.fnal.gov
 #    GSSAPIAuthentication yes
