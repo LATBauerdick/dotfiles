@@ -24,6 +24,7 @@
       htop
       imagemagick
       jq
+      llvm
       lzop
       mosh
       neofetch
