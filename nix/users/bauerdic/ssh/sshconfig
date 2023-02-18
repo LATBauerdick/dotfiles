@@ -2,95 +2,38 @@
 # UseKeychain yes
 AddKeysToAgent yes
 
-Host *
-  Port 22
-#   AddKeysToAgent yes
-#   UseKeychain yes
-#   IdentityFile ~/.ssh/id_rsa
-  ForwardX11 yes
-  ForwardX11Trusted yes
-  GSSAPIAuthentication yes
-  GSSAPIDelegateCredentials yes
-
-Host lnix
-  Hostname 192.168.64.2
-  User bauerdic
-
-Host rem
-  HostName 116.203.139.203
-
-Host algo
-  HostName  116.203.139.203
-  User root
-  IdentityFile    ~/.ssh/ipad_rsa
 
 Host lmini
   HostName 116.203.126.183
   User bauerdic
   Port 8389
-  IdentityFile   ~/.ssh/id_ed25519
 
-Host loff
-HostName 116.203.126.183
+Host lml
+  HostName lmini.local
   User bauerdic
-  Port 8386
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host lair
-HostName 116.203.126.183
-  User bauerdic
-  Port 8385
-  IdentityFile   ~/.ssh/id_ed25519
 
 Host nix
 HostName 116.203.126.183
   User bauerdic
   Port 22
-  # IdentityFile   ~/.ssh/id_ed25519
   IdentityFile   ~/.ssh/id_rsa
   LocalForward   *:8389  127.0.0.1:8384
   LocalForward   *:8089  127.0.0.1:8080
 
-Host orx
-HostName 138.3.240.109
-  User bauerdic
-  Port 22
-  IdentityFile   ~/.ssh/ipad_rsa
-
 Host umini
   HostName 116.203.126.161
-  User bauerdic
   Port 8387
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host lpro
-  HostName lpro.local
   User bauerdic
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host lml
-  HostName lmini.local
-  User bauerdic
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host lal
-  HostName mac-133890.local
-  User bauerdic
-  IdentityFile   ~/.ssh/id_ed25519
-
-Host 192.168.1.1 10.8.0.1 homer borgtom
 
 Host latbtop ltl
   Hostname latbtop.local
-  port 8328
+  Port 8328
   User bauerdic
-  IdentityFile   ~/.ssh/id_ed25519
 
 Host ltop
   HostName 116.203.126.183
   User bauerdic
   Port 8388
-  IdentityFile   ~/.ssh/id_ed25519
 
 Host mac-126620 lim
   Hostname mac-126620.local
@@ -117,3 +60,13 @@ Host 131.225.* *.fnal.gov
     ForwardX11Trusted yes
     ForwardX11 yes
 
+Host *
+  Port 22
+  IdentityFile   ~/.ssh/id_ed25519
+#   AddKeysToAgent yes
+#   UseKeychain yes
+#   IdentityFile ~/.ssh/id_rsa
+  ForwardX11 yes
+  ForwardX11Trusted yes
+  GSSAPIAuthentication yes
+  GSSAPIDelegateCredentials yes
