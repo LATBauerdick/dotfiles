@@ -27,13 +27,13 @@ Host umini
 
 Host latbtop ltl
   Hostname latbtop.local
-  Port 8328
+  Port 8328   ## in /etc/services we set ssh to 8328/tcp and 8328/udp
   User bauerdic
 
 Host ltop
   HostName 116.203.126.183
   User bauerdic
-  Port 8388
+  Port 8388 # this needs to be changed
 
 Host mac-126620 lim
   Hostname mac-126620.local
