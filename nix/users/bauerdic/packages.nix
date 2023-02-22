@@ -14,6 +14,7 @@
       fzf
       dtach
       dvtm
+      emanote
       gawk
       git
       git-crypt
@@ -29,7 +30,7 @@
       mosh
       neofetch
       neovim-unwrapped
-      neuron-notes
+#      neuron-notes
       oh-my-zsh
       pandoc
       pinentry-qt

@@ -32,7 +32,7 @@
   #   enableSSHSupport = true;
   # };
 
-  system.stateVersion = "21.11"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 
   boot.loader.efi.canTouchEfiVariables = false;
 
@@ -60,18 +60,18 @@
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
   services.xserver = {
-    enable = false;
-    dpi=130;
-    # dpi=218;
+    enable = true;
+    # dpi=130;
+    dpi=218;
     # dpi=329;
     displayManager = {
-      sddm.enable = false;
+      sddm.enable = true;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
       /* defaultSession = "none+awesome"; */
     };
 
-    desktopManager.plasma5.enable = false;
+    desktopManager.plasma5.enable = true;
     /* windowManager.awesome = { */
     /*   enable = true; */
     /*   luaModules = with pkgs.luaPackages; [ */
@@ -110,7 +110,7 @@
       extraOptions = "experimental-features = nix-command flakes";
   };
 
-  networking.hostName = "umini"; # Define your hostname.
+  networking.hostName = "umac"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -126,17 +126,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    nextdns
     silver-searcher  # ag
     git
     gnumake
 #    killall
     psmisc # things like killall
     lshw
-    lzop
-    mbuffer
-    sanoid
-    pv
     usbutils
     thunderbolt
 
@@ -146,7 +141,6 @@
     acpi
 
     vim
-    neovim
     curl
     # gui apps
     firefox
@@ -161,16 +155,16 @@
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
+  services.openssh.passwordAuthentication = true;
   services.openssh.permitRootLogin = "yes";
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
-    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+    { extraArguments = " -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
       monitoringPort = 17007;
       name = "reverse";
-      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
+      user = "root"; }
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -194,35 +188,21 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 ];
+  # and the needed ports in the firewall for `services.samba`, slimserver, roon ARC
+  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 55000 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
-  # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
-# NextDNS config
-  networking = {
-    # firewall = {
-    #   allowedTCPPorts = [ 53 ];
-    #   allowedUDPPorts = [ 53 ];
-    # };
-    nameservers = [ "45.90.28.239" "45.90.30.239" ];
-  };
-  services.nextdns = {
-    enable = true;
-    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
-  };
-
-
+  # the needed ports in the firewall for `services.samba`, slimserver, roon ARC
+  networking.firewall.allowedUDPPorts = [ 137 1383 3483 55000 ];
 
 
   programs.mosh.enable = true;
 
 # zfs setup
   # usrv  networking.hostId = "41ca8470";
-  networking.hostId = "28c80f12"; # head -c 8 /etc/machine-id
+  networking.hostId = "21e04432"; # head -c 8 /etc/machine-id
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
@@ -259,7 +239,7 @@
 
   services.deluge = {
     enable = true;
-    dataDir = "/data/deluge-umini";
+    dataDir = "/data/deluge";
     web.enable = true;
     web.openFirewall = true;
   };
@@ -274,12 +254,12 @@
     openFirewall = true;
     user = "plex";
     group = "plex";
-    dataDir = "/data/plex-umini";
+    dataDir = "/data/plex";
   };
 
-#  services.slimserver = {
-#    enable = true;
-#  };
+  services.slimserver = {
+    enable = true;
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;
@@ -289,8 +269,8 @@
     securityType = "user";
     extraConfig = ''
       workgroup = LATB
-      server string = umini
-      netbios name = umini
+      server string = umac
+      netbios name = umac
       security = user
       #use sendfile = yes
       #max protocol = smb2
@@ -306,38 +286,18 @@
     # $ sudo smbpasswd -a yourusername
 
     shares = {
-      # public = {
-      #   path = "/media";
-      #   browseable = "yes";
-      #   "read only" = "yes";
-      #   "guest ok" = "yes";
-      #   "create mask" = "0644";
-      #   "directory mask" = "0755";
-      #   "force user" = "bauerdic";
-      #   "force group" = "users";
-      # };
-      private = {
+      public = {
         path = "/media";
         browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
+        "read only" = "yes";
+        "guest ok" = "yes";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force user" = "bauerdic";
         "force group" = "users";
       };
-      tm = { # configured for time machine backups
-          path = "/arq/tm";
-          "valid users" = "bauerdic";
-          public = "no";
-          writeable = "yes";
-          "force user" = "bauerdic";
-          "fruit:aapl" = "yes";
-          "fruit:time machine" = "yes";
-          "vfs objects" = "catia fruit streams_xattr";
-      };
-      arq = {
-        path = "/arq";
+      private = {
+        path = "/media";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";

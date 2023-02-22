@@ -12,6 +12,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -32,9 +33,7 @@
   #   enableSSHSupport = true;
   # };
 
-  system.stateVersion = "21.11"; # Did you read the comment?
-
-  boot.loader.efi.canTouchEfiVariables = false;
+  system.stateVersion = "22.11"; # Did you read the comment?
 
   # let it never sleep
   systemd.targets.sleep.enable = false;
@@ -110,7 +109,7 @@
       extraOptions = "experimental-features = nix-command flakes";
   };
 
-  networking.hostName = "umini"; # Define your hostname.
+  networking.hostName = "xmini"; # Define your hostname.
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -161,14 +160,14 @@
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
-  services.openssh.permitRootLogin = "yes";
-  services.openssh.forwardX11 = true;
+  services.openssh.settings.passwordAuthentication = false;
+  services.openssh.settings.permitRootLogin = "yes";
+  services.openssh.settings.X11Forwarding = true;
   users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
-    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17007;
+    { extraArguments = " -i ~/.ssh/id_auto -N -R 8388:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17008;
       name = "reverse";
       user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
   ];
@@ -222,7 +221,7 @@
 
 # zfs setup
   # usrv  networking.hostId = "41ca8470";
-  networking.hostId = "28c80f12"; # head -c 8 /etc/machine-id
+  networking.hostId = "ee3ccc06"; # head -c 8 /etc/machine-id
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
@@ -234,13 +233,13 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ "z3" "z2" "z1" "h" ];
+  boot.zfs.extraPools = [ ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
   fonts.enableGhostscriptFonts = true;
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
+#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
 #    corefonts
 #    dejavu_fonts
 #    font-awesome-ttf
@@ -257,101 +256,12 @@
 
   # appstream.enable = true;
 
-  services.deluge = {
-    enable = true;
-    dataDir = "/data/deluge-umini";
-    web.enable = true;
-    web.openFirewall = true;
-  };
-
-  services.roon-server = {
-    enable = true;
-    openFirewall = true;
-  };
-
   services.plex = {
     enable = true;
     openFirewall = true;
     user = "plex";
     group = "plex";
-    dataDir = "/data/plex-umini";
-  };
-
-#  services.slimserver = {
-#    enable = true;
-#  };
-
-# SMB file sharing
-  services.gvfs.enable = true;
-  services.samba = {
-    enable = true;
-    openFirewall = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = LATB
-      server string = umini
-      netbios name = umini
-      security = user
-      #use sendfile = yes
-      #max protocol = smb2
-      hosts allow = 192.168.0  localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-      #browseable = yes
-      #smb encrypt = required
-    '';
-
-    # You will still need to set up the user accounts to begin with:
-    # $ sudo smbpasswd -a yourusername
-
-    shares = {
-      # public = {
-      #   path = "/media";
-      #   browseable = "yes";
-      #   "read only" = "yes";
-      #   "guest ok" = "yes";
-      #   "create mask" = "0644";
-      #   "directory mask" = "0755";
-      #   "force user" = "bauerdic";
-      #   "force group" = "users";
-      # };
-      private = {
-        path = "/media";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
-        "force group" = "users";
-      };
-      tm = { # configured for time machine backups
-          path = "/arq/tm";
-          "valid users" = "bauerdic";
-          public = "no";
-          writeable = "yes";
-          "force user" = "bauerdic";
-          "fruit:aapl" = "yes";
-          "fruit:time machine" = "yes";
-          "vfs objects" = "catia fruit streams_xattr";
-      };
-      arq = {
-        path = "/arq";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
-        "force group" = "users";
-      };
-      homes = {
-        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
-        "read only" = "no";
-        "guest ok" = "no";
-      };
-    };
+    dataDir = "/data/plex-xmini";
   };
 
   # mDNS, avahi

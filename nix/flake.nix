@@ -4,16 +4,10 @@
   inputs = {
     utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    /* nixpkgs.url = "nixpkgs/nixos-unstable"; */
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+#    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    oh-my-posh = {
-      url = "github:latbauerdick/oh-my-posh";
-      /* url = "/data/dev/Dev/oh-my-posh"; */
-      inputs.oh-my-posh.follows = "nixpkgs";
     };
   };
 
@@ -22,7 +16,6 @@
     home-manager,
     nixpkgs,
     utils,
-    oh-my-posh,
     ... }@inputs:
   let
 
@@ -40,11 +33,33 @@
     lib = nixpkgs.lib;
     mkVM = import ./lib/mkvm.nix;
 
+    mkMachine = name: { nixpkgs, home-manager, system, user }: nixpkgs.lib.nixosSystem rec {
+      inherit system;
+      modules = [
+        ./hardware/${name}.nix
+        ./machines/${name}.nix
+        ./users/${user}/user.nix
+        home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.${user} = import ./users/${user}/home.nix;
+        }
+        { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
+      ];
+    };
+
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
       legacyPackages = pkgsForSystem system;
   }) // {
     # non-system suffixed items should go here
     overlay = localOverlay;
+
+    nixosConfigurations.xmini = mkMachine "xmini" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
 
     intel.bauerdic = home-manager.lib.homeManagerConfiguration {
      # nixosModules.home = import ./users/bauerdic/home.nix; # attr set or list
@@ -78,7 +93,7 @@
       homeDirectory = "/home/bauerdic";
       username = "bauerdic";
       /* configuration.imports = [ ./users/bauerdic/home.nix ]; */
-      extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
+      extraSpecialArgs = { inherit nixpkgs; };
       extraModules = [
         /* ./users/bauerdic/extraPackages.nix */
       ];
@@ -86,14 +101,14 @@
         imports = [ ./users/bauerdic/home.nix ];
         /* home.packages = [ inputs.nixpkgs.cargo ]; */
       };
-      /* configuration = { config, pkgs, oh-my-posh, ... }: */
+      /* configuration = { config, pkgs, ... }: */
         /* let */
         /*   overlay-unstable = final: prev: { */
         /*     unstable = inputs.nixpkgs-unstable.legacyPackages.aarch64-darwin; */
         /*   }; */
         /* in */
         /* { */
-        /*   home.packages = [ oh-my-posh ]; */
+        /*   home.packages = [ ]; */
         /*   /1* nixpkgs.overlays = [ overlay-unstable ]; *1/ */
         /*   nixpkgs.config = { */
         /*     allowUnfree = true; */
@@ -109,7 +124,7 @@
       system = "x86_64-linux";
       homeDirectory = "/home/bauerdic";
       username = "bauerdic";
-      extraSpecialArgs = { inherit nixpkgs oh-my-posh; };
+      extraSpecialArgs = { inherit nixpkgs; };
       extraModules = [
         /* ./users/bauerdic/extraPackages.nix */
       ];
