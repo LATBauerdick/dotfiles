@@ -14,13 +14,14 @@
       fzf
       dtach
       dvtm
-      # emanote
+      emanote
       gawk
       git
       git-crypt
       git-lfs
       gnupg
       gnumake
+      hello
       helix
       htop
       imagemagick
