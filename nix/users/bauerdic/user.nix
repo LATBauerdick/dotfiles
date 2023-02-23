@@ -24,8 +24,7 @@
     ];
   };
 
-  /* nixpkgs.overlays = import ../../lib/overlays.nix ++ [ */
-  /*   ( self: super: { oh-my-posh = super.callPackage ../../pkgs {  }; }) */
-
-  /* ]; */
+  # nixpkgs.overlays = import ../../lib/overlays.nix ++ [
+  #    ( self: super: { oh-my-posh = super.callPackage ../../pkgs {  }; })
+  # ];
 }

@@ -3,12 +3,6 @@
 
 #let sources = import ../../nix/sources.nix; in 
 let
-    pkgs0 = import (builtins.fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/12408341763b8f2f0f0a88001d9650313f6371d5.tar.gz";
-        sha256 = "sha256:17vgd7a8k0rpmc1lg9lwbla6jr5ks2d35qp7ryp6j4dsy7r8rihw";
-    }) {};
-
-    starshipPkg = pkgs0.x86_64-darwin.starship;
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
     withGUI = true;
@@ -35,8 +29,8 @@ in {
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  #home.stateVersion = "22.05";
-  home.stateVersion = "20.09";
+  home.stateVersion = "22.11";
+  # home.stateVersion = "20.09";
 
 
   home.packages =  [ ] ++ ( myPackages pkgs withGUI ) ++ ( extraPackages pkgs );

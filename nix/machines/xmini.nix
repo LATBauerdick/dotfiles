@@ -160,9 +160,9 @@
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.passwordAuthentication = false;
-  services.openssh.settings.permitRootLogin = "yes";
-  services.openssh.settings.X11Forwarding = true;
+  services.openssh.passwordAuthentication = false;
+  services.openssh.permitRootLogin = "yes";
+  services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
