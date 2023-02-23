@@ -1,5 +1,6 @@
 {
   description = "NixOS systems and Nix Config by LATBauerdick";
+# see https://github.com/nix-community/home-manager/blob/master/docs/nix-flakes.adoc
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
@@ -70,6 +71,15 @@
     };
 
 
+    homeConfigurations.bauerdic = home-manager.lib.homeManagerConfiguration {
+      # inherit pkgs;
+      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+      modules = [ ./users/bauerdic/home.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       # inherit pkgs;
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
