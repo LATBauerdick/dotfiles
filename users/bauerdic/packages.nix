@@ -21,7 +21,6 @@
       git-lfs
       gnupg
       gnumake
-      hello
       helix
       htop
       imagemagick
