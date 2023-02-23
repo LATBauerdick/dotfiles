@@ -24,14 +24,9 @@
     };
     localOverlay = _: _: { };
     pkgsForSystem = system: import nixpkgs {
-      overlays = [
-        localOverlay
-      ];
+      # overlays = [ localOverlay ];
       inherit system;
     };
-
-    lib = nixpkgs.lib;
-    mkVM = import ./lib/mkvm.nix;
 
     mkMachine = name: { nixpkgs, home-manager, system, user }: nixpkgs.lib.nixosSystem rec {
       inherit system;
@@ -60,6 +55,20 @@
       system = "x86_64-linux";
       user   = "bauerdic";
     };
+    nixosConfigurations.umini = mkMachine "umini" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
+
+    nixosConfigurations.usrv = mkMachine "usrv" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+    };
+
 
     intel.bauerdic = home-manager.lib.homeManagerConfiguration {
      # nixosModules.home = import ./users/bauerdic/home.nix; # attr set or list
@@ -72,20 +81,6 @@
         isDesktop = true;
         networkInterface = "xxx";
       };
-    };
-
-    nixosConfigurations.umini = mkVM "umini" {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-linux";
-      user   = "bauerdic";
-    };
-
-    nixosConfigurations.usrv = mkVM "usrv" {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-linux";
-      user   = "bauerdic";
     };
 
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
@@ -152,22 +147,6 @@
         system = "aarch64-linux";
         pkgs = import nixpkgs {
           system = "aarch64-linux";
-          config = { allowUnfree = true; };
-        };
-        username = "bauerdic";
-        homeDirectory = "/home/bauerdic";
-        configuration = {
-          imports = [
-            ./users/bauerdic/home.nix
-          ];
-        };
-      };
-    };
-    homeManagerConfigurationsIntel = {
-      bauerdic = home-manager.lib.homeManagerConfiguration {
-        system = "x86_64-linux";
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
           config = { allowUnfree = true; };
         };
         username = "bauerdic";
