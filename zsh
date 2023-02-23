@@ -1,1 +1,0 @@
-nix/users/bauerdic/zsh
