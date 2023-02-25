@@ -12,6 +12,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -33,8 +34,6 @@
   # };
 
   system.stateVersion = "21.11"; # Did you read the comment?
-
-  boot.loader.efi.canTouchEfiVariables = false;
 
   # let it never sleep
   systemd.targets.sleep.enable = false;
@@ -240,7 +239,7 @@
   fonts.enableDefaultFonts = true;
   fonts.enableGhostscriptFonts = true;
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
+#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
 #    corefonts
 #    dejavu_fonts
 #    font-awesome-ttf
@@ -277,9 +276,34 @@
     dataDir = "/data/plex-umini";
   };
 
-#  services.slimserver = {
-#    enable = true;
-#  };
+ services.slimserver.enable = false;
+
+  # mDNS, avahi
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+    extraServiceFiles = {
+      smb = ''
+        <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+          <name replace-wildcards="yes">%h</name>
+          <service>
+            <type>_smb._tcp</type>
+            <port>445</port>
+          </service>
+        </service-group>
+      '';
+    };
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;
@@ -354,32 +378,6 @@
     };
   };
 
-  # mDNS, avahi
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      domain = true;
-      hinfo = true;
-      userServices = true;
-      workstation = true;
-    };
-    extraServiceFiles = {
-      smb = ''
-        <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
-        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
-        <service-group>
-          <name replace-wildcards="yes">%h</name>
-          <service>
-            <type>_smb._tcp</type>
-            <port>445</port>
-          </service>
-        </service-group>
-      '';
-    };
-  };
 
 }
 

@@ -256,6 +256,18 @@
 
   # appstream.enable = true;
 
+  services.deluge = {
+    enable = false;
+    dataDir = "/data/deluge-xmini";
+    web.enable = true;
+    web.openFirewall = true;
+  };
+
+  services.roon-server = {
+    enable = false;
+    openFirewall = true;
+  };
+
   services.plex = {
     enable = true;
     openFirewall = true;
@@ -263,6 +275,8 @@
     group = "plex";
     dataDir = "/data/plex-xmini";
   };
+
+ services.slimserver.enable = false;
 
   # mDNS, avahi
   services.avahi = {
@@ -290,6 +304,50 @@
       '';
     };
   };
+
+# SMB file sharing
+  services.gvfs.enable = true;
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+    securityType = "user";
+    extraConfig = ''
+      workgroup = LATB
+      server string = xmini
+      netbios name = xmini
+      security = user
+      #use sendfile = yes
+      #max protocol = smb2
+      hosts allow = 192.168.0  localhost
+      hosts deny = 0.0.0.0/0
+      guest account = nobody
+      map to guest = bad user
+      #browseable = yes
+      #smb encrypt = required
+    '';
+
+    # You will still need to set up the user accounts to begin with:
+    # $ sudo smbpasswd -a yourusername
+
+    shares = {
+      # public = {
+      #   path = "/media";
+      #   browseable = "yes";
+      #   "read only" = "yes";
+      #   "guest ok" = "yes";
+      #   "create mask" = "0644";
+      #   "directory mask" = "0755";
+      #   "force user" = "bauerdic";
+      #   "force group" = "users";
+      # };
+      homes = {
+        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
+        "read only" = "no";
+        "guest ok" = "no";
+      };
+    };
+  };
+
 
 }
 
