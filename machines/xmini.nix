@@ -47,6 +47,11 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+# run `boltctl`, then for each device that is not authorized, execute 
+# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
+  services.hardware.bolt.enable = true;
+
 #  boot.loader.grub.extraEntries = ''
 #    menuentry "Ubuntu" {
 #      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
