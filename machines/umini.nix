@@ -233,7 +233,7 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ "z3" "z2" "z1" "h" ];
+  boot.zfs.extraPools = [  "z3" "z2" "z1" "z0" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
