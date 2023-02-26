@@ -63,8 +63,7 @@
   /* services.xrdp.defaultWindowManager = "awesome-x11"; */
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
-  services.xserver = {
-    enable = false;
+  services.xserver = { enable = false;
     dpi=130;
     # dpi=218;
     # dpi=329;
@@ -189,8 +188,7 @@
   #  "fs.inotify.max_user_instances" =    1024;   # default:   128
   #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
   };
-  services.syncthing = {
-    enable = true;
+  services.syncthing = { enable = true;
     dataDir = "/home/bauerdic/";
     user = "bauerdic";
   };
@@ -207,15 +205,9 @@
   # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
 # NextDNS config
-  networking = {
-    # firewall = {
-    #   allowedTCPPorts = [ 53 ];
-    #   allowedUDPPorts = [ 53 ];
-    # };
-    nameservers = [ "45.90.28.239" "45.90.30.239" ];
-  };
-  services.nextdns = {
-    enable = true;
+  networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
+  # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+  services.nextdns = { enable = true;
     arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
   };
 
@@ -261,20 +253,17 @@
 
   # appstream.enable = true;
 
-  services.deluge = {
-    enable = false;
+  services.deluge = { enable = false;
     dataDir = "/data/deluge-xmini";
     web.enable = true;
     web.openFirewall = true;
   };
 
-  services.roon-server = {
-    enable = false;
+  services.roon-server = { enable = false;
     openFirewall = true;
   };
 
-  services.plex = {
-    enable = true;
+  services.plex = { enable = true;
     openFirewall = true;
     user = "plex";
     group = "plex";
@@ -284,8 +273,7 @@
  services.slimserver.enable = false;
 
   # mDNS, avahi
-  services.avahi = {
-    enable = true;
+  services.avahi = { enable = true;
     nssmdns = true;
     publish = {
       enable = true;
@@ -312,8 +300,7 @@
 
 # SMB file sharing
   services.gvfs.enable = true;
-  services.samba = {
-    enable = true;
+  services.samba = { enable = true;
     openFirewall = true;
     securityType = "user";
     extraConfig = ''

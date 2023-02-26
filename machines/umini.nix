@@ -47,6 +47,11 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+# run `boltctl`, then for each device that is not authorized, execute 
+# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
+  services.hardware.bolt.enable = true;
+
 #  boot.loader.grub.extraEntries = ''
 #    menuentry "Ubuntu" {
 #      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
@@ -58,8 +63,7 @@
   /* services.xrdp.defaultWindowManager = "awesome-x11"; */
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
-  services.xserver = {
-    enable = false;
+  services.xserver = { enable = false;
     dpi=130;
     # dpi=218;
     # dpi=329;
@@ -184,8 +188,7 @@
   #  "fs.inotify.max_user_instances" =    1024;   # default:   128
   #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
   };
-  services.syncthing = {
-    enable = true;
+  services.syncthing = { enable = true;
     dataDir = "/home/bauerdic/";
     user = "bauerdic";
   };
@@ -201,21 +204,13 @@
   ];
   # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+
 # NextDNS config
-  networking = {
-    # firewall = {
-    #   allowedTCPPorts = [ 53 ];
-    #   allowedUDPPorts = [ 53 ];
-    # };
-    nameservers = [ "45.90.28.239" "45.90.30.239" ];
-  };
-  services.nextdns = {
-    enable = true;
+  networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
+  # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+  services.nextdns = { enable = true;
     arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
   };
-
-
-
 
   programs.mosh.enable = true;
 
@@ -256,20 +251,17 @@
 
   # appstream.enable = true;
 
-  services.deluge = {
-    enable = true;
+  services.deluge = { enable = true;
     dataDir = "/data/deluge-umini";
     web.enable = true;
     web.openFirewall = true;
   };
 
-  services.roon-server = {
-    enable = true;
+  services.roon-server = { enable = true;
     openFirewall = true;
   };
 
-  services.plex = {
-    enable = true;
+  services.plex = { enable = true;
     openFirewall = true;
     user = "plex";
     group = "plex";
@@ -279,8 +271,7 @@
  services.slimserver.enable = false;
 
   # mDNS, avahi
-  services.avahi = {
-    enable = true;
+  services.avahi = { enable = true;
     nssmdns = true;
     publish = {
       enable = true;
@@ -307,8 +298,7 @@
 
 # SMB file sharing
   services.gvfs.enable = true;
-  services.samba = {
-    enable = true;
+  services.samba = { enable = true;
     openFirewall = true;
     securityType = "user";
     extraConfig = ''
