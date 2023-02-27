@@ -2,12 +2,6 @@
 # UseKeychain yes
 AddKeysToAgent yes
 
-
-Host lmini
-  HostName 116.203.126.183
-  User bauerdic
-  Port 8389
-
 Host lml
   HostName lmini.local
   User bauerdic
@@ -20,20 +14,20 @@ HostName 116.203.126.183
   LocalForward   *:8389  127.0.0.1:8384
   LocalForward   *:8089  127.0.0.1:8080
 
-Host umini
-  HostName 116.203.126.161
-  Port 8387
-  User bauerdic
-
 Host latbtop ltl
   Hostname latbtop.local
   Port 8328   ## in /etc/services we set ssh to 8328/tcp and 8328/udp
   User bauerdic
 
-Host ltop
+Host umini
+  HostName 116.203.126.161
+  Port 8387
+  User bauerdic
+
+Host xmini
   HostName 116.203.126.183
   User bauerdic
-  Port 8388 # this needs to be changed
+  Port 8388
 
 Host mac-126620 lim
   Hostname mac-126620.local
