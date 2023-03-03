@@ -1,7 +1,7 @@
 
   let
-    version = "1.30.1.6497-5fc2e0894";
-    hash = "sha256-VwaetJED30ot62LIJi8Ix5IrIa7irbzdGFZbIqz3PgU=";
+    version = "1.31.0.6654-02189b09f"; # "1.30.1.6497-5fc2e0894";
+    hash = "sha256-TTEcyIBFiuJTNHeJ9wu+4o2ol72oCvM9FdDPC83J3Mc=";
   in
 self: super: {
 

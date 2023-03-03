@@ -3,8 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-{
+let
+  hostname = "umini";
+in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
@@ -113,7 +114,7 @@
       extraOptions = "experimental-features = nix-command flakes";
   };
 
-  networking.hostName = "umini"; # Define your hostname.
+  networking.hostName = hostname;
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -252,7 +253,7 @@
   # appstream.enable = true;
 
   services.deluge = { enable = true;
-    dataDir = "/data/deluge-umini";
+    dataDir = "/data/deluge-${hostname}";
     web.enable = true;
     web.openFirewall = true;
   };
@@ -265,7 +266,7 @@
     openFirewall = true;
     user = "plex";
     group = "plex";
-    dataDir = "/data/plex-umini";
+    dataDir = "/data/plex-${hostname}";
   };
 
  services.slimserver.enable = false;
@@ -303,8 +304,8 @@
     securityType = "user";
     extraConfig = ''
       workgroup = LATB
-      server string = umini
-      netbios name = umini
+      server string = hostname
+      netbios name = hostname
       security = user
       #use sendfile = yes
       #max protocol = smb2
