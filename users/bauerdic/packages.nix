@@ -36,7 +36,7 @@
       pinentry-qt
       pv
       python310Packages.pandoc-xnos
-      python
+      python3
       qemu
       ranger
       ripgrep
