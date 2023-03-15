@@ -27,6 +27,7 @@
     pkgsForSystem = system: import nixpkgs {
       # overlays = [ localOverlay ];
       inherit system;
+      config.allowUnfree = true;
     };
 
     mkMachine = name: { nixpkgs, home-manager, system, user }: nixpkgs.lib.nixosSystem rec {
