@@ -35,9 +35,9 @@
       pandoc
       pinentry-qt
       pv
-      python310Packages.pandoc-xnos
-      python3
-      qemu
+      # python310Packages.pandoc-xnos
+      # python3
+      # qemu
       ranger
       ripgrep
       silver-searcher
