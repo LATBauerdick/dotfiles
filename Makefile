@@ -11,22 +11,22 @@ MACNAME ?= m1mac
 
 macall:
 	nix flake lock
-	nix build --impure ".#${MACNAME}.bauerdic.activationPackage"
+	nix build ".#${MACNAME}.bauerdic.activationPackage"
 	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
 	nix profile install github:latbauerdick/oh-my-posh
 
 switch:
-	sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild --impure switch --flake ".#${NIXNAME}"
+	sudo nixos-rebuild switch --flake ".#${NIXNAME}"
 
 test:
-	sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild --impure test --flake ".#${NIXNAME}"
+	sudo nixos-rebuild test --flake ".#${NIXNAME}"
 
 update:
 	nix flake lock
 
 build:
-	nix build --impure ".#${MACNAME}.bauerdic.activationPackage"
+	nix build ".#${MACNAME}.bauerdic.activationPackage"
 
 activate:
 	./result/activate
