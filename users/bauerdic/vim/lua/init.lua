@@ -1,5 +1,7 @@
 -- Type :luafile % to refresh init.lua after making changes
 
+-- from https://github.com/nvim-lua/kickstart.nvim
+
 -- Map leader key early
 -- vim.g.mapleader = ','
 -- vim.g.maplocalleader = '\\'
