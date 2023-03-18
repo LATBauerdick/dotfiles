@@ -7,7 +7,7 @@
 -- vim.g.maplocalleader = '\\'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Install packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
