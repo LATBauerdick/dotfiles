@@ -7,6 +7,82 @@ if fn.empty(fn.glob(install_path)) > 0 then
   fn.system({'git', 'clone', '--depth=1', 'https://github.com/savq/paq-nvim.git', install_path})
 end
 
+-- lots of my plugins, usint vim-plug
+-- vim-plug {{{
+    vim.cmd [[
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+call plug#begin(stdpath('data') . '/plugged')
+]]
+    local Plug = vim.fn['plug#']
+
+
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'jiangmiao/auto-pairs'
+Plug 'jgdavey/tslime.vim'
+Plug ('Shougo/vimproc.vim', { ['do'] = vim.fn['make']})
+Plug 'scrooloose/nerdcommenter'
+Plug 'jiangmiao/auto-pairs'
+Plug 'benekastah/neomake'
+Plug 'moll/vim-bbye'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'vim-scripts/gitignore'
+Plug ('mg979/vim-visual-multi', {branch = 'master'})
+Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-grepper'
+Plug 'mhinz/vim-signify'
+Plug 'int3/vim-extradite'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'vim-scripts/Align'
+Plug 'simnalamburt/vim-mundo'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
+Plug 'godlygeek/tabular'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'easymotion/vim-easymotion'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'sbdchd/neoformat'
+-- Plug 'vim-syntastic/syntastic'
+-- Plug ('neoclide/coc.nvim', {branch = 'release'})
+-- Plug 'dense-analysis/ale'
+Plug 'ujihisa/unite-haskellimport'
+Plug 'Shougo/unite.vim'
+-- Plug ('Shougo/deoplete.nvim', { do = ':UpdateRemotePlugins' })
+Plug 'neovimhaskell/haskell-vim'
+Plug 'enomsg/vim-haskellConcealPlus'
+Plug 'Twinside/vim-hoogle'
+    -- Plug 'aiya000/vim-ghcid-quickfix'
+Plug 'raichoo/purescript-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'ledger/vim-ledger'
+Plug 'terryma/vim-smooth-scroll'
+-- Plug 'sdothum/vim-colors-duochrome'
+-- Plug 'altercation/vim-colors-solarized'
+-- Plug 'frankier/neovim-colors-solarized-truecolor-only'
+-- Plug 'lifepillar/vim-solarized8'
+Plug 'rakr/vim-one'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mvandiemen/ghostbuster'
+Plug 'tpope/vim-dispatch'
+Plug 'radenling/vim-dispatch-neovim'
+Plug 'knubie/vim-kitty-navigator'
+Plug 'akinsho/toggleterm.nvim' --, tag = 'v1.*'
+
+    vim.call('plug#end')
+-- }}}
+
 vim.cmd [[
 let hscoptions="𝐌𝐄𝐓𝐒iBQZDC*"
 ]]
@@ -50,80 +126,77 @@ return require('packer').startup(
       after = 'nvim-treesitter',
     }
 
--- lots of my plugins
--- vim-plug {{{
-
     -- Git related plugins
     use 'tpope/vim-fugitive'
     use 'tpope/vim-rhubarb'
     use 'lewis6991/gitsigns.nvim'
 
     -- use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-    use 'altercation/vim-colors-solarized'
-    -- use 'frankier/neovim-colors-solarized-truecolor-only'
-    -- use 'sdothum/vim-colors-duochrome'
-    -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+
     use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
     use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
     use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
-    use 'tpope/vim-commentary'
-    use 'tpope/vim-eunuch'
-    use 'tpope/vim-vinegar'
-    use 'tpope/vim-fireplace'
-    use 'tpope/vim-unimpaired'
-    use 'tpope/vim-sexp-mappings-for-regular-people'
-    use 'tpope/vim-repeat'
-    use 'tpope/vim-surround'
-    use 'tpope/vim-dispatch'
-
-    use 'bling/vim-airline'
-    use 'vim-airline/vim-airline-themes'
-
-    use 'jgdavey/tslime.vim'
-    use { 'Shougo/vimproc.vim', run = 'make', cond = vim.fn.executable 'make' == 1 }
-    use 'scrooloose/nerdcommenter'
-    use 'jiangmiao/auto-pairs'
-    use 'benekastah/neomake'
-    use 'moll/vim-bbye'
-    use 'nathanaelkane/vim-indent-guides'
-    use 'vim-scripts/gitignore'
-    use 'mg979/vim-visual-multi'
-    use 'junegunn/fzf.vim'
-    use 'mhinz/vim-grepper'
-    use 'mhinz/vim-signify'
-    use 'int3/vim-extradite'
-    use 'scrooloose/nerdtree'
-    use 'majutsushi/tagbar'
-    use 'vim-scripts/Align'
-    use 'simnalamburt/vim-mundo'
-    use 'godlygeek/tabular'
-    use 'michaeljsmith/vim-indent-object'
-    use 'easymotion/vim-easymotion'
-    use 'christoomey/vim-tmux-navigator'
-    use 'sbdchd/neoformat'
-    use 'ujihisa/unite-haskellimport'
-    use 'Shougo/unite.vim'
-    use 'neovimhaskell/haskell-vim'
-    use 'enomsg/vim-haskellConcealPlus'
-    use 'Twinside/vim-hoogle'
-    use 'aiya000/vim-ghcid-quickfix'
-    use 'raichoo/purescript-vim'
-    use 'rust-lang/rust.vim'
-    use 'ledger/vim-ledger'
-    use 'terryma/vim-smooth-scroll'
-    use 'rakr/vim-one'
-    use 'guns/vim-sexp'
-    use 'mvandiemen/ghostbuster'
-    use 'radenling/vim-dispatch-neovim'
-    use 'knubie/vim-kitty-navigator'
-    use 'akinsho/toggleterm.nvim'
---
--- }}}
-
     use 'jvgrootveld/telescope-zoxide'
     use 'sudormrfbin/cheatsheet.nvim'
     use 'nvim-lua/popup.nvim'
+    -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+
+    -- use 'altercation/vim-colors-solarized'
+    -- use 'frankier/neovim-colors-solarized-truecolor-only'
+    -- use 'sdothum/vim-colors-duochrome'
+
+    -- use 'tpope/vim-commentary'
+    -- use 'tpope/vim-eunuch'
+    -- use 'tpope/vim-vinegar'
+    -- use 'tpope/vim-fireplace'
+    -- use 'tpope/vim-unimpaired'
+    -- use 'tpope/vim-sexp-mappings-for-regular-people'
+    -- use 'tpope/vim-repeat'
+    -- use 'tpope/vim-surround'
+    -- use 'tpope/vim-dispatch'
+
+    -- use 'bling/vim-airline'
+    -- use 'vim-airline/vim-airline-themes'
+
+    -- use 'jgdavey/tslime.vim'
+    -- use { 'Shougo/vimproc.vim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+    -- use 'scrooloose/nerdcommenter'
+    -- use 'jiangmiao/auto-pairs'
+    -- use 'benekastah/neomake'
+    -- use 'moll/vim-bbye'
+    -- use 'nathanaelkane/vim-indent-guides'
+    -- use 'vim-scripts/gitignore'
+    -- use 'mg979/vim-visual-multi'
+    -- use 'junegunn/fzf.vim'
+    -- use 'mhinz/vim-grepper'
+    -- use 'mhinz/vim-signify'
+    -- use 'int1/vim-extradite'
+    -- use 'scrooloose/nerdtree'
+    -- use 'majutsushi/tagbar'
+    -- use 'vim-scripts/Align'
+    -- use 'simnalamburt/vim-mundo'
+    -- use 'godlygeek/tabular'
+    -- use 'michaeljsmith/vim-indent-object'
+    -- use 'easymotion/vim-easymotion'
+    -- use 'christoomey/vim-tmux-navigator'
+    -- use 'sbdchd/neoformat'
+    -- use 'ujihisa/unite-haskellimport'
+    -- use 'Shougo/unite.vim'
+    -- use 'neovimhaskell/haskell-vim'
+    -- use 'enomsg/vim-haskellConcealPlus'
+    -- use 'Twinside/vim-hoogle'
+    -- use 'aiya000/vim-ghcid-quickfix'
+    -- use 'raichoo/purescript-vim'
+    -- use 'rust-lang/rust.vim'
+    -- use 'ledger/vim-ledger'
+    -- use 'terryma/vim-smooth-scroll'
+    -- use 'rakr/vim-one'
+    -- use 'guns/vim-sexp'
+    -- use 'mvandiemen/ghostbuster'
+    -- use 'radenling/vim-dispatch-neovim'
+    -- use 'knubie/vim-kitty-navigator'
+    -- use 'akinsho/toggleterm.nvim'
 
 
     -- Fuzzy Finder (files, lsp, etc)
