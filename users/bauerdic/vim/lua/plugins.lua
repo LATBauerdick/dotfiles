@@ -7,9 +7,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
   fn.system({'git', 'clone', '--depth=1', 'https://github.com/savq/paq-nvim.git', install_path})
 end
 
--- vim-plug {{{
--- }}}
-
 vim.cmd [[
 let hscoptions="𝐌𝐄𝐓𝐒iBQZDC*"
 ]]
@@ -52,6 +49,9 @@ return require('packer').startup(
       'nvim-treesitter/nvim-treesitter-textobjects',
       after = 'nvim-treesitter',
     }
+
+-- lots of my plugins
+-- vim-plug {{{
 
     -- Git related plugins
     use 'tpope/vim-fugitive'
@@ -107,6 +107,7 @@ return require('packer').startup(
     use 'neovimhaskell/haskell-vim'
     use 'enomsg/vim-haskellConcealPlus'
     use 'Twinside/vim-hoogle'
+    use 'aiya000/vim-ghcid-quickfix'
     use 'raichoo/purescript-vim'
     use 'rust-lang/rust.vim'
     use 'ledger/vim-ledger'
@@ -117,10 +118,13 @@ return require('packer').startup(
     use 'radenling/vim-dispatch-neovim'
     use 'knubie/vim-kitty-navigator'
     use 'akinsho/toggleterm.nvim'
+--
+-- }}}
 
     use 'jvgrootveld/telescope-zoxide'
     use 'sudormrfbin/cheatsheet.nvim'
     use 'nvim-lua/popup.nvim'
+
 
     -- Fuzzy Finder (files, lsp, etc)
     use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }

@@ -83,7 +83,12 @@
     };
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       # inherit pkgs;
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+      # pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+      pkgs = import nixpkgs {
+        system = "aarch64-darwin";
+        config = { allowUnfree = true; };
+      };
+
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
