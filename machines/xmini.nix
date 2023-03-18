@@ -182,12 +182,12 @@
   # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
 
   # Binary Cache for Haskell.nix
-  nix.settings.trusted-public-keys = [
-    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-  ];
-  nix.settings.substituters = [
-    "https://cache.iog.io"
-  ];
+  # nix.settings.trusted-public-keys = [
+  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  # ];
+  # nix.settings.substituters = [
+  #   "https://cache.iog.io"
+  # ];
 
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.

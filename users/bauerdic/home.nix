@@ -83,4 +83,10 @@ in {
   programs.direnv.nix-direnv.enable = true;
   # programs.direnv.nix-direnv.enableFlakes = true;
   programs.zsh.enable = true;
+
+
+#  xdg.configFile."alacritty".source=mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/dot/config/alacritty"
+
+
+
 }
