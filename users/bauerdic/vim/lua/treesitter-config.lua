@@ -1,27 +1,6 @@
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 
--- require'nvim-treesitter.configs'.setup {
---   -- A list of parser names, or "all"
---   ensure_installed = { "c", "lua", "rust", "haskell", "purescript", "python", "nix", "cpp", "help" }, -- one of "all" or a list of languages
---
---   -- Install parsers synchronously (only applied to `ensure_installed`)
---   sync_install = false,
---
---   -- Automatically install missing parsers when entering buffer
---   auto_install = true,
---
---   -- List of parsers to ignore installing (for "all")
---   ignore_install = { "javascript" },
---
---   highlight = {
---     -- `false` will disable the whole extension
---     enable = false,
---     disable = { "c", "rust" },
---     additional_vim_regex_highlighting = false,
---   },
--- }
-
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = { 'c', 'cpp', 'haskell', 'lua', 'python', 'rust', 'help', 'nix' },

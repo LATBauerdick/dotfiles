@@ -19,11 +19,6 @@ local map = function(key)
   end
 end
 
-map { 'n', '<Leader>ff', ':Telescope find_files<cr>' }
-map { 'n', '<Leader>fg', ':Telescope live_grep<cr>' }
-map { 'n', '<Leader>fb', ':Telescope buffer<cr>' }
-map { 'n', '<Leader>fh', ':Telescope help_tas<cr>' }
-
 -- map { '', ';', ':' }
 
 -- enable spell checking
@@ -160,5 +155,5 @@ vim.api.nvim_set_keymap ( 'i', '<Tab>', 'v:lua.smart_tab()'
 
 utils.map('n', '<C-l>', '<cmd>noh<CR>') -- Clear highlights
 -- inoremap kk <esc>
-utils.map('i', 'kk', '<Esc>')           -- kk to escape
+-- utils.map('i', 'kk', '<Esc>')           -- kk to escape
 
