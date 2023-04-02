@@ -44,7 +44,7 @@ enum {
 };
 
 // Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
     // Tap once for Escape, twice for Caps Lock
     [TD_O_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_O, KC_ENT),
 };
@@ -268,15 +268,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_planck_grid(
-    _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD, KC_DEL ,
-    _______, _______, MU_MOD,  AU_ON,   AU_OFF,  _______, _______, QWERTY,  COLEMAK,  COLEMAK1,COLEMAK2,_______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  TERM_ON, TERM_OFF, _______, _______, _______,
+    _______, QK_BOOT, DB_TOGG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD, KC_DEL ,
+    _______, _______, MU_TOGG,  AU_ON,   AU_OFF,  _______, _______, QWERTY,  COLEMAK,  COLEMAK1,COLEMAK2,_______,
+    _______, AU_PREV, AU_NEXT,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF, _______, _______,  _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
 )
 
 };
 
-uint32_t layer_state_set_user(uint32_t state) {
+// uint32_t layer_state_set_user(uint32_t state) {
+//   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+// }
+layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
@@ -418,7 +421,7 @@ bool music_mask_user(uint16_t keycode) {
 }
 
 #ifdef RGB_MATRIX_ENABLE
-void rgb_matrix_indicators_user(void) {
+bool rgb_matrix_indicators_user(void) {
   switch (biton32(layer_state)) {
     case _LOWER:
       rgb_matrix_set_color(40, 0xFF, 0xFF, 0xFF); // LOWER
@@ -432,5 +435,6 @@ void rgb_matrix_indicators_user(void) {
 
   // Disable middle LED between keys in grid layout.
   rgb_matrix_set_color(42, 0x00, 0x00, 0x00);
+  return false;
 }
 #endif
