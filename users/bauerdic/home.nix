@@ -1,9 +1,10 @@
-{ config, pkgs, specialArgs, withGUI ? true, ... }:
+{ config, pkgs, specialArgs, withGUI ? false, ... }:
 
 let
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
-    myPackages = import ./packages.nix;
+    gui = false; # withGUI;
+    myPackages = import ./packages.nix { inherit pkgs; withGUI = gui;  };
     extraPackages = import ./extraPackages.nix;
 
 in {
@@ -29,7 +30,7 @@ in {
   # home.stateVersion = "20.09";
 
 
-  home.packages =  [ ] ++ ( myPackages pkgs withGUI ) ++ ( extraPackages pkgs );
+  home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs );
 
 # Tex installation
   fonts.fontconfig.enable = true;
