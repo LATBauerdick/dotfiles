@@ -117,6 +117,16 @@
       };
     };
 
+    rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.aarch64-linux;
+      modules = [ ./users/bauerdic/home.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+        networkInterface = "xxx";
+      };
+    };
+
     bauerdic = self.homeConfigurations.bauerdic.activationPackage;
     defaultPackage.aarch64-darwin = self.bauerdic;
 

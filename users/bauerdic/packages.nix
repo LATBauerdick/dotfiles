@@ -61,7 +61,7 @@
       ddcutil # monitor brightness
       mutt-with-sidebar
       bitwarden-cli
-###] ++ pkgs.lib.optionals withGUI [
+  ] ++ pkgs.lib.optionals withGUI [
       kitty
       bitwarden
       obsidian

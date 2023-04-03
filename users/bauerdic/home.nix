@@ -1,14 +1,10 @@
-{ config, pkgs, specialArgs, ... }:
+{ config, pkgs, specialArgs, withGUI ? true, ... }:
 
-
-#let sources = import ../../nix/sources.nix; in 
 let
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
-    withGUI = true;
     myPackages = import ./packages.nix;
     extraPackages = import ./extraPackages.nix;
-    /* packages = xxx: yyy [ xxx ]*/
 
 in {
 
