@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -34,6 +34,8 @@
   # };
 
   system.stateVersion = "22.11"; # Did you read the comment?
+
+  programs.zsh.enable = true;
 
   # let it never sleep
   systemd.targets.sleep.enable = false;
@@ -164,9 +166,9 @@
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
-  services.openssh.permitRootLogin = "yes";
-  services.openssh.forwardX11 = true;
+  services.openssh.settings.passwordAuthentication = false;
+  services.openssh.settings.permitRootLogin = "yes";
+  services.openssh.settings.X11Forwarding = true;
   users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
@@ -347,7 +349,15 @@
       };
     };
   };
-
+    
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-bridge"
+      "unrar"
+  ];
+  services.roon-bridge = {
+      enable = true;
+      openFirewall = true;
+  };
 
 }
 
