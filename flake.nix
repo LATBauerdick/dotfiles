@@ -4,10 +4,11 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-#    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      # url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -126,7 +127,7 @@
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
       pkgs = import nixpkgs {
-        system = "aarch64-intel";
+        system = "aarch64-linux";
         config = { allowUnfree = true; };
       };
       modules = [ ./users/bauerdic/home.nix ];
