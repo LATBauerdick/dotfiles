@@ -71,6 +71,12 @@
       user   = "bauerdic";
     };
 
+    nixosConfigurations.rpi   = mkMachine "rpi" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-linux";
+      user   = "bauerdic";
+    };
 
     homeConfigurations.bauerdic = home-manager.lib.homeManagerConfiguration {
       # inherit pkgs;
@@ -118,12 +124,15 @@
     };
 
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.aarch64-linux;
+      # pkgs = nixpkgs.legacyPackages.aarch64-linux;
+      pkgs = import nixpkgs {
+        system = "aarch64-intel";
+        config = { allowUnfree = true; };
+      };
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
-        networkInterface = "xxx";
       };
     };
 
