@@ -8,7 +8,8 @@
     nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
       # url = "github:nix-community/home-manager/release-22.11";
-      url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager";
+      url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
