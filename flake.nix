@@ -12,6 +12,7 @@
       url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
   };
 
   outputs = {
@@ -19,6 +20,7 @@
     home-manager,
     nixpkgs,
     utils,
+    ohmyposh,
     ... }@inputs:
   let
 
@@ -47,6 +49,9 @@
       ];
     };
 
+    overlayxxx = prev: final: {
+      oh-my-posh = ohmyposh.packages.aarch64-darwin.oh-my-posh;
+    };
   in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
       legacyPackages = pkgsForSystem system;
   }) // {
@@ -94,9 +99,9 @@
       # pkgs = nixpkgs.legacyPackages.aarch64-darwin;
       pkgs = import nixpkgs {
         system = "aarch64-darwin";
+        overlays = [ overlayxxx ];
         config = { allowUnfree = true; };
       };
-
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;

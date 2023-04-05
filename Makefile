@@ -14,7 +14,7 @@ macall:
 	nix build ".#${MACNAME}.bauerdic.activationPackage"
 	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
-	nix profile install github:latbauerdick/oh-my-posh
+	# nix profile install github:latbauerdick/oh-my-posh
 
 switch:
 	sudo nixos-rebuild switch --flake ".#${NIXNAME}"

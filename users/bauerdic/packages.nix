@@ -32,6 +32,7 @@
       neovim-unwrapped
 #      neuron-notes
       oh-my-zsh
+      oh-my-posh
       pandoc
       pinentry-qt
       pv
