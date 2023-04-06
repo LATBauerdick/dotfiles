@@ -8,32 +8,34 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1680597706,
-        "narHash": "sha256-ZqJ3T+BxzjPH9TnmeUwS4Uu9ZQPeBXAFC9sUWlharT4=",
-        "ref": "refs/heads/master",
-        "rev": "ec06f419af79207b33d797064dfb3fc9dbe1df4a",
-        "revCount": 2631,
-        "type": "git",
-        "url": "file:///home/bauerdic/home-manager"
+        "lastModified": 1680555990,
+        "narHash": "sha256-Tu/i5sd0hk4c4VtWO8XpY3c9KmHDcOWF5Y2GSCh3LXA=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "d6f3ba090ed090ae664ab5bac329654093aae725",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/bauerdic/home-manager"
+        "owner": "nix-community",
+        "ref": "release-22.11",
+        "repo": "home-manager",
+        "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1680647623,
-        "narHash": "sha256-S/Y8Sugmn6FDm8vNWZbnexFE8Zd0OvXLVMbKskifajo=",
-        "ref": "refs/heads/master",
-        "rev": "4c40162cb5a4317df6250308c93761cc29d09c40",
-        "revCount": 470622,
-        "type": "git",
-        "url": "file:///home/bauerdic/nixpkgs"
+        "lastModified": 1680665430,
+        "narHash": "sha256-MTVhTukwza1Jlq2gECITZPFnhROmylP2uv3O3cSqQCE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5233fd2ba76a3accb5aaa999c00509a11fd0793c",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/bauerdic/nixpkgs"
+        "owner": "NixOS",
+        "ref": "nixos-22.11",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs_2": {
