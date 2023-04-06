@@ -38,16 +38,17 @@
       config.allowUnfree = true;
     };
 
-    mkMachine = name: { nixpkgs, home-manager, system, user }: nixpkgs.lib.nixosSystem rec {
+    mkMachine = name: { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
         ./hardware/${name}.nix
         ./machines/${name}.nix
         ./users/${user}/user.nix
-        home-manager.nixosModules.h1ome-manager {
+        home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user} = import ./users/${user}/home.nix;
+          home-manager.extraSpecialArgs = extraSpecialArgs;
         }
         { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
       ];
@@ -84,6 +85,10 @@
       home-manager = home-manager;
       system = "aarch64-linux";
       user   = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
     };
 
     homeConfigurations.bauerdic = home-manager.lib.homeManagerConfiguration {
