@@ -28,9 +28,13 @@
       allowUnfree = true;
     };
     localOverlay = _: _: { };
+    overlay-ohmyposh = system: prev: final: {
+      oh-my-posh = ohmyposh.packages.${system}.oh-my-posh;
+    };
     pkgsForSystem = system: import nixpkgs {
-      # overlays = [ localOverlay ];
+      # overlay = [ localOverlay ];
       inherit system;
+      overlays = [ ( overlay-ohmyposh system ) ];
       config.allowUnfree = true;
     };
 
@@ -40,7 +44,7 @@
         ./hardware/${name}.nix
         ./machines/${name}.nix
         ./users/${user}/user.nix
-        home-manager.nixosModules.home-manager {
+        home-manager.nixosModules.h1ome-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user} = import ./users/${user}/home.nix;
@@ -49,10 +53,7 @@
       ];
     };
 
-    overlayxxx = prev: final: {
-      oh-my-posh = ohmyposh.packages.aarch64-darwin.oh-my-posh;
-    };
-  in utils.lib.eachSystem [ "x86_64-linux" ] (system: rec {
+  in utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux" ] (system: rec {
       legacyPackages = pkgsForSystem system;
   }) // {
     # non-system suffixed items should go here
@@ -95,13 +96,8 @@
       };
     };
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
-      # inherit pkgs;
+      pkgs = pkgsForSystem "aarch64-darwin";
       # pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      pkgs = import nixpkgs {
-        system = "aarch64-darwin";
-        overlays = [ overlayxxx ];
-        config = { allowUnfree = true; };
-      };
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
@@ -109,33 +105,16 @@
       };
     };
     intelmac.bauerdic = home-manager.lib.homeManagerConfiguration {
-      # pkgs = nixpkgs.legacyPackages.x86_64-darwin;
-      pkgs = import nixpkgs {
-        system = "x86_64-darwin";
-        config = { allowUnfree = true; };
-      };
+      pkgs = pkgsForSystem "x86_64-darwin";
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
       };
     };
-    intel.bauerdic = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [ ./users/bauerdic/home.nix ];
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-        networkInterface = "xxx";
-      };
-    };
-
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
-      pkgs = import nixpkgs {
-        system = "aarch64-linux";
-        config = { allowUnfree = true; };
-      };
+      pkgs = pkgsForSystem "aarch64-linux";
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;

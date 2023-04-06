@@ -7,14 +7,13 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 NIXNAME ?= umini
 # umac   xmini
 MACNAME ?= m1mac
-# intelmac  lima
+# intelmac rpi lima
 
 macall:
 	nix flake lock
 	nix build ".#${MACNAME}.bauerdic.activationPackage"
-	rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
+	# rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
-	# nix profile install github:latbauerdick/oh-my-posh
 
 switch:
 	sudo nixos-rebuild switch --flake ".#${NIXNAME}"

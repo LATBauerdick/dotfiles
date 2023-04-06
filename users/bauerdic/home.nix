@@ -1,10 +1,9 @@
-{ config, pkgs, specialArgs, withGUI ? false, ... }:
+{ config, pkgs, specialArgs, ... }:
 
 let
     # hacky way of determining which machine I'm running this from
     # inherit (specialArgs) withGUI isDesktop networkInterface localOverlay;
-    gui = false; # withGUI;
-    myPackages = import ./packages.nix { inherit pkgs; withGUI = gui;  };
+    myPackages = import ./packages.nix { inherit pkgs; withGUI = specialArgs.withGUI;  };
     extraPackages = import ./extraPackages.nix;
 
 in {
