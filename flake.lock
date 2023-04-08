@@ -1,20 +1,5 @@
 {
   "nodes": {
-    "flake-utils": {
-      "locked": {
-        "lastModified": 1680776469,
-        "narHash": "sha256-3CXUDK/3q/kieWtdsYpDOBJw3Gw4Af6x+2EiSnIkNQw=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "411e8764155aa9354dbcd6d5faaeb97e9e3dce24",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -23,34 +8,32 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1680555990,
-        "narHash": "sha256-Tu/i5sd0hk4c4VtWO8XpY3c9KmHDcOWF5Y2GSCh3LXA=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "d6f3ba090ed090ae664ab5bac329654093aae725",
-        "type": "github"
+        "lastModified": 1680597706,
+        "narHash": "sha256-ZqJ3T+BxzjPH9TnmeUwS4Uu9ZQPeBXAFC9sUWlharT4=",
+        "ref": "refs/heads/master",
+        "rev": "ec06f419af79207b33d797064dfb3fc9dbe1df4a",
+        "revCount": 2631,
+        "type": "git",
+        "url": "file:///home/bauerdic/home-manager"
       },
       "original": {
-        "owner": "nix-community",
-        "ref": "release-22.11",
-        "repo": "home-manager",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/bauerdic/home-manager"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1680665430,
-        "narHash": "sha256-MTVhTukwza1Jlq2gECITZPFnhROmylP2uv3O3cSqQCE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "5233fd2ba76a3accb5aaa999c00509a11fd0793c",
-        "type": "github"
+        "lastModified": 1680793466,
+        "narHash": "sha256-teJrEAdoU6rPAwsv81wRoJQiHcvtlPZZ0EewUZ5Xv38=",
+        "ref": "refs/heads/master",
+        "rev": "a3ca379807f0174d99e55e8415496a58463d6eb3",
+        "revCount": 471104,
+        "type": "git",
+        "url": "file:///home/bauerdic/nixpkgs"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.11",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/bauerdic/nixpkgs"
       }
     },
     "nixpkgs_2": {
@@ -66,22 +49,6 @@
         "id": "nixpkgs",
         "ref": "nixos-21.11",
         "type": "indirect"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1680865339,
-        "narHash": "sha256-H6rmJ1CyJ3Q5ZyoLMYq/UEYMS9Q1orJjRpWiQ47HudE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "0040164e473509b4aee6aedb3b923e400d6df10b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.11",
-        "repo": "nixpkgs",
-        "type": "github"
       }
     },
     "ohmyposh": {
@@ -103,30 +70,11 @@
         "type": "github"
       }
     },
-    "roon": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_3"
-      },
-      "locked": {
-        "dir": "pkgs/servers/roon-bridge",
-        "lastModified": 1680725427,
-        "narHash": "sha256-Q6iTVhDH9sMa2LuvoCHezNrw8B3C/DF3l1q+7w0oRyo=",
-        "type": "git",
-        "url": "file:///home/bauerdic/nixpkgs?dir=pkgs%2fservers%2froon-bridge"
-      },
-      "original": {
-        "dir": "pkgs/servers/roon-bridge",
-        "type": "git",
-        "url": "file:///home/bauerdic/nixpkgs?dir=pkgs%2fservers%2froon-bridge"
-      }
-    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "ohmyposh": "ohmyposh",
-        "roon": "roon",
         "utils": "utils_3"
       }
     },

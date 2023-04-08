@@ -119,7 +119,7 @@ HOST="00:dc:c8:f7:75:14" # "HostPC"
 SELF="00:dd:dc:eb:6d:a1" # "BadUSB"
 echo $HOST > functions/ecm.usb0/host_addr
 echo $SELF > functions/ecm.usb0/dev_addr
-ln -s functions/ecm.usb0 configs/c.1/
+ln -sf functions/ecm.usb0 configs/c.1/
 # End functions
 ls /sys/class/udc > UDC
 #udevadm settle -t 5 || :

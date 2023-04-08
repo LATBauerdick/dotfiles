@@ -4,15 +4,15 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-    # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
-      # url = "/home/bauerdic/home-manager";
+      # url = "github:nix-community/home-manager/release-22.11";
+      url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
-    roon = { url = "/home/bauerdic/nixpkgs/pkgs/servers/roon-bridge"; };
+    # roon = { url = "/home/bauerdic/nixpkgs/pkgs/servers/roon-bridge"; };
   };
 
   outputs = {
@@ -21,7 +21,7 @@
     nixpkgs,
     utils,
     ohmyposh,
-    roon,
+    # roon,
     ... }@inputs:
   let
 
@@ -32,13 +32,15 @@
     overlay-ohmyposh = system: prev: final: {
       oh-my-posh = ohmyposh.packages.${system}.oh-my-posh;
     };
-    overlay-roon = system: prev: final: {
-      roon-bridge = roon.packages.${system}.roon-bridge;
-    };
+    # overlay-roon = system: prev: final: {
+      # roon-bridge = roon.packages.${system}.roon-bridge;
+    # };
     pkgsForSystem = system: import nixpkgs {
       # overlay = [ localOverlay ];
       inherit system;
-      overlays = [ ( overlay-ohmyposh system ) ( overlay-roon system )];
+      overlays = [  ( overlay-ohmyposh system )
+                    # ( overlay-roon system )
+                 ];
       config.allowUnfree = true;
     };
 
