@@ -12,6 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
+    roon = { url = "/home/bauerdic/nixpkgs/pkgs/servers/roon-bridge"; };
   };
 
   outputs = {
@@ -20,6 +21,7 @@
     nixpkgs,
     utils,
     ohmyposh,
+    roon,
     ... }@inputs:
   let
 
@@ -30,10 +32,13 @@
     overlay-ohmyposh = system: prev: final: {
       oh-my-posh = ohmyposh.packages.${system}.oh-my-posh;
     };
+    overlay-roon = system: prev: final: {
+      roon-bridge = roon.packages.${system}.roon-bridge;
+    };
     pkgsForSystem = system: import nixpkgs {
       # overlay = [ localOverlay ];
       inherit system;
-      overlays = [ ( overlay-ohmyposh system ) ];
+      overlays = [ ( overlay-ohmyposh system ) ( overlay-roon system )];
       config.allowUnfree = true;
     };
 

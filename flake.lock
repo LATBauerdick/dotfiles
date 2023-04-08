@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1680776469,
+        "narHash": "sha256-3CXUDK/3q/kieWtdsYpDOBJw3Gw4Af6x+2EiSnIkNQw=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "411e8764155aa9354dbcd6d5faaeb97e9e3dce24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -53,6 +68,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1680865339,
+        "narHash": "sha256-H6rmJ1CyJ3Q5ZyoLMYq/UEYMS9Q1orJjRpWiQ47HudE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0040164e473509b4aee6aedb3b923e400d6df10b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-22.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "ohmyposh": {
       "inputs": {
         "nixpkgs": "nixpkgs_2",
@@ -72,11 +103,30 @@
         "type": "github"
       }
     },
+    "roon": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "dir": "pkgs/servers/roon-bridge",
+        "lastModified": 1680725427,
+        "narHash": "sha256-Q6iTVhDH9sMa2LuvoCHezNrw8B3C/DF3l1q+7w0oRyo=",
+        "type": "git",
+        "url": "file:///home/bauerdic/nixpkgs?dir=pkgs%2fservers%2froon-bridge"
+      },
+      "original": {
+        "dir": "pkgs/servers/roon-bridge",
+        "type": "git",
+        "url": "file:///home/bauerdic/nixpkgs?dir=pkgs%2fservers%2froon-bridge"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "ohmyposh": "ohmyposh",
+        "roon": "roon",
         "utils": "utils_3"
       }
     },
