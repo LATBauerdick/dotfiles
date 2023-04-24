@@ -5,6 +5,7 @@
   { pkgs, withGUI }: with pkgs; [
   # these files are meant to be installed in all scenarios
       abduco
+      aria
       bat
       coreutils
       ctags
