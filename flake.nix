@@ -77,6 +77,10 @@
       home-manager = home-manager;
       system = "x86_64-linux";
       user   = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
     };
 
     nixosConfigurations.usrv = mkMachine "usrv" {

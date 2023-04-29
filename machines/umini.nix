@@ -36,6 +36,8 @@ in {
 
   system.stateVersion = "21.11"; # Did you read the comment?
 
+  programs.zsh.enable = true;
+
   # let it never sleep
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
