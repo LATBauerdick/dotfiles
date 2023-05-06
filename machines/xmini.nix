@@ -181,7 +181,7 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
-  # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
+  nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
 
   # Binary Cache for Haskell.nix
   # nix.settings.trusted-public-keys = [
@@ -240,7 +240,7 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ ];
+  boot.zfs.extraPools = [ "" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -273,7 +273,7 @@
     openFirewall = true;
   };
 
-  services.plex = { enable = true;
+  services.plex = { enable = false;
     openFirewall = true;
     user = "plex";
     group = "plex";
