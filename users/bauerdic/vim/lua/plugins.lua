@@ -107,6 +107,7 @@ return require('packer').startup(function(use)
                         workspaces = {
                             notes = "~/notes",
                         },
+                        default_workspace = "notes",
                     },
                 },
             },
