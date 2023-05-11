@@ -4,11 +4,11 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-    nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      # url = "github:nix-community/home-manager/release-22.11";
-      url = "/home/bauerdic/home-manager";
+      url = "github:nix-community/home-manager/release-22.11";
+      # url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
@@ -67,6 +67,16 @@
     overlay = localOverlay;
 
     nixosConfigurations.xmini = mkMachine "xmini" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+    nixosConfigurations.x130314 = mkMachine "x130314" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";
