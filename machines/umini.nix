@@ -9,6 +9,7 @@ in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
+      ../pkgs/plex.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -110,11 +111,12 @@ in {
   /* }; */
 
   # use unstable nix so we can access flakes
-  nix = {
-      package = pkgs.nixUnstable;
-      /* package = pkgs.nixFlakes; */
-      extraOptions = "experimental-features = nix-command flakes";
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # nix = {
+  #     package = pkgs.nixUnstable;
+  #     /* package = pkgs.nixFlakes; */
+  #     extraOptions = "experimental-features = nix-command flakes";
+  # };
 
   networking.hostName = hostname;
   time.timeZone = "America/Chicago"; # Set your time zone.
@@ -200,7 +202,7 @@ in {
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 55002 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
@@ -262,13 +264,6 @@ in {
 
   services.roon-server = { enable = true;
     openFirewall = true;
-  };
-
-  services.plex = { enable = true;
-    openFirewall = true;
-    user = "plex";
-    group = "plex";
-    dataDir = "/data/plex-${hostname}";
   };
 
  services.slimserver.enable = false;
