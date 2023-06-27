@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, ... }@args:
 let
   hostname = "umini";
 in {
@@ -11,6 +11,7 @@ in {
 # done elsewhere      ./hardware-configuration.nix
       ../pkgs/plex.nix
     ];
+  nixpkgs.config.plex.plexname = hostname;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

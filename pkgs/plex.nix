@@ -1,6 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
-  plexname = "umini";
+  # plexname = "umini";
   myPlex = pkgs.plex.override {
     plexRaw = pkgs.plexRaw.overrideAttrs(old: rec {
       version =  "1.32.5.7210-77f7f99fa"; # "1.25.2.5319-c43dc0277";
@@ -10,8 +10,10 @@ let
       };
     });
   };
+  plexname = pkgs.config.plex.plexname;
 in {
-  services.plex = {
+ 
+  services.plex = builtins.trace "xx${plexname}xx" {
     enable = true;
     openFirewall = true;
     package = myPlex;
