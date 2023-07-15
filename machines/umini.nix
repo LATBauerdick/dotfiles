@@ -265,13 +265,15 @@ in {
 
   # appstream.enable = true;
 
-  services.deluge = { enable = true;
+  services.deluge.enable = true;
+  services.deluge = {
     dataDir = "/data/deluge-${hostname}";
     web.enable = true;
     web.openFirewall = true;
   };
 
-  services.roon-server = { enable = true;
+  services.roon-server.enable = true;
+  services.roon-server = {
     openFirewall = true;
   };
 
