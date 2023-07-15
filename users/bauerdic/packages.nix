@@ -50,6 +50,7 @@
       wget
       xz
       zoxide
+      kitty
 
 # language support
 #      cabal-install
@@ -64,7 +65,7 @@
       mutt-with-sidebar
       bitwarden-cli
   ] ++ pkgs.lib.optionals withGUI [
-      kitty
+      # kitty
       bitwarden
       obsidian
       skypeforlinux

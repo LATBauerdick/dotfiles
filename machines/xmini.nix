@@ -2,13 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
-
-{
+{ config, pkgs, lib, ... }@args:
+let
+  hostname = "xmini";
+in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
+      ../pkgs/plex.nix
     ];
+  nixpkgs.config.plex.plexname = hostname;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -109,13 +112,14 @@
   /* }; */
 
   # use unstable nix so we can access flakes
-  nix = {
-      package = pkgs.nixUnstable;
-      /* package = pkgs.nixFlakes; */
-      extraOptions = "experimental-features = nix-command flakes";
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # nix = {
+  #     package = pkgs.nixUnstable;
+  #     /* package = pkgs.nixFlakes; */
+  #     extraOptions = "experimental-features = nix-command flakes";
+  # };
 
-  networking.hostName = "xmini"; # Define your hostname.
+  networking.hostName = hostname;
   time.timeZone = "America/Chicago"; # Set your time zone.
 
  # Don't require password for sudo
@@ -181,7 +185,7 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
-  nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
+  # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
 
   # Binary Cache for Haskell.nix
   # nix.settings.trusted-public-keys = [
@@ -207,22 +211,20 @@
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 55002 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
   ];
   # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+
 # NextDNS config
   networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
   # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
   services.nextdns = { enable = true;
     arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
   };
-
-
-
 
   programs.mosh.enable = true;
 
@@ -264,20 +266,13 @@
   # appstream.enable = true;
 
   services.deluge = { enable = false;
-    dataDir = "/data/deluge-xmini";
+    dataDir = "/data/deluge-${hostname}";
     web.enable = true;
     web.openFirewall = true;
   };
 
   services.roon-server = { enable = false;
     openFirewall = true;
-  };
-
-  services.plex = { enable = false;
-    openFirewall = true;
-    user = "plex";
-    group = "plex";
-    dataDir = "/data/plex-xmini";
   };
 
  services.slimserver.enable = false;
@@ -315,8 +310,8 @@
     securityType = "user";
     extraConfig = ''
       workgroup = LATB
-      server string = xmini
-      netbios name = xmini
+      server string = hostname
+      netbios name = hostname
       security = user
       #use sendfile = yes
       #max protocol = smb2
@@ -355,7 +350,7 @@
       "unrar"
   ];
   services.roon-bridge = {
-      enable = true;
+      enable = false;
       openFirewall = true;
   };
 
