@@ -187,6 +187,14 @@ in {
 
   # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
 
+  # Binary Cache for Haskell.nix
+  # nix.settings.trusted-public-keys = [
+  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  # ];
+  # nix.settings.substituters = [
+  #   "https://cache.iog.io"
+  # ];
+
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.
     # needed for syncthing
@@ -319,16 +327,11 @@ in {
     # $ sudo smbpasswd -a yourusername
 
     shares = {
-      # public = {
-      #   path = "/media";
-      #   browseable = "yes";
-      #   "read only" = "yes";
-      #   "guest ok" = "yes";
-      #   "create mask" = "0644";
-      #   "directory mask" = "0755";
-      #   "force user" = "bauerdic";
-      #   "force group" = "users";
-      # };
+      homes = {
+        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
+        "read only" = "no";
+        "guest ok" = "no";
+      };
       private = {
         path = "/media";
         browseable = "yes";
@@ -359,14 +362,17 @@ in {
         "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
         "force group" = "users";
       };
-      homes = {
-        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
-        "read only" = "no";
-        "guest ok" = "no";
-      };
     };
   };
 
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-bridge"
+      "unrar"
+  ];
+  services.roon-bridge = {
+      enable = false;
+      openFirewall = true;
+  };
 
 }
 

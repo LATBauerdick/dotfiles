@@ -170,9 +170,9 @@ in {
 
  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.passwordAuthentication = false;
-  services.openssh.settings.permitRootLogin = "yes";
-  services.openssh.settings.X11Forwarding = true;
+  services.openssh.passwordAuthentication = false;
+  services.openssh.permitRootLogin = "yes";
+  services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
   services.autossh.sessions = [
@@ -242,7 +242,7 @@ in {
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ "" ];
+  boot.zfs.extraPools = [ ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
@@ -327,24 +327,24 @@ in {
     # $ sudo smbpasswd -a yourusername
 
     shares = {
-      # public = {
-      #   path = "/media";
-      #   browseable = "yes";
-      #   "read only" = "yes";
-      #   "guest ok" = "yes";
-      #   "create mask" = "0644";
-      #   "directory mask" = "0755";
-      #   "force user" = "bauerdic";
-      #   "force group" = "users";
-      # };
       homes = {
         browseable = "no";  # note: each home will be browseable; the "homes" share will not.
         "read only" = "no";
         "guest ok" = "no";
       };
+      # private = {
+      #   path = "/media";
+      #   browseable = "yes";
+      #   "read only" = "no";
+      #   "guest ok" = "no";
+      #   "create mask" = "0644";
+      #   "directory mask" = "0755";
+      #   "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+      #   "force group" = "users";
+      # };
     };
   };
-    
+
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "roon-bridge"
       "unrar"
