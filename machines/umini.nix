@@ -5,6 +5,7 @@
 { config, pkgs, lib, ... }@args:
 let
   hostname = "umini";
+  hostId = "28c80f12"; # head -c 8 /etc/machine-id
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -113,11 +114,6 @@ in {
 
   # use unstable nix so we can access flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # nix = {
-  #     package = pkgs.nixUnstable;
-  #     /* package = pkgs.nixFlakes; */
-  #     extraOptions = "experimental-features = nix-command flakes";
-  # };
 
   networking.hostName = hostname;
   time.timeZone = "America/Chicago"; # Set your time zone.
@@ -229,8 +225,6 @@ in {
   programs.mosh.enable = true;
 
 # zfs setup
-  # usrv  networking.hostId = "41ca8470";
-  networking.hostId = "28c80f12"; # head -c 8 /etc/machine-id
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
