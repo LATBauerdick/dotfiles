@@ -207,7 +207,7 @@ in {
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 55000 55002 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
