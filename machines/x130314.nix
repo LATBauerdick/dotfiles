@@ -237,7 +237,7 @@ in {
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ ];
+  boot.zfs.extraPools = [ "z" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
