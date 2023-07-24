@@ -6,6 +6,9 @@
 let
   hostname = "umini";
   hostId = "28c80f12"; # head -c 8 /etc/machine-id
+  plexEnable = true;
+  roonEnable = true;
+  delugeEnable = true;
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -13,6 +16,7 @@ in {
       ../pkgs/plex.nix
     ];
   nixpkgs.config.plex.plexname = hostname;
+  services.plex.enable = plexEnable;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -207,7 +211,7 @@ in {
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
@@ -260,14 +264,14 @@ in {
 
   # appstream.enable = true;
 
-  services.deluge.enable = true;
+  services.deluge.enable = delugeEnable;
   services.deluge = {
     dataDir = "/data/deluge-${hostname}";
     web.enable = true;
     web.openFirewall = true;
   };
 
-  services.roon-server.enable = true;
+  services.roon-server.enable = roonEnable;
   services.roon-server = {
     openFirewall = true;
   };
