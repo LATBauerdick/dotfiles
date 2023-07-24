@@ -9,6 +9,7 @@ let
   plexEnable = true;
   roonEnable = false;
   delugeEnable = false;
+  zfsPools = [ "z" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -241,7 +242,7 @@ in {
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ "z" ];
+  boot.zfs.extraPools = zfsPools;
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
