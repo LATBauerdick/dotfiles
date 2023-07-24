@@ -225,6 +225,7 @@ in {
   programs.mosh.enable = true;
 
 # zfs setup
+  networking.hostId = hostId;
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
@@ -236,7 +237,7 @@ in {
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [  "z3" "z2" "z1" "z0" ];
+  boot.zfs.extraPools = [  "z3" "z2" "z1" ];
 
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
