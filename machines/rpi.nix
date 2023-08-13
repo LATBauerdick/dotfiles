@@ -13,20 +13,14 @@
     hostname = "LATBpi";
 
     rpiHardware = fetchTarball {
-          url=https://github.com/NixOS/nixos-hardware/archive/a6aa8174fa61e55bd7e62d35464d3092aefe0421.tar.gz;
-          sha256="14jba7xggr0ghgy6bvq4v34hlafk0nr182s5i0nv3x4xj1hzd13a";
-          # url=https://github.com/NixOS/nixos-hardware/archive/1c076b237f3b7b3c178e8672c7c700f295fbdb7e.tar.gz;
-          # sha256="1ns7pc689bkwqmyi0a3zjhm6036mirhzj4bgpkhs5zabv4w222bb";
+          # url=https://github.com/NixOS/nixos-hardware/archive/a6aa174fa61e55bd7e62d35464d3092aefe0421.tar.gz;
+          # sha256="14jba7xggr0ghgy6bvq4v34hlafk0nr182s5i0nv3x4xj1hzd13a";
+          url=https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+          sha256="1jc53qv3wlhky0bzcda0fifdx9mky6byycmyb0rrqcn0ys6ws87b";
         };
-#  imports = ["${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/936e4649098d6a5e0762058cb7687be1b2d90550.tar.gz" }/raspberry-pi/4"];
 
 
   in {
-
-  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
-  # boot.loader.grub.enable = false;
-  # Enables the generation of /boot/extlinux/extlinux.conf
-  boot.loader.generic-extlinux-compatible.enable = false;
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -44,7 +38,26 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
 
-  imports = [ "${rpiHardware}/raspberry-pi/4" ];
+	imports = [ "${rpiHardware}/raspberry-pi/4" ];
+	hardware = {
+	    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
+	    # deviceTree = {
+	    #   enable = true;
+	    #   filter = "*rpi-4-*.dtb";
+	    # };
+	};
+  #  hardware.raspberry-pi."4".pwm0.enable = true;
+	hardware.raspberry-pi."4".dwc2.enable = true;
+
+# Enable GPU acceleration
+	hardware.raspberry-pi."4".fkms-3d.enable = true;
+
+	hardware.pulseaudio.enable = true;
+
+	boot.kernelModules = [ "dwc2" "g_ether" "libcomposite" ];
+	console.enable = false;
+
+  # imports = [ "${rpiHardware}/raspberry-pi/4" ];
 
   fileSystems = {
       "/" = {
@@ -70,23 +83,6 @@
       interfaces."${interface}".useDHCP = true;
   };
   services.openssh.enable = true;
-
-  boot.loader.raspberryPi.enable = true;
-# Set the version depending on your raspberry pi. 
-  boot.loader.raspberryPi.version = 4;
-#  boot.loader.raspberryPi.firmwareConfig = ''
-#    dtparam=audio=on
-#    dtoverlay=dwc2
-#  '';
-
-  #  hardware.raspberry-pi."4".pwm0.enable = true;
-  hardware.raspberry-pi."4".dwc2.enable = true;
-  boot.kernelModules = [ "dwc2" "g_ether" "libcomposite" ];
-
-# Enable GPU acceleration
-  hardware.raspberry-pi."4".fkms-3d.enable = true;
-
-  hardware.pulseaudio.enable = true;
 
   networking.interfaces.usb0.useDHCP = false;
   networking.interfaces.usb0.ipv4.addresses = [ { address = "10.55.0.1"; prefixLength = 29; } ];
@@ -162,6 +158,10 @@ ls /sys/class/udc > UDC
 
   #  environment.systemPackages = with pkgs; [ hostapd dnsmasq bridge-utils coreutils vim  git tmux ];
   environment.systemPackages = with pkgs; [
+
+	libraspberrypi
+	raspberrypi-eeprom
+	
       dnsmasq
       coreutils
       gnumake psmisc

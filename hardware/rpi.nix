@@ -9,10 +9,31 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+    initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+    loader = {
+      grub.enable = false;
+    #  generic-extlinux-compatible.enable = true;
+    #
+  # from old machines/rpi.nix
+  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
+  # Enables the generation of /boot/extlinux/extlinux.conf
+      generic-extlinux-compatible.enable = false;
+      raspberryPi.enable = true;
+# Set the version depending on your raspberry pi. 
+      raspberryPi.version = 4;
+    #  raspberryPi.firmwareConfig = ''
+    #    dtparam=audio=on
+    #    dtoverlay=dwc2
+    #  '';
+    };
+
+  # initrd.kernelModules = [ ];
+  # kernelModules = [ ];
+  # extraModulePackages = [ ];
+
+  };
 
   swapDevices = [ ];
 
