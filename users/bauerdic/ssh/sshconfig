@@ -29,8 +29,9 @@ Host xmini
   User bauerdic
   Port 8388
 
-Host mac-126620 lim
-  Hostname mac-126620.local
+Host lpi
+# 192.168.0.193 eth, 192.168.0.106 wlan, 10.55.0.1 usb
+  Hostname lpi.local
   User bauerdic
 
 Host gitlab.com

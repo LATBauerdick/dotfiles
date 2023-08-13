@@ -5,12 +5,10 @@
 { config, pkgs, lib, ... }:
 
   let
-    user = "bauerdic";
-    password = "guest";
     SSID = "1201bgn";
     SSIDpassword = "elefanT1747";
     interface = "wlan0";
-    hostname = "LATBpi";
+    hostname = "lpi";
 
     rpiHardware = fetchTarball {
           # url=https://github.com/NixOS/nixos-hardware/archive/a6aa174fa61e55bd7e62d35464d3092aefe0421.tar.gz;
