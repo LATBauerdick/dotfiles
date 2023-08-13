@@ -48,9 +48,11 @@
 	hardware.raspberry-pi."4".dwc2.enable = true;
 
 # Enable GPU acceleration
-	hardware.raspberry-pi."4".fkms-3d.enable = true;
+        hardware.raspberry-pi."4".fkms-3d.enable = true;
 
-	hardware.pulseaudio.enable = true;
+        hardware.pulseaudio.enable = true;
+        # hardware.raspberry-pi."4".audio.enable = true;
+        sound.enable = true;
 
 	boot.kernelModules = [ "dwc2" "g_ether" "libcomposite" ];
 	console.enable = false;
@@ -200,7 +202,7 @@ ls /sys/class/udc > UDC
       enable = true;
       openFirewall = true;
   };
-  # services.shairport-sync.enable = true;
-  # services.shairport-sync.openFirewall = true;
+  services.shairport-sync.enable = true;
+  services.shairport-sync.openFirewall = true;
 }
 
