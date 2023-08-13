@@ -202,7 +202,7 @@ ls /sys/class/udc > UDC
       enable = true;
       openFirewall = true;
   };
-  services.shairport-sync.enable = true;
-  services.shairport-sync.openFirewall = true;
+  # services.shairport-sync.enable = true;
+  # services.shairport-sync.openFirewall = true;
 }
 
