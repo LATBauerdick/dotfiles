@@ -3,8 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, lib, ... }:
-
-  let
+let
     SSID = "1201bgn";
     SSIDpassword = "elefanT1747";
     interface = "wlan0";
@@ -18,7 +17,10 @@
         };
 
 
-  in {
+  roonEnable = false;
+in {
+
+  # nixpkgs.config.allowUnfree = true;
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -130,6 +132,12 @@ ls /sys/class/udc > UDC
 
   services.dnsmasq.enable = true;
 #  services.dnsmasq.servers = [ "8.8.8.8" "8.8.4.4" ];
+  # services.dnsmasq.settings = {
+  #   interface = "usb0";
+  #   dhcp-option = 3;
+  #   leasefile-ro;
+  #   dhcp-range = [ "10.55.0.2,10.55.0.6,255.255.255.248,1h" ];
+  # };
   services.dnsmasq.extraConfig = ''
     interface=usb0
     dhcp-option=3
@@ -198,8 +206,8 @@ ls /sys/class/udc > UDC
       "roon-bridge"
       "unrar"
   ];
+  services.roon-bridge.enable = roonEnable;
   services.roon-bridge = {
-      enable = true;
       openFirewall = true;
   };
   services.shairport-sync.enable = true;
