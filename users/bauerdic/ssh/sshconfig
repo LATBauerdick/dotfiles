@@ -15,8 +15,10 @@ HostName 116.203.126.183
   LocalForward   *:8089  127.0.0.1:8080
 
 Host latbtop ltl
-  Hostname 192.168.0.221 # latbtop.local
-  Port 8328   ## in /etc/services we set ssh to 8328/tcp and 8328/udp
+  Hostname 192.168.0.221
+# latbtop.local
+  Port 8328
+# in /etc/services we set ssh to 8328/tcp and 8328/udp
   User bauerdic
 
 Host umini
