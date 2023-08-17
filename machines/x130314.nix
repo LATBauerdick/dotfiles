@@ -342,7 +342,7 @@ in {
       "unrar"
   ];
   services.roon-bridge = {
-      enable = false;
+      enable = true;
       openFirewall = true;
   };
 
