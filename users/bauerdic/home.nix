@@ -70,7 +70,15 @@ in {
   xdg.configFile."nvim/lua".source = ./vim/lua;
   xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
   # xdg.configFile."nvim".source = ./vim;
-  xdg.configFile."kitty".source = ./kitty;
+  # xdg.configFile."kitty".source = ./kitty;
+  xdg.configFile."kitty/kitty.conf".source = ./kitty/kitty.conf;
+  xdg.configFile."kitty/myTheme.conf".source = ./kitty/myTheme.conf;
+
+  programs.kitty.enable = true;
+  # programs.kitty.font.name = "Iosevka Nerd Font";
+  # programs.kitty.font.size = 14.0;
+  # programs.kitty.theme = "Solarized Light";
+
   xdg.configFile."awesome".source = ./awesome;
 
 # https://github.com/nix-community/nix-direnv

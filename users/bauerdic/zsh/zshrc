@@ -40,7 +40,9 @@ alias zl="zfs list -t all -r -o name,used,refer"
 # kitty terminal emulator extensions
 # most won't work with tmux
 alias icat="kitty +kitten icat"
-alias d="kitty +kitten diff"
+alias kdiff="kitty +kitten diff"
+alias kssh="kitty +kitten ssh"
+alias ktheme="kitty +kitten themes --reload-in=all --config-file-name=neuxxxx"
 
 alias l=exa #'ls -alh'
 alias ll='exa -alh' #'ls -alh'
