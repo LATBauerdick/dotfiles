@@ -9,6 +9,7 @@ let
   plexEnable = true;
   roonEnable = true;
   delugeEnable = true;
+  unifiEnable = true;
   zfsPools = [ "z3" "z2" "z1" ];
 in {
   imports =
@@ -277,7 +278,25 @@ in {
     openFirewall = true;
   };
 
- services.slimserver.enable = false;
+
+  services.unifi.enable = unifiEnable;
+  services.unifi.unifiPackage = pkgs.unifi;
+  services.unifi = {
+    openFirewall = true;
+  };
+
+  services.slimserver.enable = false;
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-bridge"
+      "unrar"
+      "unifi"
+  ];
+  services.roon-bridge = {
+      enable = false;
+      openFirewall = true;
+  };
+
 
   # mDNS, avahi
   services.avahi = { enable = true;
@@ -365,15 +384,6 @@ in {
         "force group" = "users";
       };
     };
-  };
-
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "roon-bridge"
-      "unrar"
-  ];
-  services.roon-bridge = {
-      enable = false;
-      openFirewall = true;
   };
 
 }
