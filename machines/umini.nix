@@ -9,7 +9,7 @@ let
   plexEnable = true;
   roonEnable = true;
   delugeEnable = true;
-  unifiEnable = true;
+  unifiEnable = false;
   zfsPools = [ "z3" "z2" "z1" ];
 in {
   imports =
@@ -282,7 +282,7 @@ in {
   services.unifi.enable = unifiEnable;
   services.unifi.unifiPackage = pkgs.unifi;
   services.unifi = {
-    openFirewall = true;
+    openFirewall = unifiEnable;
   };
 
   services.slimserver.enable = false;
