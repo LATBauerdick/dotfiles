@@ -23,10 +23,10 @@
       fsType = "vfat";
     };
 
-  fileSystems."/mnt/drobo" =
-    { device = "/dev/disk/by-label/Drobo";
-      fsType = "hfsplus";
-    };
+#  fileSystems."/mnt/drobo" =
+#    { device = "/dev/disk/by-label/Drobo";
+#      fsType = "hfsplus";
+#    };
 
   swapDevices = [ { device = "/.swapfile"; } ];
 
