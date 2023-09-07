@@ -10,15 +10,21 @@ let
   roonEnable = true;
   delugeEnable = true;
   unifiEnable = false;
+  nextdnsEnable = false;
+  adguardEnable = true;
+
   zfsPools = [ "z3" "z2" "z1" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
       ../pkgs/plex.nix
+      ../pkgs/adguard.nix
     ];
   nixpkgs.config.plex.plexname = hostname;
   services.plex.enable = plexEnable;
+
+  services.adguardhome.enable = adguardEnable;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -137,7 +143,7 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    nextdns
+    # nextdns
     silver-searcher  # ag
     git
     gnumake
@@ -213,7 +219,7 @@ in {
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
@@ -222,11 +228,9 @@ in {
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
 
 # NextDNS config
-  networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
-  # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
-  services.nextdns = { enable = true;
-    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
-  };
+  # services.nextdns.enable = nextdnsEnable;
+  # networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
+  # services.nextdns.arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
 
   programs.mosh.enable = true;
 
@@ -296,7 +300,6 @@ in {
       enable = false;
       openFirewall = true;
   };
-
 
   # mDNS, avahi
   services.avahi = { enable = true;
