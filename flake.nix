@@ -150,6 +150,14 @@
         isDesktop = true;
       };
     };
+    intel.bauerdic = home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsForSystem "x86_64-linux";
+      modules = [ ./users/bauerdic/home.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
     bauerdic = self.homeConfigurations.bauerdic.activationPackage;
     defaultPackage.aarch64-darwin = self.bauerdic;
