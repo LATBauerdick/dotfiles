@@ -37,7 +37,8 @@
       pandoc
       pinentry-qt
       pv
-      # python310Packages.pandoc-xnos
+      python311Packages.pandoc-xnos
+      pandoc-fignos
       # python3
       # qemu
       ranger
