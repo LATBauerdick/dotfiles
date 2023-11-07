@@ -95,26 +95,15 @@ return require('packer').startup(function(use)
 
   use 'hrsh7th/nvim-compe'
 
+-- Useful status updates for LSP
   use {
-    "nvim-neorg/neorg",
+    'j-hui/fidget.nvim',
+    tag = 'legacy',
     config = function()
-        require('neorg').setup {
-            load = {
-                ["core.defaults"] = {}, -- Loads default behaviour
-                ["core.concealer"] = {}, -- Adds pretty icons to your documents
-                ["core.dirman"] = { -- Manages Neorg workspaces
-                    config = {
-                        workspaces = {
-                            notes = "~/notes",
-                        },
-                        default_workspace = "notes",
-                    },
-                },
-            },
-        }
+      require("fidget").setup {
+        -- options
+      }
     end,
-    run = ":Neorg sync-parsers",
-    requires = "nvim-lua/plenary.nvim",
   }
 
   use { -- LSP Configuration & Plugins
@@ -123,9 +112,6 @@ return require('packer').startup(function(use)
       -- Automatically install LSPs to stdpath for neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-
-      -- Useful status updates for LSP
-      'j-hui/fidget.nvim',
 
       -- Additional lua configuration, makes nvim stuff amazing
       'folke/neodev.nvim',
@@ -156,7 +142,7 @@ return require('packer').startup(function(use)
 
   -- use 'navarasu/onedark.nvim' -- Theme inspired by Atom
 
-  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+  --  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
