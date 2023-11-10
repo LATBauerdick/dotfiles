@@ -81,6 +81,8 @@ in {
 
   xdg.configFile."awesome".source = ./awesome;
 
+  xdg.configFile."amethyst".source = ./amethyst;
+
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
