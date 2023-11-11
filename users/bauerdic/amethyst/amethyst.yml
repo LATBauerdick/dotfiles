@@ -171,6 +171,21 @@ swap-main:
 # throw-space-<screen-number>:
 #   mod: mod1
 #   key: i
+# throw-space-1:
+#   mod: mod2
+#   key: 1
+# throw-space-2:
+#   mod: mod2
+#   key: 2
+# throw-space-3:
+#   mod: mod2
+#   key: 3
+# throw-space-4:
+#   mod: mod2
+#   key: 4
+# throw-space-5:
+#   mod: mod2
+#   key: 5
 
 # Select tall layout
 select-tall-layout:
@@ -214,7 +229,7 @@ display-current-layout:
 
 # Turn on or off tiling entirely.
 toggle-tiling:
-  mod: mod1
+  mod: mod2
   key: t
 
 # Rerun the current layout's algorithm.
@@ -286,10 +301,10 @@ mouse-follows-focus: false
 focus-follows-mouse: false
 
 # true if dragging and dropping windows on to each other should swap their positions (default false).
-mouse-swaps-windows: false
+mouse-swaps-windows: true
 
 # true if changing the frame of a window with the mouse should update the layout to accommodate the change (default false). Note that not all layouts will be able to respond to the change.
-mouse-resizes-windows: false
+mouse-resizes-windows: true
 
 # true to display the name of the layout when a new layout is selected (default true).
 enables-layout-hud: true
