@@ -167,10 +167,12 @@ swap-main:
 # throw-screen-<screen-number>:
 #   mod: mod1
 #   key: u
-# Move the currently focused window to the n-th space; e.g., throw-space-3 will move the window to the 3rd space.
-# throw-space-<screen-number>:
-#   mod: mod1
-#   key: i
+focus-screen-2:
+  mod: mod1
+  key: f
+throw-screen-2:
+  mod: mod2
+  key: f
 # throw-space-1:
 #   mod: mod2
 #   key: 1
@@ -205,7 +207,7 @@ select-fullscreen-layout:
 # Select column layout
 select-column-layout:
   mod: mod1
-  key: f
+  key: c
 
 # Move the currently focused window to the space to the left.
 throw-space-left:
