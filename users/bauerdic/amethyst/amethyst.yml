@@ -73,12 +73,12 @@ cycle-layout-backward:
 # Shrink the main pane by a percentage of the screen dimension as defined by window-resize-step. Note that not all layouts respond to this command.
 shrink-main:
   mod: mod1
-  key: h
+  key: m
 
 # Expand the main pane by a percentage of the screen dimension as defined by window-resize-step. Note that not all layouts respond to this command.
 expand-main:
   mod: mod1
-  key: l
+  key: i
 
 # Increase the number of windows in the main pane. Note that not all layouts respond to this command.
 increase-main:
@@ -110,47 +110,47 @@ decrease-main:
 # Focus the next window in the list going counter-clockwise.
 focus-ccw:
   mod: mod1
-  key: j
+  key: n
 
 # Focus the next window in the list going clockwise.
 focus-cw:
   mod: mod1
-  key: k
+  key: e
 
 # Focus the main window in the list.
 focus-main:
   mod: mod1
-  key: m
+  key: h
 
 # Focus the next screen in the list going counter-clockwise.
-focus-screen-ccw:
-  mod: mod1
-  key: p
+# focus-screen-ccw:
+#   mod: mod1
+#   key: p
 
 # Focus the next screen in the list going clockwise.
-focus-screen-cw:
-  mod: mod1
-  key: n
+# focus-screen-cw:
+#   mod: mod1
+#   key: n
 
 # Move the currently focused window onto the next screen in the list going counter-clockwise.
 swap-screen-ccw:
   mod: mod2
-  key: h
+  key: m
 
 # Move the currently focused window onto the next screen in the list going clockwise.
 swap-screen-cw:
   mod: mod2
-  key: l
+  key: i
 
 # Swap the position of the currently focused window with the next window in the list going counter-clockwise.
 swap-ccw:
   mod: mod2
-  key: j
+  key: n
 
 # Swap the position of the currently focused window with the next window in the list going clockwise.
 swap-cw:
   mod: mod2
-  key: k
+  key: e
 
 # Swap the position of the currently focused window with the main window in the list.
 swap-main:
@@ -197,12 +197,12 @@ select-tall-layout:
 # Select wide layout
 select-wide-layout:
   mod: mod1
-  key: s
+  key: r
 
 # Select fullscreen layout
 select-fullscreen-layout:
   mod: mod1
-  key: d
+  key: s
 
 # Select column layout
 select-column-layout:
@@ -227,7 +227,7 @@ toggle-float:
 # Display the layout HUD with the current layout on each screen.
 display-current-layout:
   mod: mod1
-  key: i
+  key: q
 
 # Turn on or off tiling entirely.
 toggle-tiling:
@@ -275,10 +275,10 @@ window-minimum-height: 0
 window-minimum-width: 0
 
 # List of bundle identifiers for applications to either be automatically floating or automatically tiled based on floating-is-blacklist (default []).
+# - us.zoom.xos
 floating:
   - com.apple.finder
   - com.apple.systempreferences
-  - us.zoom.xos
   - com.apple.DiskUtility
   - com.apple.ActivityMonitor
   - com.apple.SystemProfiler

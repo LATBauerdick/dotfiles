@@ -76,13 +76,17 @@
 # A REFERENCE ONLY, WHEN MAKING YOUR OWN CONFIGURATION..          #
 # ############################################################### #
 
-# cycle in stack or in bsp
-ctrl + alt + shift - left : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
-ctrl + alt + shift - right : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
+ctrl + alt + shift - left : yabai -m window --space prev; yabai -m space --focus prev
+ctrl + alt + shift - right : yabai -m window --space next; yabai -m space --focus next
 
-# cycle forward / backward
-# alt + shift - k : yabai -m window --focus next || yabai -m window --focus first
-# alt + shift - j : yabai -m window --focus prev || yabai -m window --focus last
+# cycle in stack or in bsp
+alt + shift - tab : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
+cmd + alt + shift - tab : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
+
+# ctrl + alt + shift - left : yabai -m window --stack west
+# ctrl + alt + shift - right : yabai -m window --stack east
+ctrl + alt + shift - up : yabai -m window --stack north
+ctrl + alt + shift - down : yabai -m window --stack south
 
 # stack or bsp
 ctrl + alt + shift - s : yabai -m space --layout stack
@@ -98,14 +102,22 @@ ctrl + alt + shift - m : yabai -m window --warp west || yabai -m window --warp e
 ctrl + alt + shift - e : yabai -m window --warp north || yabai -m window --warp south
 ctrl + alt + shift - n : yabai -m window --warp south || yabai -m window --warp north
 
+cmd + alt + shift - i : yabai -m window --swap east || yabai -m window --swap west
+cmd + alt + shift - m : yabai -m window --swap west || yabai -m window --swap east
+cmd + alt + shift - e : yabai -m window --swap north || yabai -m window --swap south
+cmd + alt + shift - n : yabai -m window --swap south || yabai -m window --swap north
+
 ctrl + alt + shift - r : yabai -m space --rotate 90
 ctrl + alt + shift - y : yabai -m space --mirror y-axis
 ctrl + alt + shift - x : yabai -m space --mirror x-axis
 
-ctrl + alt + shift - t : yabai -m window --toggle float --grid 6:6:3:0:3:6
-ctrl + alt + shift - f : yabai -m window --toggle float --grid 6:6:1:1:4:4
-ctrl + alt + shift - z : yabai -m window --toggle zoom-fullscreen
+# ctrl + alt + shift - h : yabai -m window --toggle float --grid 6:6:3:0:3:6
+ctrl + alt + shift - g : yabai -m window --toggle float --grid 6:6:1:1:4:4
+ctrl + alt + shift - f : yabai -m window --toggle zoom-fullscreen
+ctrl + alt + shift - t : yabai -m window --toggle zoom-parent
 ctrl + alt + shift - l : yabai -m space --balance
+
+ctrl + alt + shift - 0 : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # focus window
 # alt - h : yabai -m window --focus west

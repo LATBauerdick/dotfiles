@@ -49,7 +49,7 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add app="^QMK Toolbox$"         manage=off
 yabai -m rule --add app="^Reminders$"           manage=off
 yabai -m rule --add app="^System Preferences$"  manage=off
-yabai -m rule --add app="^zoom.us$"             manage=off
+yabai -m rule --add app="^zoom.us$"             manage=on
 yabai -m rule --add app="^System Information$"  manage=off
 yabai -m rule --add app="^System Settings$"     manage=off
 yabai -m rule --add title='Settings$'           manage=off
