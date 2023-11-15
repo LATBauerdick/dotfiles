@@ -42,7 +42,7 @@ yabai -m rule --add app="^Contacts$"            manage=off
 yabai -m rule --add app="^Deliveries$"          manage=off
 yabai -m rule --add app="^DEVONthink 3$"        manage=off
 yabai -m rule --add app="^Disk Utility$"        manage=off
-yabai -m rule --add app="^Finder$"              manage=off
+# yabai -m rule --add app="^Finder$"              manage=off
 yabai -m rule --add app="^Image Capture$"       manage=off
 yabai -m rule --add app="^Karabiner-Elements$"  manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" manage=off

@@ -76,49 +76,60 @@
 # A REFERENCE ONLY, WHEN MAKING YOUR OWN CONFIGURATION..          #
 # ############################################################### #
 
+# layout stack or bsp
+cmd + ctrl + alt - s : yabai -m space --layout stack
+ctrl + alt - s : yabai -m window --insert stack
+ctrl + alt - b : yabai -m space --layout bsp
+
+# throw window:
+# to next space
 ctrl + alt + shift - left : yabai -m window --space prev; yabai -m space --focus prev
 ctrl + alt + shift - right : yabai -m window --space next; yabai -m space --focus next
+# put on stack
+ctrl + alt - left  : yabai -m window --stack west && yabai -m window --focus stack.next
+ctrl + alt - right : yabai -m window --stack east && yabai -m window --focus stack.next
+ctrl + alt - up    : (yabai -m window --stack north && yabai -m window --focus stack.next) || yabai -m window --focus stack.next || yabai -m window --focus stack.first
+ctrl + alt - down  : (yabai -m window --stack south && yabai -m window --focus stack.next) || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
+# focus to window:
 # cycle in stack or in bsp
-alt + shift - tab : yabai -m window --focus stack.prev || yabai -m window --focus prev || yabai -m window --focus last
-cmd + alt + shift - tab : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
+# ctrl + alt - tab : /home/bauerdic/Library/Python/3.9/bin/yabai-stack-navigator --next
+# ctrl + alt + shift - tab : /home/bauerdic/Library/Python/3.9/bin/yabai-stack-navigator --prev
+ctrl + alt - tab : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+ctrl + alt + shift - tab : yabai -m window --focus prev || yabai -m window --focus last
+# direction
+ctrl + alt - i : yabai -m window --focus east || yabai -m window --focus west
+ctrl + alt - m : yabai -m window --focus west || yabai -m window --focus east
+ctrl + alt - e : yabai -m window --focus north || yabai -m window --focus south
+ctrl + alt - n : yabai -m window --focus south || yabai -m window --focus north
 
-# ctrl + alt + shift - left : yabai -m window --stack west
-# ctrl + alt + shift - right : yabai -m window --stack east
-ctrl + alt + shift - up : yabai -m window --stack north
-ctrl + alt + shift - down : yabai -m window --stack south
+# re-arrange windows: warp, swap, mirror, rotate
+cmd + ctrl + alt - i : yabai -m window --warp east || yabai -m window --warp west
+cmd + ctrl + alt - m : yabai -m window --warp west || yabai -m window --warp east
+cmd + ctrl + alt - e : yabai -m window --warp north || yabai -m window --warp south
+cmd + ctrl + alt - n : yabai -m window --warp south || yabai -m window --warp north
 
-# stack or bsp
-ctrl + alt + shift - s : yabai -m space --layout stack
-ctrl + alt + shift - b : yabai -m space --layout bsp
+ctrl + alt + shift - i : yabai -m window --swap east || yabai -m window --swap west
+ctrl + alt + shift - m : yabai -m window --swap west || yabai -m window --swap east
+ctrl + alt + shift - e : yabai -m window --swap north || yabai -m window --swap south
+ctrl + alt + shift - n : yabai -m window --swap south || yabai -m window --swap north
 
-alt + shift - i : yabai -m window --focus east || yabai -m window --focus west
-alt + shift - m : yabai -m window --focus west || yabai -m window --focus east
-alt + shift - e : yabai -m window --focus north || yabai -m window --focus south
-alt + shift - n : yabai -m window --focus south || yabai -m window --focus north
+ctrl + alt - r : yabai -m space --rotate 90
+ctrl + alt - y : yabai -m space --mirror y-axis
+ctrl + alt - x : yabai -m space --mirror x-axis
 
-ctrl + alt + shift - i : yabai -m window --warp east || yabai -m window --warp west
-ctrl + alt + shift - m : yabai -m window --warp west || yabai -m window --warp east
-ctrl + alt + shift - e : yabai -m window --warp north || yabai -m window --warp south
-ctrl + alt + shift - n : yabai -m window --warp south || yabai -m window --warp north
+# resize
+ctrl + alt - l : yabai -m space --balance
+ctrl + alt - 0 : yabai -m space --toggle padding; yabai -m space --toggle gap
 
-cmd + alt + shift - i : yabai -m window --swap east || yabai -m window --swap west
-cmd + alt + shift - m : yabai -m window --swap west || yabai -m window --swap east
-cmd + alt + shift - e : yabai -m window --swap north || yabai -m window --swap south
-cmd + alt + shift - n : yabai -m window --swap south || yabai -m window --swap north
+# toggles
+ctrl + alt - h : yabai -m window --toggle float --grid 1:2:0:0:1:1
+ctrl + alt - o : yabai -m window --toggle float --grid 1:2:1:0:1:1
+ctrl + alt - g : yabai -m window --toggle float --grid 8:8:1:1:6:6
+ctrl + alt - f : yabai -m window --toggle zoom-fullscreen
+ctrl + alt - t : yabai -m window --toggle zoom-parent
 
-ctrl + alt + shift - r : yabai -m space --rotate 90
-ctrl + alt + shift - y : yabai -m space --mirror y-axis
-ctrl + alt + shift - x : yabai -m space --mirror x-axis
-
-# ctrl + alt + shift - h : yabai -m window --toggle float --grid 6:6:3:0:3:6
-ctrl + alt + shift - g : yabai -m window --toggle float --grid 6:6:1:1:4:4
-ctrl + alt + shift - f : yabai -m window --toggle zoom-fullscreen
-ctrl + alt + shift - t : yabai -m window --toggle zoom-parent
-ctrl + alt + shift - l : yabai -m space --balance
-
-ctrl + alt + shift - 0 : yabai -m space --toggle padding; yabai -m space --toggle gap
-
+################################################################################
 # focus window
 # alt - h : yabai -m window --focus west
 
