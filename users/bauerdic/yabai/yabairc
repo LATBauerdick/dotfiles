@@ -18,11 +18,11 @@ yabai -m config                                 \
     window_opacity_duration      0.0            \
     active_window_opacity        1.0            \
     normal_window_opacity        0.90           \
-    window_opacity               off            \
+    window_opacity               on             \
     insert_feedback_color        0xffd75f5f     \
     split_ratio                  0.50           \
     split_type                   auto           \
-    auto_balance                 off            \
+    auto_balance                 on             \
     top_padding                  12             \
     bottom_padding               12             \
     left_padding                 12             \
@@ -32,24 +32,29 @@ yabai -m config                                 \
     mouse_modifier               alt            \
     mouse_action1                move           \
     mouse_action2                resize         \
-    mouse_drop_action            swap
+    mouse_drop_action            stack          \
+
 
 # do not manages these application
 yabai -m rule --add app="^Activity Monitor$"    manage=off
+yabai -m rule --add app="AnyConnect"    manage=off
 yabai -m rule --add app="^Bitwarden$"           manage=off
 yabai -m rule --add app="^Capture One"          manage=off
 yabai -m rule --add app="^Contacts$"            manage=off
 yabai -m rule --add app="^Deliveries$"          manage=off
-yabai -m rule --add app="^DEVONthink 3$"        manage=off
+yabai -m rule --add app="^DEVONthink 3$"        manage=on
 yabai -m rule --add app="^Disk Utility$"        manage=off
-# yabai -m rule --add app="^Finder$"              manage=off
+yabai -m rule --add app="^Finder$"              manage=on
 yabai -m rule --add app="^Image Capture$"       manage=off
 yabai -m rule --add app="^Karabiner-Elements$"  manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
+yabai -m rule --add app="^News"                 manage=on
 yabai -m rule --add app="^QMK Toolbox$"         manage=off
 yabai -m rule --add app="^Reminders$"           manage=off
+yabai -m rule --add app="^Reeder"               manage=on
+yabai -m rule --add app="^Safari"               manage=on
 yabai -m rule --add app="^System Preferences$"  manage=off
-yabai -m rule --add app="^zoom.us$"             manage=on
+yabai -m rule --add app="^zoom.us$"             manage=off
 yabai -m rule --add app="^System Information$"  manage=off
 yabai -m rule --add app="^System Settings$"     manage=off
 yabai -m rule --add title='Settings$'           manage=off
