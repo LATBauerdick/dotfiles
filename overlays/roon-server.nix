@@ -1,7 +1,7 @@
 
   let
-    version = "2.0-1311";
-    vhash = "sha256-PFo5GtEZ/j5Mu1+42SVLUhXRwsE3CFPoGhBcrktnsHg=";
+    version = "2.0-1353";
+    vhash = "sha256-/lBrDymDcXfOg3/sLa0/nzVgxbWN1x1qUx+jsHpwUgI=";
     urlVersion = builtins.replaceStrings [ "." "-" ] [ "00" "0" ] version;
   in
 self: super: {
