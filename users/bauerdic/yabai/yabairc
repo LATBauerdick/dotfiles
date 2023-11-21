@@ -61,5 +61,4 @@ yabai -m rule --add title='Settings$'           manage=off
 yabai -m rule --add title='Preferences$'        manage=off
 yabai -m rule --add title='Passwords$'          manage=off
 
-echo "yabai configuration loaded.."
-
+echo "yabai configuration loaded " $(date)
