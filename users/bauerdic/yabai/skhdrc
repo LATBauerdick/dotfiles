@@ -136,6 +136,14 @@ ctrl + alt - g : yabai -m window --toggle float --grid 10:10:1:1:8:8
 ctrl + alt - f : yabai -m window --toggle zoom-fullscreen
 ctrl + alt - t : yabai -m window --toggle zoom-parent
 
+# query window parameters
+ctrl + alt - q : json_text=$(yabai -m query --windows --window mouse | jq -r tostring | tr -d '{}"' | tr ',' '\n') ; \
+                 appName=$(echo "$json_text" | sed -n 's/^app:\(.*\)/\1/p') ; \
+                 result=$(osascript -e "display dialog \"$json_text\" buttons {\"Close\", \"manageOff\"} default button \"Close\"") ; \
+                 echo "$result" | grep -q "manageOff" && \
+                 perl -i -pe "s/manageOffApp\=\'\^\(/manageOffApp\=\'\^\($appName\|/g" ~/.config/yabai/yabairc && \
+                 yabai --restart-service
+
 ################################################################################
 # focus window
 # alt - h : yabai -m window --focus west
