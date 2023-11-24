@@ -45,7 +45,7 @@ yabai -m config                                 \
 # yabai -m rule --add app="^Reeder"               manage=on
 # yabai -m rule --add app="^Safari"               manage=on
 
-systemApp='^(System Preferences|System Information|Finder|Calendar|Contacts|Disk Utility|Image Capture|Reminders|App Store|Activity Monitor|Dictionary)$'
+systemApp='^(System Preferences|System Settings|System Information|Finder|Calendar|Contacts|Disk Utility|Image Capture|Reminders|App Store|Activity Monitor|Dictionary)$'
 manageOffApp='^(AnyConnect|Bitwarden|Karabiner-Elements|Karabiner-EventViewer|QMK Toolbox|zoom.us)$'
 
 yabai -m rule --add app="${systemApp}|${manageOffApp}" manage=off
