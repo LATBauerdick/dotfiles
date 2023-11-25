@@ -77,9 +77,9 @@
 # ############################################################### #
 
 # layout stack or bsp
+cmd + ctrl + alt - b : yabai -m space --layout bsp
 cmd + ctrl + alt - s : yabai -m space --layout stack
 ctrl + alt - s : yabai -m window --insert stack
-ctrl + alt - b : yabai -m space --layout bsp
 
 # throw window:
 # to next space
