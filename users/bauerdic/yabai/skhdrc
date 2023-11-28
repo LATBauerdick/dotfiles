@@ -144,6 +144,8 @@ ctrl + alt - q : json_text=$(yabai -m query --windows --window mouse | jq -r tos
                  perl -i -pe "s/manageOffApp\=\'\^\(/manageOffApp\=\'\^\($appName\|/g" ~/.config/yabai/yabairc && \
                  yabai --restart-service
 
+cmd + ctrl + alt - r : yabai --restart-service
+
 ################################################################################
 # focus window
 # alt - h : yabai -m window --focus west
