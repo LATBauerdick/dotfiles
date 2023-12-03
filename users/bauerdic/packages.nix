@@ -23,6 +23,7 @@
       gnupg
       gnumake
       helix
+      hpack
       htop
       imagemagick
       jq
