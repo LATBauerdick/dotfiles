@@ -6,7 +6,7 @@
 let
   hostname = "x130314";
   hostId = "48f2d09d"; # head -c 8 /etc/machine-id
-  plexEnable = true;
+  plexEnable = false;
   roonEnable = false;
   delugeEnable = false;
   zfsPools = [ "z" ];

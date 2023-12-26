@@ -14,7 +14,6 @@ let
 in {
  
   services.plex = builtins.trace "enable plex for >>${plexname}<<" {
-    enable = true;
     openFirewall = true;
     package = myPlex;
     user = "plex";
