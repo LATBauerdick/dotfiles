@@ -13,7 +13,7 @@ let
   nextdnsEnable = false;
   adguardEnable = true;
 
-  zfsPools = [ "z3" "z2" "z1" ];
+  zfsPools = [ "z3" "z2" "z1" "z0" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
