@@ -9,7 +9,7 @@ let
   plexEnable = true;
   roonEnable = false;
   delugeEnable = false;
-  zfsPools = [ "z" "z0"];
+  zfsPools = [ "z" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
