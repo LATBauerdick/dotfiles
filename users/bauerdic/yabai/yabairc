@@ -41,7 +41,7 @@ yabai -m config                                 \
 # yabai -m rule --add title='Passwords$'          manage=off
 #
 # yabai -m rule --add app="^Finder$"              manage=on
-yabai -m rule --add app="^News"                 manage=on
+yabai -m rule --add app="^News"                 manage=off
 yabai -m rule --add app="^Reeder"               manage=on
 yabai -m rule --add app="^Safari"               manage=on
 
