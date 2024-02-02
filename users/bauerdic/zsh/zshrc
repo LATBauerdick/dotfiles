@@ -75,6 +75,10 @@ alias na="neuron -d ~/zk search -a"
 alias xo='xargs -I % open %'
 alias xe='xargs -I % $EDITOR %'
 
+agz () {
+  ag -l -0 ${1} ~/Zettelkasten | xargs -0 $EDITOR
+}
+
 # }}}
 
 # Exports {{{
