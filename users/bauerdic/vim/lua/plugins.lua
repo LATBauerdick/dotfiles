@@ -98,7 +98,7 @@ return require('packer').startup(function(use)
 -- Useful status updates for LSP
   use {
     'j-hui/fidget.nvim',
-    tag = 'legacy',
+    -- tag = 'legacy',
     config = function()
       require("fidget").setup {
         -- options
@@ -213,6 +213,29 @@ return require('packer').startup(function(use)
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+
+  use({
+    "epwalsh/obsidian.nvim",
+    tag = "*",  -- recommended, use latest release instead of latest commit
+    requires = {
+      -- Required.
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("obsidian").setup({
+        workspaces = {
+          {
+            name = "personal",
+            path = "~/Zettelkasten",
+          },
+          {
+            name = "music",
+            path = "~/Zettelkasten/_AlbumPlayed",
+          },
+        },
+      })
+    end,
+  })
 
   -- -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   -- local has_plugins, plugins = pcall(require, 'custom.plugins')
