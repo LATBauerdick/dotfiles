@@ -130,6 +130,8 @@ export BAT_THEME="Solarized (light)"
 autoload -U zmv
 
 # eval $(thefuck --alias)
+#
+eval "$(atuin init zsh)"
 
 eval "$(direnv hook zsh)"
 nixify() {

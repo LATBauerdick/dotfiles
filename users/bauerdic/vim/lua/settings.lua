@@ -1,6 +1,8 @@
 
 local indent = 2
 
+
+
 vim.cmd 'syntax enable'
 
 vim.opt.compatible = false
@@ -23,6 +25,7 @@ vim.opt.softtabstop = indent
 vim.opt.expandtab = true
 vim.opt.shiftround = true
 
+vim.opt.conceallevel = 1
 
 -- Show trailing whitespace
 vim.opt.list = true
