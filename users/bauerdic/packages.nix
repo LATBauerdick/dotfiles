@@ -6,6 +6,7 @@
   # these files are meant to be installed in all scenarios
       abduco
       aria
+      atuin
       bat
       coreutils
       ctags
