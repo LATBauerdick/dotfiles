@@ -28,6 +28,7 @@
       htop
       imagemagick
       jq
+      lilypond-unstable-with-fonts
       llvm
       lzop
       mosh
