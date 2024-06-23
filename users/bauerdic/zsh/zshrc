@@ -127,6 +127,8 @@ export EDITOR="nvim"
 
 export BAT_THEME="Solarized (light)"
 
+export TOOLCHAINS=$(plutil -extract CFBundleIdentifier raw /Library/Developer/Toolchains/swift-latest.xctoolchain/Info.plist)
+
 autoload -U zmv
 
 # eval $(thefuck --alias)
