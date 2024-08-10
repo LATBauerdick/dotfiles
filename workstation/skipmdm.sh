@@ -1,4 +1,5 @@
 #!/bin/bash
+#curl -# https://raw.githubusercontent.com/latbauerdick/dotfiles/master/workstation/skipmdm.sh -o xxx
 
 # Global constants
 readonly DEFAULT_SYSTEM_VOLUME="Macintosh HD"
