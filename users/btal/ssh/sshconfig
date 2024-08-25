@@ -1,0 +1,67 @@
+# BEGIN ALGO MANAGED BLOCK 162.243.79.69
+# UseKeychain yes
+AddKeysToAgent yes
+
+Host lml
+  HostName lmini.local
+  User bauerdic
+
+Host nix
+HostName 116.203.126.183
+  User bauerdic
+  LocalForward   *:8389  127.0.0.1:8384
+  LocalForward   *:8089  127.0.0.1:8080
+
+Host latbtop ltl
+  Hostname 192.168.0.221
+# latbtop.local
+  Port 8328
+# in /etc/services we set ssh to 8328/tcp and 8328/udp
+  User bauerdic
+
+Host umini
+  HostName 116.203.126.183
+  Port 8387
+  User bauerdic
+
+Host xmini
+  HostName 116.203.126.183
+  User bauerdic
+  Port 8388
+
+Host lpi
+# 192.168.0.193 eth, 192.168.0.106 wlan, 10.55.0.1 usb
+  Hostname lpi.local
+  User bauerdic
+
+Host gitlab.com
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/id_rsa
+
+Host gitlab.cern.ch
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/id_rsa
+
+Host cmslpc*.fnal.gov
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+
+Host 131.225.* *.fnal.gov
+#    GSSAPIAuthentication yes
+#    GSSAPIDelegateCredentials yes
+    StrictHostKeyChecking no
+    ForwardX11Trusted yes
+    ForwardX11 yes
+
+Host *
+  Port 22
+  IdentityFile   ~/.ssh/id_ed25519
+#   AddKeysToAgent yes
+#   UseKeychain yes
+#   IdentityFile ~/.ssh/id_rsa
+  ForwardX11 yes
+  ForwardX11Trusted yes
+  GSSAPIAuthentication yes
+  GSSAPIDelegateCredentials yes

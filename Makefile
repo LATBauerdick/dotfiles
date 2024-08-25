@@ -11,7 +11,7 @@ MACNAME ?= m1mac
 
 macall:
 	nix flake lock
-	nix build ".#${MACNAME}.bauerdic.activationPackage"
+	nix build ".#${MACNAME}.${USER}.activationPackage"
 	# rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
 

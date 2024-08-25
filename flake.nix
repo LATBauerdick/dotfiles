@@ -133,6 +133,14 @@
         isDesktop = true;
       };
     };
+    m1mac.btal = home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsForSystem "aarch64-darwin";
+      modules = [ ./users/btal/home.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
     intelmac.bauerdic = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgsForSystem "x86_64-darwin";
       modules = [ ./users/bauerdic/home.nix ];
