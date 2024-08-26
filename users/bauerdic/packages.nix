@@ -10,7 +10,7 @@
       bat
       coreutils
       ctags
-      exa
+      eza
       exiftool
       fd
       fzf
@@ -38,7 +38,6 @@
       oh-my-zsh
       oh-my-posh
       pandoc
-      pinentry-qt
       pv
       python311Packages.pandoc-xnos
       pandoc-fignos

@@ -4,13 +4,15 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-24.05";
       # url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
     # roon = { url = "/home/bauerdic/nixpkgs/pkgs/servers/roon-bridge"; };
   };
@@ -21,6 +23,7 @@
     nixpkgs,
     utils,
     ohmyposh,
+    nix-darwin,
     # roon,
     ... }@inputs:
   let

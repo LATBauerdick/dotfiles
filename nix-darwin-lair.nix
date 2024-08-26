@@ -9,11 +9,12 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
-    configuration = { pkgs, ... }: {
+    darwinConfiguration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ pkgs.vim
+          pkgs.git
         ];
 
       # Auto upgrade nix package and the daemon service.
@@ -34,7 +35,7 @@
       # $ darwin-rebuild changelog
       system.stateVersion = 4;
 
-      # The platform the configuration will be used on.
+      # The platform the darwinConfiguration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
 
       security.pam.enableSudoTouchIdAuth = true;
@@ -56,7 +57,7 @@
       ];
 
       homebrew.enable = true;
-        homebrew.casks = [
+      homebrew.casks = [
           "adobe-acrobat-reader"
           "airbuddy"
           "alfred"
@@ -125,11 +126,11 @@
           #"private-internet-access"
           #"vinegar"
           #"vivid"
-        ];
-        homebrew.brews = [
+      ];
+      homebrew.brews = [
           "imagemagick"
           "syncthing"
-        ];
+      ];
 
     };
   in
@@ -137,7 +138,7 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#lair
     darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [ darwinConfiguration ];
     };
 
     # Expose the package set, including overlays, for convenience.
