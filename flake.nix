@@ -28,6 +28,8 @@
     ... }@inputs:
   let
 
+    darwinConfiguration = import ./darwin.nix;
+
     globalPkgsConfig = {
       allowUnfree = true;
     };
@@ -180,5 +182,13 @@
       };
       modules = [ ./users/bauerdic/home.nix ];
     };
+
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#lair
+    darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
+      modules = [ darwinConfiguration ];
+    };
+    # Expose the package set, including overlays, for convenience.
+    darwinPackages = self.darwinConfigurations."lair".pkgs;
   };
 }
