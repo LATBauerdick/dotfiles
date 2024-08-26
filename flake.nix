@@ -188,6 +188,11 @@
     darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
       modules = [ darwinConfiguration ];
     };
+    # $ darwin-rebuild build --flake .#MAC-138940
+    darwinConfigurations."MAC-138940" = nix-darwin.lib.darwinSystem {
+      modules = [ darwinConfiguration ];
+    };
+
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."lair".pkgs;
   };
