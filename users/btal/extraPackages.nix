@@ -10,9 +10,9 @@
     entr
     /* lima */
     lilypond-unstable-with-fonts
-    ncdu
+  #  ncdu
     procs
-    qemu
+  #  qemu
     sd
     tealdeer
     /* vifs */
