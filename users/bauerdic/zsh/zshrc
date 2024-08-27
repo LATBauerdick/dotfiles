@@ -44,9 +44,9 @@ alias kdiff="kitty +kitten diff"
 alias kssh="kitty +kitten ssh"
 alias ktheme="kitty +kitten themes --reload-in=all --config-file-name=neuxxxx"
 
-alias l=exa #'ls -alh'
-alias ll='exa -alh' #'ls -alh'
-alias tree='exa --tree'
+alias l=eza #'ls -alh'
+alias ll='eza -alh' #'ls -alh'
+alias tree='eza --tree'
 
 alias nv='nvim'
 
