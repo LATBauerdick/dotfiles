@@ -51,7 +51,7 @@
 
     system.defaults.trackpad = {
       Clicking = true;
-      TrackpadThreeFingerDrag = true;
+      TrackpadThreeFingerDrag = false;
     };
     system.keyboard = {
       enableKeyMapping = true;
