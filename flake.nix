@@ -178,7 +178,7 @@
       };
     };
 
-    darwinConfigurations."lbook" =  mkDarwin {
+    darwinConfigurations.intelmac =  mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-darwin";
