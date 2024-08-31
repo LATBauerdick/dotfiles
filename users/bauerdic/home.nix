@@ -1,4 +1,4 @@
-{ config, pkgs,  ... }:
+{ user ? "bauerdic", dir ? "/home/bauerdic"  } : { config, pkgs,  ... }:
 
 let
     # hacky way of determining which machine I'm running this from
@@ -18,8 +18,8 @@ in {
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "bauerdic";
-  home.homeDirectory = "/home/bauerdic";
+  home.username = user;
+  home.homeDirectory = dir;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

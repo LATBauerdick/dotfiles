@@ -52,7 +52,7 @@
       modules = [
         ./hardware/${name}.nix
         ./machines/${name}.nix
-        ./users/${user}/user.nix
+        ./users/${user}/${user}.nix
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -63,15 +63,14 @@
       ];
     };
 
-    mkDarwin = { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
+    mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
         ./darwin.nix
         home-manager.darwinModules.home-manager {
-          home-manager.users.${user} = import ./users/${user}/home.nix;
-          home-manager.extraSpecialArgs = extraSpecialArgs;
-          users.users.bauerdic.home = "/home/${user}";
-          users.users.btal.home = "/Users/${user}";
+          home-manager.users.${user} = import ./users/bauerdic/home.nix { user=user; dir=dir; };
+          users.users."${user}".home = dir;
+
         }
       # { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
       ];
@@ -162,6 +161,7 @@
       home-manager = home-manager;
       system = "aarch64-darwin";
       user   = "bauerdic";
+      dir   =  "/home/bauerdic";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
@@ -173,6 +173,7 @@
       home-manager = home-manager;
       system = "aarch64-darwin";
       user   = "btal";
+      dir    = "/Users/btal";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
@@ -184,6 +185,7 @@
       home-manager = home-manager;
       system = "x86_64-darwin";
       user   = "bauerdic";
+      dir    = "/home/bauerdic";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
