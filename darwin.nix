@@ -57,12 +57,15 @@
       enableKeyMapping = true;
       remapCapsLockToControl = true;
     };
-    system.defaults.finder.AppleShowAllExtensions = true;
-    system.defaults.finder.AppleShowAllFiles = false;
-    system.defaults.finder.ShowPathbar = true;
-    system.defaults.finder.ShowStatusBar = true;
-    system.defaults.finder._FXShowPosixPathInTitle = false;
+    system.defaults.finder = {
+      AppleShowAllExtensions = true;
+      AppleShowAllFiles = false;
+      ShowPathbar = true;
+      ShowStatusBar = true;
+      _FXShowPosixPathInTitle = false;
+      FXEnableExtensionChangeWarning = false;
 
+    };
     system.defaults.CustomUserPreferences = {
       NSGlobalDomain = {
         # Add a context menu item for showing the Web Inspector in web views
@@ -152,7 +155,7 @@
         "grandperspective"
         "iina"
         "iterm2"
-        "karabiner-elements"
+     # "karabiner-elements"
         "keycastr"
         "kicad"
         "kitty"
@@ -203,6 +206,10 @@
         "imagemagick"
         "syncthing"
     ];
+    homebrew.masApps = {
+     # "Drafts" = 1435957248;
+      "Reeder" = 1529448980;
+    };
     system.activationScripts.postUserActivation.text = ''
   # Following line should allow us to avoid a logout/login cycle
   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
