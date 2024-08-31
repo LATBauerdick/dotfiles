@@ -71,7 +71,8 @@
       modules = [
         ./darwin.nix
         home-manager.darwinModules.home-manager {
-          home-manager.users.${user} = import ./users/bauerdic/home.nix { user=user; dir=dir; };
+          home-manager.users.${user} = import ./users/user/home.nix { user=user; dir=dir; };
+        # to fix some supposed bug in home-manager
           users.users."${user}".home = dir;
 
         }
