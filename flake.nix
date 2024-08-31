@@ -168,7 +168,7 @@
       };
     };
 
-    darwinConfigurations."MAC-138940" = mkDarwin {
+    darwinConfigurations.btalmac = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "aarch64-darwin";
