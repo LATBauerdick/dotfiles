@@ -63,43 +63,19 @@
       ];
     };
 
+    mkDarwin = { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
+      inherit system;
+      modules = [
+        ./darwin.nix
+        home-manager.darwinModules.home-manager {
+          home-manager.users.${user} = import ./users/${user}/home.nix;
+          home-manager.extraSpecialArgs = extraSpecialArgs;
+          users.users.bauerdic.home = "/home/${user}";
+        }
+      # { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
+      ];
+    };
 
-    darwinConfigs = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-          ./darwin.nix
-          home-manager.darwinModules.home-manager {
-            home-manager = {
-              users.bauerdic = import ./users/bauerdic/home.nix;
-            };
-            users.users.bauerdic.home = "/home/bauerdic";
-          }
-      ];
-    };
-    darwinConfigsBtal = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-          ./darwin.nix
-          home-manager.darwinModules.home-manager {
-            home-manager = {
-              users.bauerdic = import ./users/btal/home.nix;
-            };
-            users.users.bauerdic.home = "/home/bauerdic";
-          }
-      ];
-    };
-    darwinConfigsIntel = nix-darwin.lib.darwinSystem {
-      system = "x86_64-darwin";
-      modules = [
-          ./darwin.nix
-          home-manager.darwinModules.home-manager {
-            home-manager = {
-              users.bauerdic = import ./users/bauerdic/home.nix;
-            };
-            users.users.bauerdic.home = "/home/bauerdic";
-          }
-      ];
-    };
 
   in utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux" ] (system: rec {
       legacyPackages = pkgsForSystem system;
@@ -107,16 +83,6 @@
     # non-system suffixed items should go here
     overlay = localOverlay;
 
-    nixosConfigurations.xmini = mkMachine "xmini" {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-linux";
-      user   = "bauerdic";
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
     nixosConfigurations.x130314 = mkMachine "x130314" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
@@ -138,13 +104,6 @@
       };
     };
 
-    nixosConfigurations.usrv = mkMachine "usrv" {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-linux";
-      user   = "bauerdic";
-    };
-
     nixosConfigurations.rpi   = mkMachine "rpi" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
@@ -156,15 +115,6 @@
       };
     };
 
-    homeConfigurations.bauerdic = home-manager.lib.homeManagerConfiguration {
-      # inherit pkgs;
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ ./users/bauerdic/home.nix ];
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgsForSystem "aarch64-darwin";
       modules = [ ./users/bauerdic/home.nix ];
@@ -173,22 +123,7 @@
         isDesktop = true;
       };
     };
-    m1mac.btal = home-manager.lib.homeManagerConfiguration {
-      pkgs = pkgsForSystem "aarch64-darwin";
-      modules = [ ./users/btal/home.nix ];
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
-    intelmac.bauerdic = home-manager.lib.homeManagerConfiguration {
-      pkgs = pkgsForSystem "x86_64-darwin";
-      modules = [ ./users/bauerdic/home.nix ];
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
+
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
       pkgs = pkgsForSystem "aarch64-linux";
@@ -219,21 +154,42 @@
     };
 
     # Build darwin flake using:
-
     # $ darwin-rebuild build --flake .#lair
-    darwinConfigurations."lair" = darwinConfigs;
-    darwinConfigurations."ltop" = darwinConfigs;
 
-    darwinConfigurations."MAC-138940" = darwinConfigsBtal;
+    darwinConfigurations.m1mac = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
-    darwinConfigurations."lbook" = darwinConfigsIntel;
+    darwinConfigurations."MAC-138940" = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "btal";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
-    # $ darwin-rebuild build --flake .#MAC-138940
-      #darwinConfigurations."MAC-138940" = nix-darwin.lib.darwinSystem {
-      #modules = [ darwinConfiguration ];
-      #};
+    darwinConfigurations."lbook" =  mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-darwin";
+      user   = "bauerdic";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."lair".pkgs;
+    # darwinPackages = self.darwinConfigurations."lair".pkgs;
   };
 }

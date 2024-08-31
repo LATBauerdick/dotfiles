@@ -25,8 +25,7 @@
     # $ darwin-rebuild changelog
     system.stateVersion = 4;
 
-    # The platform the darwinConfiguration will be used on.
-    # nixpkgs.hostPlatform = arch;
+   # nixpkgs.config.allowUnfree = true;
 
     security.pam.enableSudoTouchIdAuth = true;
     system.defaults = {

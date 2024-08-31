@@ -8,13 +8,12 @@ NIXNAME ?= umini
 # umac   xmini x130314
 MACNAME ?= m1mac
 # intelmac rpi lima
-DARWINNAME=lair
 
 darwin:
 	nix flake lock
-	darwin-rebuild switch --flake ."#${DARWINNAME}"
+	darwin-rebuild switch --flake ."#${MACNAME}"
 
-macall:
+home-manager:
 	nix flake lock
 	nix build ".#${MACNAME}.${USER}.activationPackage"
 	# rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
