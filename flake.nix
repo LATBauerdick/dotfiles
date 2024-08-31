@@ -184,17 +184,27 @@
     };
 
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#lair
-    darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
+    # $ darwin-rebuild build --flake .#lbook
+    darwinConfigurations."lbook" = nix-darwin.lib.darwinSystem {
+      darwinConfiguration.nixpkgs.hostPlatform = "x86_64-darwin";
       modules = [ darwinConfiguration ];
     };
+
+    # $ darwin-rebuild build --flake .#lair
+    darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
+      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
+      modules = [ darwinConfiguration ];
+    };
+
     # $ darwin-rebuild build --flake .#ltop
     darwinConfigurations."ltop" = nix-darwin.lib.darwinSystem {
+      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
       modules = [ darwinConfiguration ];
     };
 
     # $ darwin-rebuild build --flake .#MAC-138940
     darwinConfigurations."MAC-138940" = nix-darwin.lib.darwinSystem {
+      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
       modules = [ darwinConfiguration ];
     };
 

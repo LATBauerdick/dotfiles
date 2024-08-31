@@ -25,7 +25,7 @@
     system.stateVersion = 4;
 
     # The platform the darwinConfiguration will be used on.
-    nixpkgs.hostPlatform = "aarch64-darwin";
+    # nixpkgs.hostPlatform = "aarch64-darwin";
 
     security.pam.enableSudoTouchIdAuth = true;
     system.defaults = {
