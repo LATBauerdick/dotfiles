@@ -26,7 +26,7 @@ export MYPOSHTHEME=~/.oh-my-posh/powerlevel10k_rainbow.omp.json
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 ZSH_THEME=powerlevel10k/powerlevel10k
-DEFAULT_USER="bauerdic"
+DEFAULT_USER=$USER
 plugins=(git z history history-substring-search)
 source $ZSH/oh-my-zsh.sh
 # }}}
@@ -126,7 +126,7 @@ export EDITOR="nvim"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[ -f "/home/bauerdic/.ghcup/env" ] && source "/home/bauerdic/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 export BAT_THEME="Solarized (light)"
 

@@ -71,6 +71,7 @@
           home-manager.users.${user} = import ./users/${user}/home.nix;
           home-manager.extraSpecialArgs = extraSpecialArgs;
           users.users.bauerdic.home = "/home/${user}";
+          users.users.btal.home = "/Users/${user}";
         }
       # { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
       ];
