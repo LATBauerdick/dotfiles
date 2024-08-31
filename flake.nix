@@ -28,8 +28,6 @@
     ... }@inputs:
   let
 
-    darwinConfiguration = import ./darwin.nix;
-
     globalPkgsConfig = {
       allowUnfree = true;
     };
@@ -62,6 +60,44 @@
           home-manager.extraSpecialArgs = extraSpecialArgs;
         }
         { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
+      ];
+    };
+
+
+    darwinConfigs = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      modules = [
+          ./darwin.nix
+          home-manager.darwinModules.home-manager {
+            home-manager = {
+              users.bauerdic = import ./users/bauerdic/home.nix;
+            };
+            users.users.bauerdic.home = "/home/bauerdic";
+          }
+      ];
+    };
+    darwinConfigsBtal = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      modules = [
+          ./darwin.nix
+          home-manager.darwinModules.home-manager {
+            home-manager = {
+              users.bauerdic = import ./users/btal/home.nix;
+            };
+            users.users.bauerdic.home = "/home/bauerdic";
+          }
+      ];
+    };
+    darwinConfigsIntel = nix-darwin.lib.darwinSystem {
+      system = "x86_64-darwin";
+      modules = [
+          ./darwin.nix
+          home-manager.darwinModules.home-manager {
+            home-manager = {
+              users.bauerdic = import ./users/bauerdic/home.nix;
+            };
+            users.users.bauerdic.home = "/home/bauerdic";
+          }
       ];
     };
 
@@ -131,7 +167,6 @@
     };
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgsForSystem "aarch64-darwin";
-      # pkgs = nixpkgs.legacyPackages.aarch64-darwin;
       modules = [ ./users/bauerdic/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
@@ -184,29 +219,19 @@
     };
 
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#lbook
-    darwinConfigurations."lbook" = nix-darwin.lib.darwinSystem {
-      darwinConfiguration.nixpkgs.hostPlatform = "x86_64-darwin";
-      modules = [ darwinConfiguration ];
-    };
 
     # $ darwin-rebuild build --flake .#lair
-    darwinConfigurations."lair" = nix-darwin.lib.darwinSystem {
-      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
-      modules = [ darwinConfiguration ];
-    };
+    darwinConfigurations."lair" = darwinConfigs;
+    darwinConfigurations."ltop" = darwinConfigs;
 
-    # $ darwin-rebuild build --flake .#ltop
-    darwinConfigurations."ltop" = nix-darwin.lib.darwinSystem {
-      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
-      modules = [ darwinConfiguration ];
-    };
+    darwinConfigurations."MAC-138940" = darwinConfigsBtal;
+
+    darwinConfigurations."lbook" = darwinConfigsIntel;
 
     # $ darwin-rebuild build --flake .#MAC-138940
-    darwinConfigurations."MAC-138940" = nix-darwin.lib.darwinSystem {
-      darwinConfiguration.nixpkgs.hostPlatform = "aarch64-darwin";
-      modules = [ darwinConfiguration ];
-    };
+      #darwinConfigurations."MAC-138940" = nix-darwin.lib.darwinSystem {
+      #modules = [ darwinConfiguration ];
+      #};
 
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."lair".pkgs;

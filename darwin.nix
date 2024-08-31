@@ -1,6 +1,7 @@
- { pkgs, ... }: {
+ { pkgs, ... }:
     # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
+  {
     environment.systemPackages =
       [ pkgs.vim
         pkgs.git
@@ -25,7 +26,7 @@
     system.stateVersion = 4;
 
     # The platform the darwinConfiguration will be used on.
-    # nixpkgs.hostPlatform = "aarch64-darwin";
+    # nixpkgs.hostPlatform = arch;
 
     security.pam.enableSudoTouchIdAuth = true;
     system.defaults = {

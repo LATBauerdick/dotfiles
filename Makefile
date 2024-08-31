@@ -8,6 +8,11 @@ NIXNAME ?= umini
 # umac   xmini x130314
 MACNAME ?= m1mac
 # intelmac rpi lima
+DARWINNAME=lair
+
+darwin:
+	nix flake lock
+	darwin-rebuild switch --flake ."#${DARWINNAME}"
 
 macall:
 	nix flake lock
