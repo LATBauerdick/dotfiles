@@ -56,7 +56,10 @@
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${user} = import ./users/${user}/home.nix;
+          home-manager.users.${user} = import ./users/user/home.nix {
+            user = user;
+            dir = "/home/${user}";
+          };
           home-manager.extraSpecialArgs = extraSpecialArgs;
         }
         { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
