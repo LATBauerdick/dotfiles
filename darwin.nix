@@ -167,7 +167,7 @@
         "mediathekview"
         "menubarx"
         "menuwhere"
-        "notchnook"
+       # "notchnook"
         "obsidian"
         "omnigraffle"
         "pdf-expert"
