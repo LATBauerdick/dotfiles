@@ -18,8 +18,6 @@ ctrl + alt - u : window=$(yabai -m query --windows --window | jq -r '.id') && ya
 
 # focus to window:
 # cycle in stack or in bsp
-# ctrl + alt - tab : /home/bauerdic/Library/Python/3.9/bin/yabai-stack-navigator --next
-# ctrl + alt + shift - tab : /home/bauerdic/Library/Python/3.9/bin/yabai-stack-navigator --prev
 ctrl + alt - tab : yabai -m window --focus stack.next || yabai -m window --focus stack.first
 ctrl + alt + shift - tab : yabai -m window --focus prev || yabai -m window --focus last
 # direction
