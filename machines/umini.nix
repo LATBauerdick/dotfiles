@@ -250,9 +250,9 @@ in {
   boot.zfs.extraPools = zfsPools;
 
   fonts.fontDir.enable = true;
-  fonts.enableDefaultFonts = true;
+  fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
 #    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
 #    corefonts
 #    dejavu_fonts
