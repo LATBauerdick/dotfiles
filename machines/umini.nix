@@ -81,12 +81,12 @@ in {
   /* services.xrdp.defaultWindowManager = "awesome-x11"; */
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
+  services.displayManager.sddm.enable = false;
   services.xserver = { enable = false;
     dpi=130;
     # dpi=218;
     # dpi=329;
     displayManager = {
-      sddm.enable = false;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
       /* defaultSession = "none+awesome"; */
@@ -303,7 +303,7 @@ in {
 
   # mDNS, avahi
   services.avahi = { enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     publish = {
       enable = true;
       addresses = true;
