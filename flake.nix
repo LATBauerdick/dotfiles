@@ -195,6 +195,17 @@
         isDesktop = true;
       };
     };
+    darwinConfigurations.btalintel = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-darwin";
+      user   = "btal";
+      dir    = "/home/btal";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
     # Expose the package set, including overlays, for convenience.
     # darwinPackages = self.darwinConfigurations."lair".pkgs;

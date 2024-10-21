@@ -7,7 +7,7 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 NIXNAME ?= umini
 # umac   xmini x130314
 MACNAME ?= m1mac
-# btalmac intelmac rpi lima
+# btalmac btalintel intelmac rpi lima
 
 darwin:
 	nix flake lock
