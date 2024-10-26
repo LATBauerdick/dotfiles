@@ -128,6 +128,7 @@
           #"DroidSansMono" 
           "Iosevka"
           "Lekton"
+          "JetBrainsMono"
           ]; })
     ];
 
@@ -157,10 +158,10 @@
         "iterm2"
      # "karabiner-elements"
         "keycastr"
-        "kicad"
+     #   "kicad"
         "kitty"
         "launchcontrol"
-        "ltspice"
+     #   "ltspice"
         "mactex"
         "marked"
         "mattermost"
@@ -174,6 +175,7 @@
         "pdf-expert"
         "plex"
         "qmk-toolbox"
+        "quicksilver"
         "quiet-reader"
         "raindropio"
         "raycast"
