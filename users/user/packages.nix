@@ -60,8 +60,8 @@
 #      cabal-install
 #      cabal2nix
 
-    nodejs_latest
-    nodePackages_latest.parcel
+    #    nodejs_latest
+    #    nodePackages_latest.parcel
 
 # tex
 #      texlive.combined.scheme-full

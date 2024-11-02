@@ -137,6 +137,7 @@
         "adobe-acrobat-reader"
         "airbuddy"
         "alfred"
+        "alt-tab"
         "arc"
      # "arq"
         "backuploupe"
