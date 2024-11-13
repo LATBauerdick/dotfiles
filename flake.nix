@@ -121,7 +121,7 @@
 
     m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgsForSystem "aarch64-darwin";
-      modules = [ ./users/bauerdic/home.nix ];
+      modules = [ ./users/user/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
@@ -131,7 +131,7 @@
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
       pkgs = pkgsForSystem "aarch64-linux";
-      modules = [ ./users/bauerdic/home.nix ];
+      modules = [ ./users/user/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
@@ -139,7 +139,7 @@
     };
     intel.bauerdic = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgsForSystem "x86_64-linux";
-      modules = [ ./users/bauerdic/home.nix ];
+      modules = [ ./users/user/home.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
@@ -154,7 +154,7 @@
         system = "aarch64-linux";
         config = { allowUnfree = true; };
       };
-      modules = [ ./users/bauerdic/home.nix ];
+      modules = [ ./users/user/home.nix ];
     };
 
     # Build darwin flake using:
