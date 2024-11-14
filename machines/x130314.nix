@@ -221,7 +221,7 @@ in {
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
 
 # NextDNS config
-  networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
+  # networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
   # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
   services.nextdns = { enable = true;
     arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
