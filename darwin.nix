@@ -118,8 +118,8 @@
     };
 
 
-    services.yabai.enable = true;
-    services.skhd.enable = true;
+    services.yabai.enable = false;
+    services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
     fonts.packages = with pkgs; [
@@ -136,15 +136,15 @@
     homebrew.casks = [
         "adobe-acrobat-reader"
         "airbuddy"
-        "alfred"
+     #  "alfred"
         "alt-tab"
-        "arc"
+     #  "arc"
      # "arq"
         "backuploupe"
         "balenaetcher"
         "bitwarden"
         "bluos-controller"
-        "brave-browser"
+     #  "brave-browser"
         "calibre"
         "chatgpt"
         "devonthink"
@@ -157,12 +157,12 @@
         "grandperspective"
         "iina"
         "iterm2"
-     # "karabiner-elements"
+     #  "karabiner-elements"
         "keycastr"
-     #   "kicad"
+     #  "kicad"
         "kitty"
         "launchcontrol"
-     #   "ltspice"
+     #  "ltspice"
         "mactex"
         "marked"
         "mattermost"
@@ -170,13 +170,13 @@
         "menubarx"
         "menuwhere"
         "musescore"
-       # "notchnook"
+      # "notchnook"
         "obsidian"
         "omnigraffle"
         "pdf-expert"
         "plex"
         "qmk-toolbox"
-        "quicksilver"
+      # "quicksilver"
         "quiet-reader"
         "raindropio"
         "raycast"

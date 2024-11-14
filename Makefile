@@ -11,7 +11,7 @@ MACNAME ?= m1mac
 
 darwin:
 	nix flake lock
-	darwin-rebuild switch --flake ."#${MACNAME}"
+	darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
 home-manager:
 	nix flake lock

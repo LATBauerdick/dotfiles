@@ -119,14 +119,14 @@
       };
     };
 
-    m1mac.bauerdic = home-manager.lib.homeManagerConfiguration {
-      pkgs = pkgsForSystem "aarch64-darwin";
-      modules = [ ./users/user/home.nix ];
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
+#    m1mac.latb = home-manager.lib.homeManagerConfiguration {
+#      pkgs = pkgsForSystem "aarch64-darwin";
+#      modules = [ ./users/latb/home.nix ];
+#      extraSpecialArgs = { # pass arguments
+#        withGUI = false;
+#        isDesktop = true;
+#      };
+#    };
 
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
@@ -160,7 +160,7 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#lair
 
-    darwinConfigurations.m1mac = mkDarwin {
+    darwinConfigurations.m1mac.bauerdic = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "aarch64-darwin";
@@ -171,7 +171,19 @@
         isDesktop = true;
       };
     };
-
+ 
+    darwinConfigurations.m1mac.latb = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "latb";
+      dir   =  "/home/latb";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+ 
     darwinConfigurations.btalmac = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
