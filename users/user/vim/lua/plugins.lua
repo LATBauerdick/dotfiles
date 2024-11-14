@@ -226,11 +226,11 @@ return require('packer').startup(function(use)
         workspaces = {
           {
             name = "personal",
-            path = "~/Zettelkasten",
+            path = "~/Notes",
           },
           {
             name = "music",
-            path = "~/Zettelkasten/_AlbumPlayed",
+            path = "~/Notes/AlbumsPlayed",
           },
         },
         follow_url_func = function(url)
