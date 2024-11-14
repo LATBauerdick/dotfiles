@@ -8,16 +8,24 @@ let
   hostId = "48f2d09d"; # head -c 8 /etc/machine-id
   plexEnable = false;
   roonEnable = false;
+  roonBridgeEnable = false;
   delugeEnable = false;
+  unifiEnable = false;
+  nextdnsEnable = false;
+  adguardEnable = false;
+
   zfsPools = [ "z" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
       ../pkgs/plex.nix
+#      ../pkgs/adguard.nix
     ];
   nixpkgs.config.plex.plexname = hostname;
   services.plex.enable = plexEnable;
+
+  services.adguardhome.enable = adguardEnable;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -74,12 +82,12 @@ in {
   /* services.xrdp.defaultWindowManager = "awesome-x11"; */
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
+  services.displayManager.sddm.enable = false;
   services.xserver = { enable = false;
     dpi=130;
     # dpi=218;
     # dpi=329;
     displayManager = {
-      sddm.enable = false;
       /* lightdm.enable = true; */
       /* startx.enable = true; */
       /* defaultSession = "none+awesome"; */
@@ -212,7 +220,7 @@ in {
   networking.firewall.allowPing = true;
   # open firewall ports for services.xrdp
   # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 ];
+  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
   # open firewall ports for mosh, wireguard
   networking.firewall.allowedUDPPortRanges = [
     { from = 60001; to = 61000; }
@@ -221,6 +229,7 @@ in {
   networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
 
 # NextDNS config
+  # services.nextdns.enable = nextdnsEnable;
   # networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
   # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
   services.nextdns = { enable = true;
@@ -245,9 +254,9 @@ in {
   boot.zfs.extraPools = zfsPools;
 
   fonts.fontDir.enable = true;
-  fonts.enableDefaultFonts = true;
+  fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
 #    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
 #    corefonts
 #    dejavu_fonts
@@ -277,11 +286,26 @@ in {
     openFirewall = true;
   };
 
- services.slimserver.enable = false;
+  services.unifi.enable = unifiEnable;
+  services.unifi.unifiPackage = pkgs.unifi;
+  services.unifi = {
+    openFirewall = unifiEnable;
+  };
+
+  services.slimserver.enable = false;
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-bridge"
+      "unrar"
+  ];
+  services.roon-bridge = {
+      enable = roonBridgeEnable;
+      openFirewall = roonBridgeEnable;
+  };
 
   # mDNS, avahi
   services.avahi = { enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     publish = {
       enable = true;
       addresses = true;
@@ -335,15 +359,6 @@ in {
         "guest ok" = "no";
       };
     };
-  };
-
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "roon-bridge"
-      "unrar"
-  ];
-  services.roon-bridge = {
-      enable = true;
-      openFirewall = true;
   };
 
 }

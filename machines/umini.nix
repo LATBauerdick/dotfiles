@@ -8,6 +8,7 @@ let
   hostId = "28c80f12"; # head -c 8 /etc/machine-id
   plexEnable = true;
   roonEnable = true;
+  roonBridgeEnable = false;
   delugeEnable = true;
   unifiEnable = false;
   nextdnsEnable = false;
@@ -297,8 +298,8 @@ in {
       "unifi"
   ];
   services.roon-bridge = {
-      enable = false;
-      openFirewall = true;
+      enable = roonBridgeEnable;
+      openFirewall = roonBridgeEnable;
   };
 
   # mDNS, avahi
