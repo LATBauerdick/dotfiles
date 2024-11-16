@@ -196,18 +196,18 @@
       };
     };
 
-    darwinConfigurations.intelmac =  mkDarwin {
+    darwinConfigurations.intelmac.latb =  mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-darwin";
-      user   = "bauerdic";
-      dir    = "/home/bauerdic";
+      user   = "latb";
+      dir    = "/home/latb";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
       };
     };
-    darwinConfigurations.btalintel = mkDarwin {
+    darwinConfigurations.intel.btal = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-darwin";
