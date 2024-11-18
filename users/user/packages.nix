@@ -60,7 +60,7 @@
 #      cabal-install
 #      cabal2nix
 
-    #    nodejs_latest
+      nodejs_latest
     #    nodePackages_latest.parcel
 
 # tex
