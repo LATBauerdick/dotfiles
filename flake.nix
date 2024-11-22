@@ -207,12 +207,12 @@
         isDesktop = true;
       };
     };
-    darwinConfigurations.intel.btal = mkDarwin {
+    darwinConfigurations.intelmac.latb = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-darwin";
-      user   = "btal";
-      dir    = "/home/btal";
+      user   = "latb";
+      dir    = "/home/latb";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
