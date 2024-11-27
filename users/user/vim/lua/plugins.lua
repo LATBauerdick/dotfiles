@@ -8,7 +8,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- lots of my plugins, usint vim-plug
--- vim-plug {{{
     vim.cmd [[
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -21,10 +20,7 @@ call plug#begin(stdpath('data') . '/plugged')
 
 
 -- Plug 'altercation/vim-colors-solarized'
-Plug 'ishan9299/nvim-solarized-lua'
--- Plug 'sdothum/vim-colors-duochrome'
--- Plug 'frankier/neovim-colors-solarized-truecolor-only'
--- Plug 'lifepillar/vim-solarized8'
+-- Plug 'ishan9299/nvim-solarized-lua'
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'jgdavey/tslime.vim'
@@ -73,8 +69,8 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+--Plug 'bling/vim-airline'
+--Plug 'vim-airline/vim-airline-themes'
 Plug 'mvandiemen/ghostbuster'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
@@ -82,7 +78,6 @@ Plug 'knubie/vim-kitty-navigator'
 Plug 'akinsho/toggleterm.nvim' --, tag = 'v1.*'
 
     vim.call('plug#end')
--- }}}
 
 vim.cmd [[
 let hscoptions="𝐌𝐄𝐓𝐒iBQZDC*"
@@ -150,11 +145,11 @@ return require('packer').startup(function(use)
   use 'jvgrootveld/telescope-zoxide'
   use 'sudormrfbin/cheatsheet.nvim'
   use 'nvim-lua/popup.nvim'
-    -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-
+  use { 'nvim-lualine/lualine.nvim',
+    requires = {'kyazdani42/nvim-web-devicons', opt = true}
+  }
+  use 'ishan9299/nvim-solarized-lua'
     -- use 'altercation/vim-colors-solarized'
-    -- use 'frankier/neovim-colors-solarized-truecolor-only'
-    -- use 'sdothum/vim-colors-duochrome'
 
     -- use 'tpope/vim-commentary'
     -- use 'tpope/vim-eunuch'
