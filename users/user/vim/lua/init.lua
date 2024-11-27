@@ -57,10 +57,6 @@ require('settings')
 local custom_solarized = require'lualine.themes.solarized_light'
 custom_solarized.normal.a.bg = '#b58900'
 require('lualine').setup {
-  options = {
-    theme = 'custom_solarized',
-    always_show_tabline = true,
-  },
   tabline = {
     lualine_a = {'buffers'},
     lualine_b = {},
