@@ -30,8 +30,6 @@ in {
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "22.11";
-  # home.stateVersion = "20.09";
-
 
   home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs );
 
@@ -74,6 +72,55 @@ in {
   xdg.enable = true;
   xdg.configFile."nvim/lua".source = ./vim/lua;
   xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
+
+  #programs.nixvim = {
+  #  enable = true;
+  #  globals.mapleader = " ";
+  #  globals.maplocalleader = " ";
+  #  opts = {
+  #    relativenumber = true;
+  #    ignorecase = true;
+  #    incsearch = true;
+  #    textwidth = 80;
+  #    numberwidth = 5;
+  #  };
+  #  colorschemes.catppuccin.enable = true;
+  #  #colorschemes.everforest.settings = {
+  #  #    background = "hard";
+  #  #    dim_inactive_windows = 1;
+  #  #};
+  #  plugins.lualine.enable = true;
+  #  plugins.nix.enable = true;
+
+  #  plugins.treesitter.enable = true;
+
+  #  plugins.telescope.enable = true;
+
+  #  plugins.harpoon = {
+  #    enable = true;
+  #    keymaps.addFile = "<leader>a";
+  #  };
+
+  #  plugins.lsp = {
+  #    keymaps = {
+  #      silent = true;
+  #      diagnostic = {
+  #        "<leader>k" = "goto_prev";
+  #        "<leader>j" = "goto_next";
+  #      };
+
+  #      lspBuf = {
+  #        gd = "definition";
+  #        K  = "hover";
+  #      };
+  #    };
+  #  };
+  #};
+
+
+
+
+
   # xdg.configFile."nvim".source = ./vim;
   # xdg.configFile."kitty".source = ./kitty;
   xdg.configFile."kitty/kitty.conf".source = ./kitty/kitty.conf;

@@ -14,7 +14,11 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
-    # roon = { url = "/home/bauerdic/nixpkgs/pkgs/servers/roon-bridge"; };
+    nixvim = {
+        url = "github:nix-community/nixvim/nixos-24.05";
+        # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -24,7 +28,7 @@
     utils,
     ohmyposh,
     nix-darwin,
-    # roon,
+    nixvim,
     ... }@inputs:
   let
 
@@ -72,6 +76,7 @@
         ./darwin.nix
         home-manager.darwinModules.home-manager {
           home-manager.users.${user} = import ./users/user/home.nix { user=user; dir=dir; };
+          home-manager.sharedModules = [ nixvim.homeManagerModules.nixvim ];
         # to fix some supposed bug in home-manager
           users.users."${user}".home = dir;
 

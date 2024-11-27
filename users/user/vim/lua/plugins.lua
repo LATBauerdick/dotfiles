@@ -20,8 +20,13 @@ call plug#begin(stdpath('data') . '/plugged')
     local Plug = vim.fn['plug#']
 
 
-    Plug 'altercation/vim-colors-solarized'
-    Plug 'jiangmiao/auto-pairs'
+-- Plug 'altercation/vim-colors-solarized'
+Plug 'ishan9299/nvim-solarized-lua'
+-- Plug 'sdothum/vim-colors-duochrome'
+-- Plug 'frankier/neovim-colors-solarized-truecolor-only'
+-- Plug 'lifepillar/vim-solarized8'
+
+Plug 'jiangmiao/auto-pairs'
 Plug 'jgdavey/tslime.vim'
 Plug ('Shougo/vimproc.vim', { ['do'] = vim.fn['make']})
 Plug 'scrooloose/nerdcommenter'
@@ -60,10 +65,6 @@ Plug 'raichoo/purescript-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'ledger/vim-ledger'
 Plug 'terryma/vim-smooth-scroll'
--- Plug 'sdothum/vim-colors-duochrome'
--- Plug 'altercation/vim-colors-solarized'
--- Plug 'frankier/neovim-colors-solarized-truecolor-only'
--- Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fireplace'
