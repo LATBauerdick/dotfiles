@@ -1,11 +1,32 @@
- { pkgs, ... }:
+ { pkgs, config, ... }:
     # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
   {
-    environment.systemPackages =
-      [ pkgs.vim
-        pkgs.git
-      ];
+    environment.systemPackages = with pkgs; [
+       # failed to install airbuddy
+       alacritty
+       alt-tab-macos
+       # not on this platform bitwarden
+       # marked as broken calibre
+       discord
+       # not on this platform  firefox
+       google-chrome
+       grandperspective
+       iterm2
+       keycastr
+       kitty
+       mediathekview
+       mkalias
+       obsidian
+       raycast
+       slack
+       xld
+       # does not install xquartz
+       zoom-us
+
+       vim
+       git
+    ];
 
     # Auto upgrade nix package and the daemon service.
     services.nix-daemon.enable = true;
@@ -25,7 +46,7 @@
     # $ darwin-rebuild changelog
     system.stateVersion = 4;
 
-   # nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
 
     security.pam.enableSudoTouchIdAuth = true;
     system.defaults = {
@@ -118,11 +139,11 @@
     };
 
 
-    services.yabai.enable = false;
-    services.skhd.enable = false;
+   services.yabai.enable = false;
+   services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
-    fonts.packages = with pkgs; [
+   fonts.packages = with pkgs; [
         (nerdfonts.override { fonts = [
           #"FiraCode" 
           #"DroidSansMono" 
@@ -130,94 +151,106 @@
           "Lekton"
           "JetBrainsMono"
           ]; })
-    ];
+   ];
 
-    homebrew.enable = true;
-    homebrew.casks = [
-        "adobe-acrobat-reader"
-        "airbuddy"
+   homebrew = {
+     enable = true;
+     casks = [
+       "adobe-acrobat-reader"
+       "airbuddy"
      #  "alfred"
-        "alt-tab"
      #  "arc"
      # "arq"
-        "backuploupe"
-        "balenaetcher"
-        "bitwarden"
-        "bluos-controller"
+       "backuploupe"
+       "balenaetcher"
+       "bitwarden"
+       "bluos-controller"
      #  "brave-browser"
-        "calibre"
-        "chatgpt"
-        "devonthink"
-        "discord"
-        "fantastical"
-        "firefox"
-        "folx"
-        "google-chrome"
-        "grammarly-desktop"
-        "grandperspective"
-        "iina"
-        "iterm2"
+       "calibre"
+       "chatgpt"
+       "devonthink"
+       "fantastical"
+       "firefox"
+       "folx"
+       "grammarly-desktop"
+       "iina"
      #  "karabiner-elements"
-        "keycastr"
      #  "kicad"
-        "kitty"
-        "launchcontrol"
+       "launchcontrol"
      #  "ltspice"
-        "mactex"
-        "marked"
-        "mattermost"
-        "mediathekview"
-        "menubarx"
-        "menuwhere"
-        "musescore"
+       "mactex"
+       "marked"
+       "mattermost"
+       "menubarx"
+       "menuwhere"
+       "musescore"
       # "notchnook"
-        "obsidian"
-        "omnigraffle"
-        "pdf-expert"
-        "plex"
-        "qmk-toolbox"
+       "omnigraffle"
+       "pdf-expert"
+       "plex"
+       "qmk-toolbox"
       # "quicksilver"
-        "quiet-reader"
-        "raindropio"
-        "raycast"
-        "roon"
-        "skype"
-        "slack"
-        "superduper"
-        "switchresx"
-        "tidal"
-        "ukelele"
-        "vlc"
-        "xld"
-        "xquartz"
-        "zoom"
-        #"eaglefiler"
-        #"font-comic-mono"
-        #"font-iosevka-nerd-font"
-        #"font-jetbrains-mono"
-        #"font-lekton-nerd-font"
-        #"font-monaspace"
-        #"forehead"
-        #"luna-display"
-        #"luna-secondary"
-        #"lyn"
-        #"openzfs"
-        #"private-internet-access"
-        #"vinegar"
-        #"vivid"
-    ];
-    homebrew.brews = [
-        "imagemagick"
-        "syncthing"
-    ];
-    homebrew.masApps = {
-     # "Drafts" = 1435957248;
-      "Reeder" = 1529448980;
-    };
+       "quiet-reader"
+       "raindropio"
+       "roon"
+       "skype"
+       "superduper"
+       "switchresx"
+       "tidal"
+       "ukelele"
+       "visual-studio-code"
+       "vlc"
+       "xquartz"
+       #"eaglefiler"
+       #"font-comic-mono"
+       #"font-iosevka-nerd-font"
+       #"font-jetbrains-mono"
+       #"font-lekton-nerd-font"
+       #"font-monaspace"
+       #"forehead"
+       #"luna-display"
+       #"luna-secondary"
+       #"lyn"
+       #"openzfs"
+       #"private-internet-access"
+       #"vinegar"
+       #"vivid"
+     ];
+     brews = [
+       "imagemagick"
+       "qmk/qmk/qmk"
+       "syncthing"
+     ];
+     masApps = {
+       # "Drafts" = 1435957248;
+       "Reeder" = 1529448980;
+     };
+     onActivation.cleanup = "zap";
+   };
     system.activationScripts.postUserActivation.text = ''
   # Following line should allow us to avoid a logout/login cycle
   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 '';
+
+   #    system.activationScripts.applications.text = let
+   #   env = pkgs.buildEnv {
+  #    name = "system-applications";
+  #     paths = config.environment.systemPackages;
+  #    pathsToLink = "/Applications";
+   #    };
+   #  in
+   #   pkgs.lib.mkForce ''
+   #     # Set up applications.
+   #     echo "setting up /Applications..." >&2
+# rm -rf /Applications/Nix\ Apps
+# mkdir -p /Applications/Nix\ Apps
+   #     find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+   #     while read src; do
+   #       app_name=$(basename "$src")
+   #       echo "sudo mkalias $src /Applications/Nix\ Apps/$app_name" >&2
+# ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix\ Apps/$app_name"
+   #     done
+   # '';
 
 }
 

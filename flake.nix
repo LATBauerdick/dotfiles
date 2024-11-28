@@ -4,18 +4,19 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       # url = "/home/bauerdic/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
     nixvim = {
-        url = "github:nix-community/nixvim/nixos-24.05";
+        url = "github:nix-community/nixvim";
         inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -27,10 +28,10 @@
     utils,
     ohmyposh,
     nix-darwin,
+    nix-homebrew,
     nixvim,
     ... }@inputs:
   let
-
     globalPkgsConfig = {
       allowUnfree = true;
     };
@@ -73,12 +74,20 @@
       inherit system;
       modules = [
         ./darwin/darwin.nix
+        nix-homebrew.darwinModules.nix-homebrew {
+          nix-homebrew = {
+            enable = true;
+            # enableRosetta = true;
+            user=user;
+            autoMigrate=true;
+          };
+        }
         home-manager.darwinModules.home-manager {
-          home-manager.users.${user} = import ./users/user/home.nix { user=user; dir=dir; };
+          home-manager.users.${user} =
+              import ./users/user/home.nix { user=user; dir=dir; };
           home-manager.sharedModules = [ nixvim.homeManagerModules.nixvim ];
         # to fix some supposed bug in home-manager
           users.users."${user}".home = dir;
-
         }
       # { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
       ];
