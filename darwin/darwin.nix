@@ -54,6 +54,14 @@
       dock.largesize = 128;
       dock.magnification = true;
       dock.orientation = "left";
+     dock.persistent-apps = [
+        "${pkgs.obsidian}/Applications/Obsidian.app"
+        "/System/Applications/Calendar.app"
+        "/System/Applications/Launchpad.app"
+        "/System/Applications/Mail.app"
+        "/System/Applications/Safari.app"
+     ];
+     finder.FXPreferredViewStyle = "clmv";
     };
     system.defaults.NSGlobalDomain = {
       AppleShowAllExtensions = true;
