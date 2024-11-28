@@ -218,14 +218,18 @@
      ];
      brews = [
        "imagemagick"
+       "mas"
        "qmk/qmk/qmk"
        "syncthing"
      ];
      masApps = {
        # "Drafts" = 1435957248;
+       "NextDNS" = 1464122853;
        "Reeder" = 1529448980;
      };
      onActivation.cleanup = "zap";
+     onActivation.autoUpdate = true;
+     onActivation.upgrade = true;
    };
     system.activationScripts.postUserActivation.text = ''
   # Following line should allow us to avoid a logout/login cycle
