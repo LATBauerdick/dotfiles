@@ -16,7 +16,6 @@
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
     nixvim = {
         url = "github:nix-community/nixvim/nixos-24.05";
-        # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
         inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -73,7 +72,7 @@
     mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
-        ./darwin.nix
+        ./darwin/darwin.nix
         home-manager.darwinModules.home-manager {
           home-manager.users.${user} = import ./users/user/home.nix { user=user; dir=dir; };
           home-manager.sharedModules = [ nixvim.homeManagerModules.nixvim ];
