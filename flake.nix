@@ -13,7 +13,7 @@
     };
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
     nixvim = {
         url = "github:nix-community/nixvim";
@@ -50,7 +50,7 @@
                  ];
       config.allowUnfree = true;
     };
-
+    darwinConfig = ./darwin/darwin.nix;
     mkMachine = name: { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
@@ -73,7 +73,7 @@
     mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
-        ./darwin/darwin.nix
+        darwinConfig
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;

@@ -2,31 +2,7 @@
     # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
   {
-    environment.systemPackages = with pkgs; [
-       # failed to install airbuddy
-       alacritty
-       alt-tab-macos
-       # not on this platform bitwarden
-       # marked as broken calibre
-       discord
-       # not on this platform  firefox
-       google-chrome
-       grandperspective
-       iterm2
-       keycastr
-       kitty
-       mediathekview
-       mkalias
-       obsidian
-       raycast
-       slack
-       xld
-       # does not install xquartz
-       zoom-us
-
-       vim
-       git
-    ];
+    environment.systemPackages = import ./darwinPackages.nix { inherit pkgs; };
 
     # Auto upgrade nix package and the daemon service.
     services.nix-daemon.enable = true;
@@ -163,78 +139,9 @@
 
    homebrew = {
      enable = true;
-     casks = [
-       "adobe-acrobat-reader"
-       "airbuddy"
-     #  "alfred"
-     #  "arc"
-     # "arq"
-       "backuploupe"
-       "balenaetcher"
-       "bitwarden"
-       "bluos-controller"
-     #  "brave-browser"
-       "calibre"
-       "chatgpt"
-       "devonthink"
-       "fantastical"
-       "firefox"
-       "folx"
-       "grammarly-desktop"
-       "iina"
-     #  "karabiner-elements"
-     #  "kicad"
-       "launchcontrol"
-     #  "ltspice"
-       "mactex"
-       "marked"
-       "mattermost"
-       "menubarx"
-       "menuwhere"
-       "musescore"
-      # "notchnook"
-       "omnigraffle"
-       "pdf-expert"
-       "plex"
-       "qmk-toolbox"
-      # "quicksilver"
-       "quiet-reader"
-       "raindropio"
-       "roon"
-       "skype"
-       "superduper"
-       "switchresx"
-       "tidal"
-       "ukelele"
-       "visual-studio-code"
-       "vlc"
-       "xquartz"
-       #"eaglefiler"
-       #"font-comic-mono"
-       #"font-iosevka-nerd-font"
-       #"font-jetbrains-mono"
-       #"font-lekton-nerd-font"
-       #"font-monaspace"
-       #"forehead"
-       #"luna-display"
-       #"luna-secondary"
-       #"lyn"
-       #"openzfs"
-       #"private-internet-access"
-       #"vinegar"
-       #"vivid"
-     ];
-     brews = [
-       "imagemagick"
-       "mas"
-       "qmk/qmk/qmk"
-       "syncthing"
-     ];
-     masApps = {
-       # "Drafts" = 1435957248;
-       "NextDNS" = 1464122853;
-       "Reeder" = 1529448980;
-     };
+     casks = import ./darwinCasks.nix;
+     brews = import ./darwinBrews.nix;
+     masApps = import ./darwinMasApps.nix;
      onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;
      onActivation.upgrade = true;
@@ -244,25 +151,25 @@
   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 '';
 
-   #    system.activationScripts.applications.text = let
-   #   env = pkgs.buildEnv {
-  #    name = "system-applications";
-  #     paths = config.environment.systemPackages;
-  #    pathsToLink = "/Applications";
-   #    };
-   #  in
-   #   pkgs.lib.mkForce ''
-   #     # Set up applications.
-   #     echo "setting up /Applications..." >&2
-# rm -rf /Applications/Nix\ Apps
-# mkdir -p /Applications/Nix\ Apps
-   #     find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-   #     while read src; do
-   #       app_name=$(basename "$src")
-   #       echo "sudo mkalias $src /Applications/Nix\ Apps/$app_name" >&2
-# ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix\ Apps/$app_name"
-   #     done
-   # '';
+  system.activationScripts.applications.text = let
+    env = pkgs.buildEnv {
+      name = "system-applications";
+      paths = config.environment.systemPackages;
+      pathsToLink = "/Applications";
+    };
+  in
+    pkgs.lib.mkForce ''
+    # Set up applications.
+    echo "setting up /Applications..." >&2
+    rm -rf /Applications/Nix\ Apps
+    mkdir -p /Applications/Nix\ Apps
+    find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+    while read -r src; do
+      app_name=$(basename "$src")
+      echo "copying $src" >&2
+      ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+    done
+      '';
 
 }
 
