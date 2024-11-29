@@ -1,9 +1,13 @@
  { pkgs, config, ... }:
   let
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
+    myCasks = import ./darwinCasks.nix;
+    myBrews = import ./darwinBrews.nix;
+    myMasApps = import ./darwinMasApps.nix;
   in
   {
     environment.systemPackages = myPackages.systemPackages;
+    fonts.packages = myPackages.fontsPackages;
 
     # Auto upgrade nix package and the daemon service.
     services.nix-daemon.enable = true;
@@ -31,14 +35,27 @@
       dock.largesize = 128;
       dock.magnification = true;
       dock.orientation = "left";
-     dock.persistent-apps = [
+      dock.persistent-apps = [
         "${pkgs.obsidian}/Applications/Obsidian.app"
         "/System/Applications/Calendar.app"
         "/System/Applications/Launchpad.app"
         "/System/Applications/Mail.app"
         "/System/Applications/Safari.app"
-     ];
-     finder.FXPreferredViewStyle = "clmv";
+      ];
+      finder = {
+        AppleShowAllExtensions = true;
+        AppleShowAllFiles = false;
+        ShowPathbar = true;
+        ShowStatusBar = true;
+        _FXShowPosixPathInTitle = false;
+        FXEnableExtensionChangeWarning = false;
+        FXPreferredViewStyle = "clmv";
+
+      };
+      trackpad = {
+        Clicking = true;
+        TrackpadThreeFingerDrag = false;
+      };
     };
     system.defaults.NSGlobalDomain = {
       AppleShowAllExtensions = true;
@@ -55,22 +72,9 @@
       "com.apple.sound.beep.feedback" = 0;
     };
 
-    system.defaults.trackpad = {
-      Clicking = true;
-      TrackpadThreeFingerDrag = false;
-    };
     system.keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = true;
-    };
-    system.defaults.finder = {
-      AppleShowAllExtensions = true;
-      AppleShowAllFiles = false;
-      ShowPathbar = true;
-      ShowStatusBar = true;
-      _FXShowPosixPathInTitle = false;
-      FXEnableExtensionChangeWarning = false;
-
     };
     system.defaults.CustomUserPreferences = {
       NSGlobalDomain = {
@@ -128,31 +132,19 @@
    services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
-   fonts.packages = myPackages.fontsPackages;
-
-     #with pkgs; [
-     #   (nerdfonts.override { fonts = [
-     #     #"FiraCode" 
-     #     #"DroidSansMono" 
-     #     "Iosevka"
-     #     "Lekton"
-     #     "JetBrainsMono"
-     #     ]; })
-   #];
-
    homebrew = {
      enable = true;
-     casks = import ./darwinCasks.nix;
-     brews = import ./darwinBrews.nix;
-     masApps = import ./darwinMasApps.nix;
+     casks = myCasks;
+     brews = myBrews;
+     masApps = myMasApps;
      onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;
      onActivation.upgrade = true;
    };
-    system.activationScripts.postUserActivation.text = ''
-  # Following line should allow us to avoid a logout/login cycle
-  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-'';
+   system.activationScripts.postUserActivation.text = ''
+      # Following line should allow us to avoid a logout/login cycle
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  '';
 
   system.activationScripts.applications.text = let
     env = pkgs.buildEnv {
@@ -172,7 +164,7 @@
       echo "copying $src" >&2
       ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
     done
-      '';
+  '';
 
 }
 
