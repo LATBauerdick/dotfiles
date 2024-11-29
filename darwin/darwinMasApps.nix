@@ -8,6 +8,7 @@
        "Infuse" = 1136220934;
        "NextDNS" = 1464122853;
        "Parcel" = 639968404;
+       "Raycast Companion" = 6738274497;
        "Reeder" = 1529448980;
        "Save to Raindrop.io" = 1549370672;
        "SingleFile" = 6444322545;
