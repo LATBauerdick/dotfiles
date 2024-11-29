@@ -1,7 +1,6 @@
 .DS_Store
 *CONFLICT*
 result
-flake.lock
 vim/autoload/
 vim/bundle/
 vim/plugged/
