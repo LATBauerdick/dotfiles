@@ -1,8 +1,9 @@
  { pkgs, config, ... }:
-    # List packages installed in system profile. To search by name, run:
-    # $ nix-env -qaP | grep wget
+  let
+    myPackages = import ./darwinPackages.nix { inherit pkgs; };
+  in
   {
-    environment.systemPackages = import ./darwinPackages.nix { inherit pkgs; };
+    environment.systemPackages = myPackages.systemPackages;
 
     # Auto upgrade nix package and the daemon service.
     services.nix-daemon.enable = true;
@@ -127,15 +128,17 @@
    services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
-   fonts.packages = with pkgs; [
-        (nerdfonts.override { fonts = [
-          #"FiraCode" 
-          #"DroidSansMono" 
-          "Iosevka"
-          "Lekton"
-          "JetBrainsMono"
-          ]; })
-   ];
+   fonts.packages = myPackages.fontsPackages;
+
+     #with pkgs; [
+     #   (nerdfonts.override { fonts = [
+     #     #"FiraCode" 
+     #     #"DroidSansMono" 
+     #     "Iosevka"
+     #     "Lekton"
+     #     "JetBrainsMono"
+     #     ]; })
+   #];
 
    homebrew = {
      enable = true;
