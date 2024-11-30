@@ -1,5 +1,7 @@
 # Connectivity info for Linux VM
 
+.PHONY: darwin
+
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
@@ -10,7 +12,7 @@ MACNAME ?= m1mac
 # btalmac btalintel intelmac rpi lima
 
 darwin:
-	nix flake lock
+	nix flake update
 	darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
 home-manager:

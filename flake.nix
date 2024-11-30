@@ -14,7 +14,6 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    ohmyposh = { url = "github:latbauerdick/oh-my-posh"; };
     nixvim = {
         url = "github:nix-community/nixvim";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +25,6 @@
     home-manager,
     nixpkgs,
     utils,
-    ohmyposh,
     nix-darwin,
     nix-homebrew,
     nixvim,
@@ -36,16 +34,13 @@
       allowUnfree = true;
     };
     localOverlay = _: _: { };
-    overlay-ohmyposh = system: prev: final: {
-      oh-my-posh = ohmyposh.packages.${system}.oh-my-posh;
-    };
     # overlay-roon = system: prev: final: {
       # roon-bridge = roon.packages.${system}.roon-bridge;
     # };
     pkgsForSystem = system: import nixpkgs {
       # overlay = [ localOverlay ];
       inherit system;
-      overlays = [  ( overlay-ohmyposh system )
+      overlays = [  # ( overlay-ohmyposh system )
                     # ( overlay-roon system )
                  ];
       config.allowUnfree = true;
