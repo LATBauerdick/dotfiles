@@ -12,11 +12,9 @@ MACNAME ?= m1mac
 # btalmac btalintel intelmac rpi lima
 
 darwin:
-	nix flake update
 	darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
 home-manager:
-	nix flake lock
 	nix build ".#${MACNAME}.${USER}.activationPackage"
 	# rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
@@ -28,7 +26,7 @@ test:
 	sudo nixos-rebuild test --flake ".#${NIXNAME}"
 
 update:
-	nix flake lock
+	nix flake update
 
 build:
 	nix build ".#${MACNAME}.bauerdic.activationPackage"
