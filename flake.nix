@@ -127,14 +127,14 @@
       };
     };
 
-#    m1mac.latb = home-manager.lib.homeManagerConfiguration {
-#      pkgs = pkgsForSystem "aarch64-darwin";
-#      modules = [ ./users/latb/home.nix ];
-#      extraSpecialArgs = { # pass arguments
-#        withGUI = false;
-#        isDesktop = true;
-#      };
-#    };
+    m1mac.latb = home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsForSystem "aarch64-darwin";
+      modules = [ ./users/user/home.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
 
     rpi.bauerdic = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.aarch64-linux;
