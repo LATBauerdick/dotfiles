@@ -63,7 +63,6 @@ in {
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;
 
-  sound.enable = true;
   hardware.pulseaudio.enable = true;
 
 # Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
@@ -332,26 +331,21 @@ in {
   services.gvfs.enable = true;
   services.samba = { enable = true;
     openFirewall = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = LATB
-      server string = hostname
-      netbios name = hostname
-      security = user
-      #use sendfile = yes
-      #max protocol = smb2
-      hosts allow = 192.168.0  localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-      #browseable = yes
-      #smb encrypt = required
-    '';
+    # settings = ''
+    #   workgroup = LATB
+    #   server string = hostname
+    #   netbios name = hostname
+    #   hosts allow = 192.168.0  localhost
+    #   hosts deny = 0.0.0.0/0
+    #   guest account = nobody
+    #   map to guest = bad user
+    # '';
 
     # You will still need to set up the user accounts to begin with:
     # $ sudo smbpasswd -a yourusername
 
-    shares = {
+    settings = {
+      global.security = "user";
       homes = {
         browseable = "no";  # note: each home will be browseable; the "homes" share will not.
         "read only" = "no";
