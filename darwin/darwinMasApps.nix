@@ -1,7 +1,7 @@
 {
        "Amphetamine" = 937984704;
        "Blackmagic Disk Speed Test" = 425264550;
-       "Bsky" = 6444370199;
+  #       "Bsky" = 6444370199;
        "Day One" = 1055511498;
        "FruitJuice" = 671736912;
        "iA Writer" = 775737590;

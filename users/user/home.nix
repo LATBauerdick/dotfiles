@@ -73,7 +73,7 @@ in {
   xdg.configFile."nvim/lua".source = ./vim/lua;
   xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
 
-  xdg.configFile."aerospace/aerospace.toml".source = ./aerospace/aerospace.toml;
+  xdg.configFile."aerospace/myAerospace.toml".source = ./aerospace/myAerospace.toml;
 
   #programs.nixvim = {
   #  enable = true;

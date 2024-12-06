@@ -42,6 +42,7 @@
         "/System/Applications/Mail.app"
         "/System/Applications/Safari.app"
       ];
+      # dock.expose-group-apps = true;
       finder = {
         AppleShowAllExtensions = true;
         AppleShowAllFiles = false;
@@ -52,6 +53,7 @@
         FXPreferredViewStyle = "clmv";
 
       };
+      spaces.spans-displays = false;
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = false;
