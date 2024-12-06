@@ -27,6 +27,7 @@
        "menubarx"
        "menuwhere"
        "musescore"
+  "nikitabobko/tap/aerospace"
       # "notchnook"
        "omnigraffle"
        "pdf-expert"

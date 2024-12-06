@@ -73,6 +73,8 @@ in {
   xdg.configFile."nvim/lua".source = ./vim/lua;
   xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
 
+  xdg.configFile."aerospace/aerospace.toml".source = ./aerospace/aerospace.toml;
+
   #programs.nixvim = {
   #  enable = true;
   #  globals.mapleader = " ";
