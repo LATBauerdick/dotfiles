@@ -18,11 +18,6 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 #
 # vi mode
 bindkey -v
-export MYPOSHTHEME=~/.oh-my-posh/myPoshTheme.omp.json
-# clean-detailed.omp.json
-# powerlevel10k_classic.omp.json
-###eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
-eval "$(oh-my-posh --init --shell zsh --config ~/.oh-my-posh/powerlevel10k_rainbow.omp.json)"
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
@@ -30,6 +25,9 @@ export ZSH=~/.oh-my-zsh
 DEFAULT_USER=$USER
 plugins=(git z history history-substring-search)
 source $ZSH/oh-my-zsh.sh
+
+export MYPOSHTHEME=~/.oh-my-posh/myPoshTheme.omp.json
+eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
