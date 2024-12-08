@@ -139,11 +139,6 @@ map { 'n', 'vA', 'ggVG' }
 -- yank to end of line
 map { 'n', 'Y', 'y$' }
 
--- remap for smooth scroll
-map { 'n', '<c-u>', ':call smooth_scroll#up(&scroll, 0, 2)<CR>', silent = true }
-map { 'n', '<c-d>', ':call smooth_scroll#down(&scroll, 0, 2)<CR>', silent = true }
-map { 'n', '<c-b>', ':call smooth_scroll#up(&scroll*2, 0, 4)<CR>', silent = true }
-map { 'n', '<c-f>', ':call smooth_scroll#down(&scroll*2, 0, 4)<CR>', silent = true }
 
 -- nnoremap <buffer> <CR> <cmd>lua require'neuron'.enter_link()<CR>
 map { 'n', 'gzo', ":lua require'neuron'.enter_link()<CR>", buffer = true }

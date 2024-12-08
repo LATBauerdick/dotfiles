@@ -1,6 +1,7 @@
 .DS_Store
 *CONFLICT*
 result
+lazy-lock.json
 vim/autoload/
 vim/bundle/
 vim/plugged/
