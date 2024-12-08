@@ -77,7 +77,11 @@ alias xo='xargs -I % open %'
 alias xe='xargs -I % $EDITOR %'
 
 agz () {
-  ag -l -0 ${1} ~/Zettelkasten | xargs -0 $EDITOR
+  ag -l -0 ${1} ~/Notes/Notes | xargs -0 $EDITOR
+}
+
+ff () {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 
 # }}}
