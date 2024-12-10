@@ -61,13 +61,10 @@ in {
 
   home.file.".zshrc".source = ./zsh/zshrc;
   home.file.".p10k.zsh".source = ./zsh/p10k.zsh;
-  home.file.".ssh/config".source = ./ssh/sshconfig;
   home.file.".oh-my-posh".source = ./zsh/oh-my-posh;
-  home.file.".config/karabiner/assets".source = ./karabiner/assets;
+  home.file.".ssh/config".source = ./ssh/sshconfig;
   home.file.".gitconfig".source = ./git/gitconfig;
-  home.file.".config/yabai/yabairc".source = ./yabai/yabairc;
-  home.file.".config/skhd/skhdrc".source = ./yabai/skhdrc;
-  home.file.".config/limelight/limelightrc".source = ./yabai/limelightrc;
+  home.file.".editorconfig".source = ./vim/editorconfig;
 
   xdg.enable = true;
   xdg.configFile."nvim/lua".source = ./vim/lua;
@@ -76,6 +73,14 @@ in {
 
   xdg.configFile."aerospace/myAerospace.toml".source = ./aerospace/myAerospace.toml;
 
+  xdg.configFile."borders/bordersrc".source = ./borders/bordersrc;
+  xdg.configFile."yabai/yabairc".source = ./yabai/yabairc;
+  xdg.configFile."skhd/skhdrc".source = ./yabai/skhdrc;
+  xdg.configFile."limelight/limelightrc".source = ./yabai/limelightrc;
+  xdg.configFile."awesome".source = ./awesome;
+  xdg.configFile."amethyst".source = ./amethyst;
+  xdg.configFile."karabiner/assets".source = ./karabiner/assets;
+
   xdg.configFile."kitty/kitty.conf".source = ./kitty/kitty.conf;
   xdg.configFile."kitty/myTheme.conf".source = ./kitty/myTheme.conf;
 
@@ -83,10 +88,6 @@ in {
   # programs.kitty.font.name = "Iosevka Nerd Font";
   # programs.kitty.font.size = 14.0;
   # programs.kitty.theme = "Solarized Light";
-
-  xdg.configFile."awesome".source = ./awesome;
-
-  xdg.configFile."amethyst".source = ./amethyst;
 
 # https://github.com/nix-community/nix-direnv
   programs.direnv.enable = true;

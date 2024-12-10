@@ -45,6 +45,7 @@
        "ukelele"
        "visual-studio-code"
        "vlc"
+       "wezterm"
        "xquartz"
        #"eaglefiler"
        #"font-comic-mono"

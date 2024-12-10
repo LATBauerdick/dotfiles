@@ -14,8 +14,23 @@ return {
     },
     config = function()
       require("lspconfig").lua_ls.setup {}
-      require'lspconfig'.purescriptls.setup{}
+      require 'lspconfig'.purescriptls.setup {}
       -- require'lspconfig'.hls.setup{}
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(ev)
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if not client then return end
+          if client.supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = ev.buf,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = ev.buf, id = client.id })
+              end,
+            })
+          end
+        end,
+      })
     end,
   },
 }
