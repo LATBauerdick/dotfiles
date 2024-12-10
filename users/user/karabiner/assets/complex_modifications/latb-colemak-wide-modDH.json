@@ -1,5 +1,5 @@
 {
-  "title": "Colemak ModDH Wide Mods (LATB)",
+  "title": "Colemak Wide ModDH Mods (LATB)",
   "rules": [
     {
       "description": "Application Switching with control tab/grave.",
@@ -408,7 +408,7 @@
       ]
     },
     {
-      "description": "Colemak Mod-DH Wide (ANSI) - LATB mods",
+      "description": "Colemak Wide ModDH (ANSI) - LATB mods",
       "manipulators": [
         {
           "type": "basic",
