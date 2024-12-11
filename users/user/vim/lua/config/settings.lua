@@ -1,4 +1,3 @@
-
 vim.opt.compatible = false
 
 -- Set spellfile to location that is guaranteed to exist
@@ -7,7 +6,7 @@ vim.opt.spellfile = '~/.vim-spell-en.utf-8.add'
 -- make sure spelling is on for markdown etc
 vim.cmd [[autocmd FileType tex,latex,markdown setlocal spell spelllang=en_us]]
 
-vim.opt.wildmode = {'longest','list','full'}
+vim.opt.wildmode = { 'longest', 'list', 'full' }
 
 -- Softtabs, 2 spaces
 local indent = 2
@@ -37,7 +36,7 @@ vim.opt.autoread = true
 
 vim.opt.linespace = 4
 -- highlight the current line
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 -- highlight the current column
 -- vim.opt.cursorcolumn
 -- stop that ANNOYING beeping
@@ -91,9 +90,9 @@ vim.opt.splitright = true
 
 ---------------------Scrolling-----------------------
 -- Start scrolling when we're 8 lines away from margins
-vim.opt.scrolloff=8
-vim.opt.sidescrolloff=15
-vim.opt.sidescroll=1
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 15
+vim.opt.sidescroll = 1
 
 -- persistent undofiles
 vim.opt.undofile = true
@@ -121,7 +120,54 @@ set whichwrap+=<,>,h,l
 ]]
 
 -- update dir to current file
+-- vim.cmd [[
+-- autocmd BufEnter * silent! cd %:p:h
+-- ]]
+
+-- define Wrap command to set text soft wrapping
+-- vim.cmd [[
+-- command! -nargs=* Wrap set wrap linebreak nolist
+-- ]]
+--
+-- easy expansion of the Active File Directory
+-- vim.cmd [[
+-- cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+-- ]]
+--
+-- trigger autoread when changing buffers or coming back to vim in terminal
 vim.cmd [[
-autocmd BufEnter * silent! cd %:p:h
+au FocusGained,BufEnter * :silent! !
 ]]
 
+-- Save whenever switching windows or leaving vim
+-- This is useful when running
+-- the tests inside vim without having to save all files first
+vim.cmd [[
+au FocusLost,WinLeave * :silent! wa
+]]
+
+-- automatically rebalance windows on vim resize
+vim.cmd [[
+autocmd VimResized * :wincmd =
+]]
+
+-- When editing a file, always jump to the last known cursor position.
+-- Don't do it for commit messages, when the position is invalid, or when
+-- inside an event handler (happens when dropping a file on gvim).
+vim.cmd [[
+augroup vimrcEx
+  autocmd!
+
+  autocmd BufReadPost * if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |   exe "normal g`\"" | endif
+augroup END
+
+]]
+
+-- Highlight when yanking
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
