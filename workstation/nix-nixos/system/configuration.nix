@@ -8,14 +8,36 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./networking.nix
-      ./wireguard.nix
+#      ./networking.nix
+#      ./wireguard.nix
       # ./cachix.nix
-      ./devenv.nix
+      # ./devenv.nix
     ];
 
+  environment.systemPackages = with pkgs; [
+      wireguard-tools
+      sshfs
+      mosh
+      networkmanager
+      cryptsetup
+      vim
+      bind      # for nslookup  
+      mosh
+      syncthing
+      less
+      man
+      coreutils
+      binutils gcc gnumake openssl
+      nix-prefetch-git
+  ];
+
+  fonts.packages = [
+#    pkgs.cm_unicode
+    pkgs.lmodern
+  ];
+
 # use unstable nix so we can access flakes
-  nix.package = pkgs.nixUnstable;
+#  nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -27,24 +49,16 @@
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-  # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+  boot.loader.grub.devices = [ "/dev/sda" ];
+
 
   networking.hostName = "nix-latb"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.ens3.useDHCP = true;
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # networking.useDHCP = false;
+  # networking.interfaces.ens3.useDHCP = true;
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
@@ -95,12 +109,6 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -112,12 +120,9 @@
 
 
 
-  boot.loader.grub.devices = [ "/dev/sda" ];
-
   # Initial empty root password for easy login:
-  users.users.root.initialHashedPassword = "";
-  services.openssh.permitRootLogin = "prohibit-password";
-
+  # users.users.root.initialHashedPassword = "";
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
   services.openssh.enable = true;
 
   # Replace this by your SSH pubkey
@@ -135,8 +140,8 @@
   #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
   };
 
-  services.openssh.gatewayPorts = "yes";
-
+  # services.openssh.gatewayPorts = "yes";
+  services.openssh.settings.GatewayPorts = "yes";
   # 8385 for syncthing WebGUI port forward, 838x for my reverse tunnel
   networking.firewall.allowedTCPPorts = [ 8385 8386 8387 8388 8389 8888 8080 32401 ];
 

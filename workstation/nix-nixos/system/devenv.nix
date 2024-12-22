@@ -19,11 +19,11 @@
       less
       man
       coreutils
-      binutils gcc gnumake openssl pkgconfig
+      binutils gcc gnumake openssl
       nix-prefetch-git
   ];
 
-  fonts.fonts = [ 
+  fonts.packages = [
 #    pkgs.cm_unicode
     pkgs.lmodern
   ];
