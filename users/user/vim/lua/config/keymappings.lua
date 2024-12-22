@@ -1,10 +1,9 @@
-
 -- local utils = require('utils')
 
 
 local map = function(key)
   -- get the extra options
-  local opts = {noremap = true}
+  local opts = { noremap = true }
   for i, v in pairs(key) do
     if type(i) == 'string' then opts[i] = v end
   end
@@ -41,22 +40,23 @@ vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
 
 -- diagnostic window
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<leader>ql', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<leader>qq', vim.diagnostic.setqflist)
 
 
 -- VSplit window
-vim.keymap.set ('n', '<Leader>2', ':vsplit<CR>')
-vim.keymap.set ('n', '<Leader>1', ':only<CR>')
+vim.keymap.set('n', '<Leader>2', ':vsplit<CR>')
+vim.keymap.set('n', '<Leader>1', ':only<CR>')
 
 -- go to the other window
-vim.keymap.set ('n', '<Leader>w', '<C-w><C-w>')
-vim.keymap.set ('n', '<Leader>o', '<C-w><C-w>')
+vim.keymap.set('n', '<Leader>w', '<C-w><C-w>')
+vim.keymap.set('n', '<Leader>o', '<C-w><C-w>')
 
 -- list buffers
-vim.keymap.set ('', '<Leader>l', ':ls<CR>:b ')
+vim.keymap.set('', '<Leader>l', ':ls<CR>:b ')
 
 -- close buffer without closing window
-map { '', '<Leader>q', ':bp<bar>sp<bar>bn<bar>bd<CR>', noremap = false }
+--map { '', '<Leader>q', ':bp<bar>sp<bar>bn<bar>bd<CR>', noremap = false }
 
 -- delete buffer without closing pane
 map { 'n', '<Leader>bd', ':Bd<cr>' }
@@ -114,21 +114,21 @@ map { 'n', 'cp', 'yap<S-}>p' }
 -- zoom a vim pane, <C-w>= to re-balance
 -- nnoremap <leader>_ :wincmd _<cr>:wincmd \|<cr>
 -- nnoremap <leader>= :wincmd =<cr>
-map { 'n', '<leader>z',   ':wincmd _<cr>:wincmd |<cr>' }
-map { 'n', '<leader>=',   ':wincmd =<cr>' }
+map { 'n', '<leader>z', ':wincmd _<cr>:wincmd |<cr>' }
+map { 'n', '<leader>=', ':wincmd =<cr>' }
 
 -- use cursor keys to move display lines
 -- nmap <up> gk
 -- nmap <down> gj
-map { 'n', '<up>',   'gk' }
+map { 'n', '<up>', 'gk' }
 map { 'n', '<down>', 'gj' }
 -- inoremap <Up> <C-o>gk
 -- inoremap <Down> <C-o>gj
-map { 'i', '<up>',   '<C-o>gk' }
+map { 'i', '<up>', '<C-o>gk' }
 map { 'i', '<down>', '<C-o>gj' }
 -- vnoremap <silent> <up> gk
 -- vnoremap <silent> <down> gj
-map { 'v', '<up>',   'gk', silent = true }
+map { 'v', '<up>', 'gk', silent = true }
 map { 'v', '<down>', 'gj', silent = true }
 
 -- easier go to start and end of line
@@ -148,7 +148,7 @@ map { 'n', 'gzo', ":lua require'neuron'.enter_link()<CR>", buffer = true }
 
 -- Switch between the last two files
 -- nnoremap <leader><leader> <c-^>
-map { 'n', '<leader><leader>',   'c-^' }
+map { 'n', '<leader><leader>', 'c-^' }
 
 -- a smart <Tab> Key
 -- When the autocomplete menu is visible navigate throught the list of results,
@@ -159,14 +159,14 @@ end
 
 _G.smart_tab = function()
   if vim.fn.pumvisible() == 1 then
-    return t'<C-n>'
+    return t '<C-n>'
   else
-    return t'<Tab>'
+    return t '<Tab>'
   end
 end
 
-vim.api.nvim_set_keymap ( 'i', '<Tab>', 'v:lua.smart_tab()'
-                        , {noremap = true, expr = true}
-                        )
+vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.smart_tab()'
+, { noremap = true, expr = true }
+)
 
 -- utils.map('n', '<C-l>', '<cmd>noh<CR>') -- Clear highlights

@@ -27,7 +27,7 @@ local live_multigrep = function(opts)
         table.insert(args, pieces[2])
       end
 
-      --@diagnostic disable-next-line: deprecated
+      ---@diagnostic disable-next-line: deprecated
       return vim.tbl_flatten {
         args,
         { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" }
