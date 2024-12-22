@@ -13,6 +13,7 @@ let
   unifiEnable = false;
   nextdnsEnable = false;
   adguardEnable = true;
+  tailscaleEnable = true;
 
   zfsPools = [ "z3" "z2" "z1" "z0" ];
 in {
@@ -26,6 +27,10 @@ in {
   services.plex.enable = plexEnable;
 
   services.adguardhome.enable = adguardEnable;
+
+  services.tailscale.enable = tailscaleEnable;
+  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+  networking.search = [ "taild2340b.ts.net" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
