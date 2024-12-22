@@ -19,6 +19,9 @@ Host latbtop ltl
 # in /etc/services we set ssh to 8328/tcp and 8328/udp
   User bauerdic
 
+Host umini
+  User bauerdic
+
 Host wumini
   HostName 116.203.126.183
   Port 8387
