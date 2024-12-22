@@ -24,9 +24,9 @@ in {
 #      ./wireguard.nix
     ];
 
-#  services.tailscale.enable = tailscaleEnable;
-#  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
-#  networking.search = [ "taild2340b.ts.net" ];
+  services.tailscale.enable = tailscaleEnable;
+  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+  networking.search = [ "taild2340b.ts.net" ];
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
