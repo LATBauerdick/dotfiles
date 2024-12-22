@@ -19,29 +19,30 @@
     };
 
     lib = nixpkgs.lib;
-
+    user = "bauerdic";
+    extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = false;
+    };
   in {
     homeManagerConfigurations = {
       bauerdic = home-manager.lib.homeManagerConfiguration {
-#        inherit system pkgs;
         pkgs = nixpkgs.legacyPackages.${system};
-	modules = [
-          ./users/bauerdic/home.nix
-	  {
-	    home = {
-              username = "bauerdic";
-              homeDirectory = "/home/bauerdic";
-              stateVersion = "22.05";
-            };
-          }
-	];
-#        username = "bauerdic";
-#        homeDirectory = "/home/bauerdic";
-#        configuration = {
-#          imports = [
-#            ./users/bauerdic/home.nix
-#          ];
-#        };
+
+        modules = [
+        ./users/${user}/${user}.nix
+        home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.${user} = import ./users/user/home.nix {
+            user = user;
+            dir = "/home/${user}";
+          };
+          home-manager.extraSpecialArgs = extraSpecialArgs;
+          home.stateVersion = "20.09";
+        }
+        /* { nixpkgs.overlays = import ./overlays.nix ++ [ ]; } */
+        ];
       };
     };
 

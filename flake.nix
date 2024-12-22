@@ -116,6 +116,17 @@
       };
     };
 
+    nixosConfigurations.uhetz = mkMachine "uhetz" {
+      nixpkgs = nixpkgs;  
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "latb";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+
     nixosConfigurations.rpi   = mkMachine "rpi" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
