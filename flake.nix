@@ -18,6 +18,7 @@
         url = "github:nix-community/nixvim";
         inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs = {
@@ -34,6 +35,9 @@
       allowUnfree = true;
     };
     localOverlay = _: _: { };
+    overlays = import ./overlays.nix ++ [
+      inputs.neovim-nightly-overlay.overlays.default
+    ];
     # overlay-roon = system: prev: final: {
       # roon-bridge = roon.packages.${system}.roon-bridge;
     # };
@@ -61,7 +65,7 @@
           };
           home-manager.extraSpecialArgs = extraSpecialArgs;
         }
-        { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
+        { nixpkgs.overlays = overlays; }
       ];
     };
 

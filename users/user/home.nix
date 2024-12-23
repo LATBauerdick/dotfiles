@@ -66,6 +66,10 @@ in {
   home.file.".gitconfig".source = ./git/gitconfig;
   home.file.".editorconfig".source = ./vim/editorconfig;
 
+  programs.neovim = {
+    enable = true;
+  };
+
   xdg.enable = true;
   xdg.configFile."nvim/lua".source = ./vim/lua;
   xdg.configFile."nvim/after".source = ./vim/after;

@@ -33,7 +33,7 @@
       lzop
       mosh
       neofetch
-      neovim-unwrapped
+#      neovim-unwrapped
 #      neuron-notes
       oh-my-zsh
       oh-my-posh
