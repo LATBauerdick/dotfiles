@@ -2,7 +2,7 @@
 let systemPackages = with pkgs; [
        # failed to install airbuddy
        alacritty
-       alt-tab-macos
+       # alt-tab-macos
        # not on this platform bitwarden
        # marked as broken calibre
        discord

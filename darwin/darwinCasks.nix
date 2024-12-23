@@ -32,6 +32,7 @@
        "nikitabobko/tap/aerospace"
       # "notchnook"
        "omnigraffle"
+       "onyx"
        "pdf-expert"
        "plex"
        "popclip"
