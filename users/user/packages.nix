@@ -54,7 +54,7 @@
       wget
       xz
       zoxide
-      kitty
+#      kitty
 
 # language support
 #      cabal-install
