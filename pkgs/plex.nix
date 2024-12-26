@@ -3,14 +3,15 @@ let
   # plexname = "umini";
   myPlex = pkgs.plex.override {
     plexRaw = pkgs.plexRaw.overrideAttrs(old: rec {
-      version = "1.41.2.9200-c6bbc1b53";
+      version = "1.41.3.9314-a0bfb8370";
+      # version = "1.41.2.9200-c6bbc1b53";
       # version = "1.41.1.9057-af5eaea7a";
       # version = "1.40.2.8395-c67dce28e";
       # version = "1.40.1.8227-c0dd5a73e";
       # "1.32.8.7639-fb6452ebf";  "1.32.5.7349-8f4248874"; "1.32.5.7318-0b5fb6462"; "1.32.5.7210-77f7f99fa"; "1.25.2.5319-c43dc0277";
       src = pkgs.fetchurl {
         url = "https://downloads.plex.tv/plex-media-server-new/${version}/debian/plexmediaserver_${version}_amd64.deb";
-        sha256 = "sha256-HmgtnUsDzRIUThYdlZIzhiU02n9jSU7wtwnEA0+r1iQ=";
+        sha256 = "sha256-ku16UwIAAdtMO1ju07DwuWzfDLg/BjqauWhVDl68/DI=";
       };
     });
   };
