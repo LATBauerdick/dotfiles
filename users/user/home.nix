@@ -85,6 +85,8 @@ in {
   xdg.configFile."amethyst".source = ./amethyst;
   xdg.configFile."karabiner/assets".source = ./karabiner/assets;
 
+  xdg.configFile."ghostty".source = ./ghostty;
+
   xdg.configFile."kitty/kitty.conf".source = ./kitty/kitty.conf;
   xdg.configFile."kitty/lightTheme.conf".source = ./kitty/lightTheme.conf;
   xdg.configFile."kitty/darkTheme.conf".source = ./kitty/darkTheme.conf;

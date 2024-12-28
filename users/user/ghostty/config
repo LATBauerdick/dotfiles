@@ -1,0 +1,12 @@
+#theme = dark:catppuccin-frappe,light:catppuccin-latte
+theme = dark:Builtin Solarized Dark,light:Builtin Solarized Light
+
+shell-integration-features = no-cursor
+
+cursor-style = block
+cursor-color = #ff4c00
+adjust-cursor-thickness = 4
+
+font-family = Iosevka Term
+font-size = 14.0
+adjust-cell-height = 4
