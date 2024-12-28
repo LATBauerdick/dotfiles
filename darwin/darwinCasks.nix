@@ -17,6 +17,7 @@
        "fantastical"
        "firefox"
        "folx"
+       "ghostty"
        "grammarly-desktop"
        "iina"
        "karabiner-elements"
