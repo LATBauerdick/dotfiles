@@ -23,6 +23,12 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 if.app-name-regex-substring = "finder"
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-id="com.mitchellh.ghostty"
+run= [
+  "layout tiling",
+]
+
 # Possible values: (qwerty|dvorak)
 [key-mapping]
 preset = 'qwerty'
@@ -77,7 +83,7 @@ outer.right =      5
 ctrl-alt-f = '''exec-and-forget osascript -e '
 tell application "Finder" to activate'
 '''
-ctrl-alt-enter = 'exec-and-forget open -a /Applications/Nix\ Apps/kitty.app'
+ctrl-alt-enter = 'exec-and-forget open -a /apps/Applications/Ghostty.app'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 ctrl-alt-slash = 'layout tiles horizontal vertical' # period
