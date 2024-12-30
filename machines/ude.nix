@@ -183,7 +183,7 @@ in {
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "prohibit-password";
   services.openssh.settings.X11Forwarding = true;
-  services.openssh.settings.gatewayPorts = "yes";
+  services.openssh.settings.GatewayPorts = "yes";
 
   programs.mosh.enable = true;
 
