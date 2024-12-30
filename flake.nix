@@ -120,7 +120,7 @@
       };
     };
 
-    nixosConfigurations.uhetz = mkMachine "uhetz" {
+    nixosConfigurations.ude = mkMachine "ude" {
       nixpkgs = nixpkgs;  
       home-manager = home-manager;
       system = "x86_64-linux";
