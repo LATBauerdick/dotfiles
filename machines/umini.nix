@@ -14,6 +14,7 @@ let
   nextdnsEnable = false;
   adguardEnable = true;
   tailscaleEnable = true;
+  tailnetName = "taild2340b.ts.net";
 
   zfsPools = [ "z3" "z2" "z1" "z0" ];
 in {
@@ -23,50 +24,193 @@ in {
       ../pkgs/plex.nix
       ../pkgs/adguard.nix
     ];
-  nixpkgs.config.plex.plexname = hostname;
-  services.plex.enable = plexEnable;
 
-  services.adguardhome.enable = adguardEnable;
-
-  services.tailscale.enable = tailscaleEnable;
-  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
-  networking.search = [ "taild2340b.ts.net" ];
+  system.stateVersion = "22.11"; # Did you read the comment?
+  # use unstable nix so we can access flakes
+  nix.settings.trusted-users = [ "root" "bauerdic" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking = {
+    useDHCP = false;
+    hostName = hostname;
+    hostId = hostId;
+    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    search = [ tailnetName ];
+    interfaces.enp1s0f0.useDHCP = true;
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+    networkmanager.enable = true;
+    firewall.enable = true;
+    firewall.allowPing = true;
+# ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
+    firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
+# open firewall ports for mosh, wireguard
+    firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
+# ports for NextDNS, `services.samba`, slimserver, roon ARC
+    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+  };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  services.tailscale.enable = tailscaleEnable;
+  services.tailscale.useRoutingFeatures = "server";
+# make sure tailscale starts with exit-node enabled
+  systemd.services.tailscale-autoconnect = {
+    description = "Automatic connection to Tailscale";
 
-  system.stateVersion = "22.11"; # Did you read the comment?
+    # make sure tailscale is running before trying to connect to tailscale
+    after = [ "network-pre.target" "tailscale.service" ];
+    wants = [ "network-pre.target" "tailscale.service" ];
+    wantedBy = [ "multi-user.target" ];
+
+    # set this service as a oneshot job
+    serviceConfig.Type = "oneshot";
+
+    # have the job run this shell script
+    script = with pkgs; ''
+      # wait for tailscaled to settle
+      sleep 2
+
+      # otherwise authenticate with tailscale
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes
+    '';
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
+    "net.ipv6.conf.all.forwarding" = true;
+
+    /* # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52 */
+    /* # By default, not automatically configure any IPv6 addresses. */
+    /* "net.ipv6.conf.all.accept_ra" = 0; */
+    /* "net.ipv6.conf.all.autoconf" = 0; */
+    /* "net.ipv6.conf.all.use_tempaddr" = 0; */
+
+# On WAN, allow IPv6 autoconfiguration and tempory address use.
+    "net.ipv6.conf.enp1s0f0.accept_ra" = 2;
+    "net.ipv6.conf.enp1s0f0.autoconf" = 1;
+  };
+
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnsupportedSystem = true;
+
+  environment.systemPackages = with pkgs; [
+    silver-searcher
+    git
+    gnumake
+#    killall
+    psmisc # things like killall
+    lshw
+    lzop
+    mbuffer
+    sanoid
+    pv
+    usbutils
+    thunderbolt
+
+    networkmanagerapplet
+    xorg.xbacklight
+    lm_sensors
+    acpi
+
+    vim
+    neovim
+    curl
+    # gui apps
+    firefox
+    # window manager stuff
+    xmobar
+    nitrogen
+    picom
+    dmenu
+  # To make SMB mounting easier on the command line
+    cifs-utils
+  ];
+
+  fonts.fontDir.enable = true;
+  fonts.enableDefaultPackages = true;
+  # fonts.enableGhostscriptFonts = true;
+  fonts.packages = with pkgs; [
+#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
+#    corefonts
+  ];
 
   programs.zsh.enable = true;
 
-  # let it never sleep
+  security.sudo.wheelNeedsPassword = false;
+  security = {
+    sudo.extraRules = [
+      { users = [ "bauerdic" ];
+        commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
+      }
+    ];
+  };
+
+  services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.PermitRootLogin = "yes";
+  services.openssh.settings.X11Forwarding = true;
+
+  programs.mosh.enable = true;
+
+  users.users.root.initialPassword = "root";
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOXZjedCEONef8tQoqk8iZYODg0VoONlyfIz5tFfWXz latb@lmini.local"
+  ];
+
+  time.timeZone = "America/Chicago";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  services.syncthing = {
+    enable = true;
+    dataDir = "/home/bauerdic/";
+    user = "bauerdic";
+  };
+  boot.kernel.sysctl = {
+    # Note that inotify watches consume 1kB on 64-bit machines.
+    # needed for syncthing
+    "fs.inotify.max_user_watches"   =  204800;   # default:  8192
+  #  "fs.inotify.max_user_instances" =    1024;   # default:   128
+  #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
+  };
+
+
+  services.autossh.sessions = [
+    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17007;
+      name = "reverse";
+      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
+  ];
+
+
+  # Binary Cache for Haskell.nix
+  # nix.settings.trusted-public-keys = [
+  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  # ];
+  # nix.settings.substituters = [
+  #   "https://cache.iog.io"
+  # ];
+
+# zfs setup
+  boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
+  boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
+  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
+
+  /* fileSystems."/media" = */
+  /*   { device = "h/m"; */
+  /*     fsType = "zfs"; */
+  /*     options = [ "zfsutil" ]; */
+  /*   }; */
+  boot.zfs.extraPools = zfsPools;
+
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
-
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;
 
   hardware.pulseaudio.enable = true;
 
@@ -75,12 +219,10 @@ in {
 # `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
   services.hardware.bolt.enable = true;
 
-#  boot.loader.grub.extraEntries = ''
-#    menuentry "Ubuntu" {
-#      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
-#      configfile "($ubuntu)/boot/grub/grub.cfg"
-#    }
-#  '';
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
 
   services.xrdp.enable = true;
   /* services.xrdp.defaultWindowManager = "awesome-x11"; */
@@ -114,166 +256,14 @@ in {
     /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
   };
 
-  # setup i3 windowing environment
-  /* services.xserver = { */
-  /*   desktopManager = { */
-  /*     xterm.enable = false; */
-  /*     wallpaper.mode = "scale"; */
-  /*   }; */
-  /*   displayManager = { */
-  /*     defaultSession = "none+i3"; */
-  /*     lightdm.enable = true; */
-  /*   }; */
-  /*   windowManager = { */
-  /*     i3.enable = true; */
-  /*   }; */
-  /* }; */
-
-  # use unstable nix so we can access flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  networking.hostName = hostname;
-  time.timeZone = "America/Chicago"; # Set your time zone.
-
- # Don't require password for sudo
-  security.sudo.wheelNeedsPassword = false;
-
-  # Virtualization settings
-#  virtualisation.docker.enable = true;
-
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # nextdns
-    silver-searcher  # ag
-    git
-    gnumake
-#    killall
-    psmisc # things like killall
-    lshw
-    lzop
-    mbuffer
-    sanoid
-    pv
-    usbutils
-    thunderbolt
-
-    networkmanagerapplet
-    xorg.xbacklight
-    lm_sensors
-    acpi
-
-    vim
-    neovim
-    curl
-    # gui apps
-    firefox
-    # window manager stuff
-    xmobar
-    nitrogen
-    picom
-    dmenu
-  # To make SMB mounting easier on the command line
-    cifs-utils
-  ];
-
- # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
-  services.openssh.settings.PermitRootLogin = "yes";
-  services.openssh.settings.X11Forwarding = true;
-  users.users.root.initialPassword = "root";
-
-  services.autossh.sessions = [
-    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17007;
-      name = "reverse";
-      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
-  ];
-
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnsupportedSystem = true;
-
-  # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
-
-  # Binary Cache for Haskell.nix
-  # nix.settings.trusted-public-keys = [
-  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-  # ];
-  # nix.settings.substituters = [
-  #   "https://cache.iog.io"
-  # ];
-
-  boot.kernel.sysctl = {
-    # Note that inotify watches consume 1kB on 64-bit machines.
-    # needed for syncthing
-    "fs.inotify.max_user_watches"   =  204800;   # default:  8192
-  #  "fs.inotify.max_user_instances" =    1024;   # default:   128
-  #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
-  };
-  services.syncthing = { enable = true;
-    dataDir = "/home/bauerdic/";
-    user = "bauerdic";
-  };
-
-  networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
-  # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
-  # open firewall ports for mosh, wireguard
-  networking.firewall.allowedUDPPortRanges = [
-    { from = 60001; to = 61000; }
-  ];
-  # the needed ports in the firewall for NextDNS, `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
-
-# NextDNS config
-  # services.nextdns.enable = nextdnsEnable;
-  # networking.nameservers = [ "45.90.28.239" "45.90.30.239" ];
-  # services.nextdns.arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
-
-  programs.mosh.enable = true;
-
-# zfs setup
-  networking.hostId = hostId;
-  boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
-  boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
-  services.udev.extraRules = ''
-    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
-  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
-
-  /* fileSystems."/media" = */
-  /*   { device = "h/m"; */
-  /*     fsType = "zfs"; */
-  /*     options = [ "zfsutil" ]; */
-  /*   }; */
-  boot.zfs.extraPools = zfsPools;
-
-  fonts.fontDir.enable = true;
-  fonts.enableDefaultPackages = true;
-  fonts.enableGhostscriptFonts = true;
-  fonts.packages = with pkgs; [
-#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
-#    corefonts
-#    dejavu_fonts
-#    font-awesome-ttf
-#    inconsolata
-#    liberation_ttf
-#    terminus_font
-#    ubuntu_font_family
-#    unifont
-  ];
-
   nixpkgs.config.permittedInsecurePackages = [
                 "electron-13.6.9"
   ];
 
-  # appstream.enable = true;
+  services.adguardhome.enable = adguardEnable;
+
+  nixpkgs.config.plex.plexname = hostname;
+  services.plex.enable = plexEnable;
 
   services.deluge.enable = delugeEnable;
   services.deluge = {
@@ -390,4 +380,3 @@ in {
   };
 
 }
-
