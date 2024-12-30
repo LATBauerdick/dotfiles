@@ -24,15 +24,61 @@ in {
 #      ./wireguard.nix
     ];
 
+  networking = {
+    useDHCP = false;
+    hostName = "nix-latb";
+    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    search = [ "taild2340b.ts.net" ];
+    interfaces.ens3.useDHCP = true;
+
+    nat = {
+      enable = true;
+      externalInterface = "ens3";
+      internalInterfaces = [ "wg0" ];
+    };
+
+    wireguard.interfaces.wg0 = {
+      ips = [ "10.0.0.1/24" ];
+      listenPort = 60990;
+      privateKeyFile = "/etc/nixos/wg-priv";
+
+# This allows the wireguard server to route your traffic to the internet
+# you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+      postSetup = ''
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o ens3 -j MASQUERADE
+      '';
+      postShutdown = ''
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o ens3 -j MASQUERADE
+      '';
+
+      peers = [
+        {
+          publicKey = "BOiWgg6uuKUm3+tnPdcvIp7LffxQjcoIaMZHbcuCsx8=";
+          allowedIPs = [ "10.0.0.0/24" "10.0.0.2/32" ];
+          persistentKeepalive = 25;
+        }
+        {
+          publicKey = "/xz3AXSHjuvNNDPxmvMWJIBNoTcEatfBldaS01EV1DM=";
+          allowedIPs = [ "10.0.0.3/32" ];
+          persistentKeepalive = 25;
+        }
+        {
+          publicKey = "bG6Ro8DiV144lGRGY0YLbasEyXDjkdl3GfZc7XVfm0c=";
+          allowedIPs = [ "10.0.0.4/32" ];
+          persistentKeepalive = 25;
+        }
+      ];
+
+    };
+
+    firewall.allowedTCPPorts = [ 8385 8386 8387 8388 8389 8888 8080 32401 ];
+  # open firewall ports for mosh, wireguard
+    firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
+  };
   services.tailscale.enable = tailscaleEnable;
-  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
-  networking.search = [ "taild2340b.ts.net" ];
 
   boot.kernel.sysctl = {
-    # if you use ipv4, this is all you need
     "net.ipv4.conf.all.forwarding" = true;
-
-    # If you want to use it for ipv6
     "net.ipv6.conf.all.forwarding" = true;
 
     /* # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52 */
@@ -41,9 +87,9 @@ in {
     /* "net.ipv6.conf.all.autoconf" = 0; */
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
-    /* # On WAN, allow IPv6 autoconfiguration and tempory address use. */
-    /* "net.ipv6.conf.${name}.accept_ra" = 2; */
-    /* "net.ipv6.conf.${name}.autoconf" = 1; */
+# On WAN, allow IPv6 autoconfiguration and tempory address use.
+    "net.ipv6.conf.ens3.accept_ra" = 2;
+    "net.ipv6.conf.ens3.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -85,13 +131,7 @@ in {
   boot.loader.grub.devices = [ "/dev/sda" ];
 
 
-  networking.hostName = "nix-latb"; # Define your hostname.
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  # networking.useDHCP = false;
-  # networking.interfaces.ens3.useDHCP = true;
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
@@ -170,7 +210,6 @@ in {
   # services.openssh.gatewayPorts = "yes";
   services.openssh.settings.GatewayPorts = "yes";
   # 8385 for syncthing WebGUI port forward, 838x for my reverse tunnel
-  networking.firewall.allowedTCPPorts = [ 8385 8386 8387 8388 8389 8888 8080 32401 ];
 
 #  fileSystems."/data" =
 #  { #device = "/dev/disk/by-uuid/9834bc72-2720-4ac1-86e6-2c737db330a0";
@@ -218,10 +257,6 @@ in {
 
   nix.settings.trusted-users = [ "root" "latb" ];
 
-  # open firewall ports for mosh, wireguard
-  networking.firewall.allowedUDPPortRanges = [
-    { from = 60001; to = 61000; }
-  ];
   programs.mosh.enable = true;
 
 }
