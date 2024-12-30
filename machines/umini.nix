@@ -138,8 +138,8 @@ in {
 
   programs.zsh.enable = true;
 
-  security.sudo.wheelNeedsPassword = false;
   security = {
+    sudo.wheelNeedsPassword = false;
     sudo.extraRules = [
       { users = [ "bauerdic" ];
         commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
