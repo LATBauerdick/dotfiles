@@ -184,6 +184,10 @@ in {
       user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
   ];
 
+  # NextDNS config
+  services.nextdns = { enable = nextdnsEnable;
+    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
+  };
 
   # Binary Cache for Haskell.nix
   # nix.settings.trusted-public-keys = [
