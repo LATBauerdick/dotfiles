@@ -36,7 +36,7 @@
     };
     localOverlay = _: _: { };
     overlays = import ./overlays.nix ++ [
-      inputs.neovim-nightly-overlay.overlays.default
+##      inputs.neovim-nightly-overlay.overlays.default
     ];
     # overlay-roon = system: prev: final: {
       # roon-bridge = roon.packages.${system}.roon-bridge;

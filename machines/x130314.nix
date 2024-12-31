@@ -12,7 +12,7 @@ let
   delugeEnable = false;
   unifiEnable = false;
   nextdnsEnable = false;
-  adguardEnable = false;
+  adguardEnable = true;
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
