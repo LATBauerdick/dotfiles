@@ -19,6 +19,10 @@ local map = function(key)
   end
 end
 
+-- end terminal
+vim.cmd [[
+tnoremap <Esc> <C-\><C-n>
+]]
 
 -- enable spell checking
 map { '', '<Leader>s', ':setlocal spell! spelllang=en_us<cr>', noremap = false }
