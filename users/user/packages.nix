@@ -53,6 +53,7 @@
       unrar
       wget
       xz
+      zellij
       zoxide
 #      kitty
 
