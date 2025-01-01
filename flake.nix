@@ -103,7 +103,7 @@
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";
-      user   = "bauerdic";
+      user   = "latb";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
