@@ -99,6 +99,8 @@ in {
     silver-searcher
     git
     gnumake
+    gcc
+    fzf
 #    killall
     psmisc # things like killall
     lshw
