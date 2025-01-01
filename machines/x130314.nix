@@ -27,7 +27,7 @@ in {
 
   system.stateVersion = "24.05"; # Did you read the comment?
   # use unstable nix so we can access flakes
-  nix.settings.trusted-users = [ "root" "bauerdic" ];
+  nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
@@ -99,6 +99,8 @@ in {
     silver-searcher
     git
     gnumake
+    gcc
+    fzf
 #    killall
     psmisc # things like killall
     lshw
@@ -141,7 +143,7 @@ in {
   security = {
     sudo.wheelNeedsPassword = false;
     sudo.extraRules = [
-      { users = [ "bauerdic" ];
+      { users = [ "latb" ];
         commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
       }
     ];
@@ -165,8 +167,8 @@ in {
 
   services.syncthing = {
     enable = true;
-    dataDir = "/home/bauerdic/";
-    user = "bauerdic";
+    dataDir = "/home/latb/";
+    user = "latb";
   };
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.
@@ -357,15 +359,15 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force user" = "latb"; # smbpasswd -a latb as root...
         "force group" = "users";
       };
       tm = { # configured for time machine backups
           path = "/arq/tm";
-          "valid users" = "bauerdic";
+          "valid users" = "latb";
           public = "no";
           writeable = "yes";
-          "force user" = "bauerdic";
+          "force user" = "latb";
           "fruit:aapl" = "yes";
           "fruit:time machine" = "yes";
           "vfs objects" = "catia fruit streams_xattr";
@@ -377,7 +379,7 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force user" = "latb"; # smbpasswd -a latb as root...
         "force group" = "users";
       };
     };
