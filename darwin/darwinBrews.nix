@@ -4,6 +4,7 @@
        "imagemagick"
        "lua-language-server"
        "mas"
+       "pngpaste"
        "qmk/qmk/qmk"
        "syncthing"
      ]
