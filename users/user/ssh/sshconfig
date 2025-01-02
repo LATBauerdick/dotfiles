@@ -51,11 +51,11 @@ Host gitlab.cern.ch
   Preferredauthentications publickey
   IdentityFile ~/.ssh/id_rsa
 
-Host cmslpc*.fnal.gov
-    GSSAPIAuthentication yes
-    GSSAPIDelegateCredentials yes
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
+# Host cmslpc*.fnal.gov
+#     GSSAPIAuthentication yes
+#     GSSAPIDelegateCredentials yes
+#     StrictHostKeyChecking no
+#     UserKnownHostsFile /dev/null
 
 Host 131.225.* *.fnal.gov
 #    GSSAPIAuthentication yes
@@ -72,5 +72,5 @@ Host *
 #   IdentityFile ~/.ssh/id_rsa
   ForwardX11 yes
   ForwardX11Trusted yes
-  GSSAPIAuthentication yes
-  GSSAPIDelegateCredentials yes
+  # GSSAPIAuthentication yes
+  # GSSAPIDelegateCredentials yes
