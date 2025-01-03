@@ -1,0 +1,15 @@
+
+
+macos-titlebar-style = hidden
+
+shell-integration-features = no-cursor, sudo, no-title
+
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
+
+auto-update-channel = tip
+
+window-padding-x=20
+window-padding-y=20
+window-padding-balance=true
+link-url=true
