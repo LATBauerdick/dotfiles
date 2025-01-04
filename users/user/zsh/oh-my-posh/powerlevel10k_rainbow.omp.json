@@ -26,7 +26,7 @@
             "style": "full"
           },
           "style": "powerline",
-          "template": " \uf07c {{ .Path }} ",
+          "template": " \uf07c {{ .UserName }}@{{ .HostName }}:{{ .Path }} ",
           "type": "path"
         },
         {
