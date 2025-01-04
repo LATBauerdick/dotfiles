@@ -99,6 +99,16 @@
     # non-system suffixed items should go here
     overlay = localOverlay;
 
+    nixosConfigurations.fmini = mkMachine "fmini" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "latb";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
     nixosConfigurations.x130314 = mkMachine "x130314" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
