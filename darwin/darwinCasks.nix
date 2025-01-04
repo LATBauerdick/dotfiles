@@ -1,5 +1,5 @@
 [
-       "adobe-acrobat-reader"
+#      "adobe-acrobat-reader"
        "aerospace"
        "airbuddy"
      #  "alfred"
@@ -12,7 +12,7 @@
        "bluos-controller"
      #  "brave-browser"
        "calibre"
-       "chatgpt"
+#      "chatgpt"
        "devonthink"
        "fantastical"
        "firefox"
