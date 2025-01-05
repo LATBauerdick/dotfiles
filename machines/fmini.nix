@@ -16,7 +16,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [  ];
+  zfsPools = [ "z3" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -73,7 +73,7 @@ in {
       sleep 2
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
     '';
   };
 
