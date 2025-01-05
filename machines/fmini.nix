@@ -16,7 +16,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ ];
+  zfsPools = [ "z3" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
