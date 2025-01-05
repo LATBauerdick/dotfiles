@@ -29,7 +29,7 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    security.pam.enableSudoTouchIdAuth = true;
+    # security.pam.enableSudoTouchIdAuth = true;
     system.defaults = {
       dock.autohide = true;
       dock.largesize = 128;
