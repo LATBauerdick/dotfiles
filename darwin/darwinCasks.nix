@@ -45,7 +45,7 @@
        "skype"
        "superduper"
        "switchresx"
-       "tailscale"
+#      "tailscale"
        "tidal"
        "ukelele"
      # "visual-studio-code"

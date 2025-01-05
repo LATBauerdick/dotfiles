@@ -7,6 +7,6 @@
        "pngpaste"
        "qmk/qmk/qmk"
        "syncthing"
-       "tailscale"
+#      "tailscale"
      ]
 

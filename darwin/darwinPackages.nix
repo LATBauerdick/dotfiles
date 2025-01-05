@@ -1,7 +1,7 @@
 {pkgs}:
 let systemPackages = with pkgs; [
        # failed to install airbuddy
-       alacritty
+#      alacritty
        # alt-tab-macos
        # not on this platform bitwarden
        # marked as broken calibre
@@ -17,6 +17,7 @@ let systemPackages = with pkgs; [
        obsidian
        raycast
        slack
+       tailscale
        xld
        # does not install xquartz
        zoom-us
