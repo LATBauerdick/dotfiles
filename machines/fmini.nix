@@ -152,7 +152,8 @@ in {
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.PermitRootLogin = "yes";
-  services.openssh.settings.X11Forwarding = true;
+  # services.openssh.settings.X11Forwarding = true;
+  services.openssh.openFirewall = false; # only allow tailscale
 
   programs.mosh.enable = true;
 
