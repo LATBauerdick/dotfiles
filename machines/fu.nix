@@ -4,7 +4,7 @@
 
 { config, pkgs, lib, ... }@args:
 let
-  hostname = "x130314";
+  hostname = "fu";
   hostId = "48f2d09d"; # head -c 8 /etc/machine-id
   plexEnable = false;
   roonEnable = false;

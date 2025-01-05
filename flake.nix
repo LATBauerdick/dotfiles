@@ -109,7 +109,7 @@
         isDesktop = true;
       };
     };
-    nixosConfigurations.x130314 = mkMachine "x130314" {
+    nixosConfigurations.fu = mkMachine "fu" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
       system = "x86_64-linux";
