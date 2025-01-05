@@ -27,7 +27,7 @@ in {
 
   system.stateVersion = "22.11"; # Did you read the comment?
   # use unstable nix so we can access flakes
-  nix.settings.trusted-users = [ "root" "bauerdic" ];
+  nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
@@ -73,7 +73,7 @@ in {
       sleep 2
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
     '';
   };
 
@@ -143,7 +143,7 @@ in {
   security = {
     sudo.wheelNeedsPassword = false;
     sudo.extraRules = [
-      { users = [ "bauerdic" ];
+      { users = [ "latb" ];
         commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
       }
     ];
@@ -152,7 +152,8 @@ in {
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.PermitRootLogin = "yes";
-  services.openssh.settings.X11Forwarding = true;
+  # services.openssh.settings.X11Forwarding = true;
+  services.openssh.openFirewall = false; # only allow tailscale
 
   programs.mosh.enable = true;
 
@@ -167,8 +168,8 @@ in {
 
   services.syncthing = {
     enable = true;
-    dataDir = "/home/bauerdic/";
-    user = "bauerdic";
+    dataDir = "/home/latb/";
+    user = "latb";
   };
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.
@@ -359,15 +360,15 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force user" = "latb"; # smbpasswd -a latb as root...
         "force group" = "users";
       };
       tm = { # configured for time machine backups
           path = "/arq/tm";
-          "valid users" = "bauerdic";
+          "valid users" = "latb";
           public = "no";
           writeable = "yes";
-          "force user" = "bauerdic";
+          "force user" = "latb";
           "fruit:aapl" = "yes";
           "fruit:time machine" = "yes";
           "vfs objects" = "catia fruit streams_xattr";
@@ -379,7 +380,7 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
+        "force user" = "latb"; # smbpasswd -a latb as root...
         "force group" = "users";
       };
     };
