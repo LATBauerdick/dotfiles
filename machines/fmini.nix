@@ -16,7 +16,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "z3" ];
+  zfsPools = [ ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -40,7 +40,7 @@ in {
     hostId = hostId;
     nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
     search = [ tailnetName ];
-    interfaces.enp4s0f0.useDHCP = true;
+    interfaces.enp4s0.useDHCP = true;
 
     networkmanager.enable = true;
     firewall.enable = true;
@@ -88,8 +88,8 @@ in {
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
-    "net.ipv6.conf.enp4s0f0.accept_ra" = 2;
-    "net.ipv6.conf.enp4s0f0.autoconf" = 1;
+    "net.ipv6.conf.enp4s0.accept_ra" = 2;
+    "net.ipv6.conf.enp4s0.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;
