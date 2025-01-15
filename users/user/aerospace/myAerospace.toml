@@ -28,13 +28,17 @@ if.app-name-regex-substring = "arq"
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = "passwords"
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-name-regex-substring = "devon"
 run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id="com.mitchellh.ghostty"
 run= [
-  "layout tiling",
+  "layout floating",
 ]
 
 # Possible values: (qwerty|dvorak)
