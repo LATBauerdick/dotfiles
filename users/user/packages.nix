@@ -30,6 +30,7 @@
       jq
       lilypond-unstable-with-fonts
       llvm
+      lld
       lzop
       mosh
       neofetch
@@ -43,7 +44,7 @@
       pandoc-fignos
       pandoc-eqnos
       # python3
-      # qemu
+      qemu
       ranger
       ripgrep
       silver-searcher
