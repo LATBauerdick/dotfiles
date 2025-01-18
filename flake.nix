@@ -21,6 +21,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
     };
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    limainit.url = "github:msgilligan/nixos-lima/msgilligan-main";
   };
 
   outputs = {
@@ -31,6 +32,7 @@
     nix-darwin,
     nix-homebrew,
     nixvim,
+    limainit,
     ... }@inputs:
   let
     globalPkgsConfig = {
@@ -100,6 +102,17 @@
   }) // {
     # non-system suffixed items should go here
     overlay = localOverlay;
+
+    nixosConfigurations.lima = nixpkgs.lib.nixosSystem {
+# nixos-rebuild switch --flake .#lima --use-remote-sudo
+      # Change this to "x86_64-linux" if necessary
+      system = "aarch64-linux";
+      # Pass the `limainit` input along with the default module system parameters
+      specialArgs = { inherit limainit; };
+      modules = [
+        ./hardware/lima.nix
+      ];
+    };
 
     nixosConfigurations.fmini = mkMachine "fmini" {
       nixpkgs = nixpkgs;
