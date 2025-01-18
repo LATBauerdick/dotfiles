@@ -111,6 +111,21 @@
       specialArgs = { inherit limainit; };
       modules = [
         ./hardware/lima.nix
+        ./machines/lima.nix
+        ./users/latb/latb.nix
+        home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.latb = import ./users/user/home.nix {
+            user = "latb";
+            dir = "/home/latb.linux";
+          };
+          home-manager.extraSpecialArgs = { # pass arguments
+		  withGUI = false;
+		  isDesktop = true;
+	  };
+        }
+        { nixpkgs.overlays = overlays; }
       ];
     };
 
