@@ -29,6 +29,7 @@
       imagemagick
       jq
       lilypond-unstable-with-fonts
+      lima
       llvm
       lld
       lzop

@@ -22,6 +22,7 @@ let systemPackages = with pkgs; [
        # does not install xquartz
        zoom-us
 
+      darwin.linux-builder
        vim
        git
     ];
