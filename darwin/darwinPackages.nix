@@ -26,14 +26,12 @@ let systemPackages = with pkgs; [
        vim
        git
     ];
-    fontsPackages = with pkgs; [
-        (nerdfonts.override { fonts = [
-          #"FiraCode" 
-          #"DroidSansMono" 
-          "Iosevka"
-          "Lekton"
-          "JetBrainsMono"
-          ]; })
+    fontsPackages = [
+          #"FiraCode"
+          #"DroidSansMono"
+          pkgs.nerd-fonts.iosevka
+          pkgs.nerd-fonts.lekton
+          pkgs.nerd-fonts.jetbrains-mono
     ];
 in
   {
