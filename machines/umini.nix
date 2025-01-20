@@ -219,7 +219,8 @@ in {
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.enable = true;
+  services.pulseaudio.enable = true;
 
 # Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
 # run `boltctl`, then for each device that is not authorized, execute 
