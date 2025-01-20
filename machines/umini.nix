@@ -364,7 +364,7 @@ in {
         "force group" = "users";
       };
       tm = { # configured for time machine backups
-          path = "/arq/tm";
+          path = "/tm";
           "valid users" = "latb";
           public = "no";
           writeable = "yes";
