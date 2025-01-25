@@ -1,4 +1,4 @@
--- lua/config/plugins/mini.lua
+-- lua/plugins/mini.lua
 return {
   {
     'echasnovski/mini.nvim',
