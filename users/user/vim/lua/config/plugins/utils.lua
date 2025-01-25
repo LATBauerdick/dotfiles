@@ -1,18 +1,17 @@
-
 return {
-  'tpope/vim-surround',
-  'tpope/vim-unimpaired',
-  'tpope/vim-repeat',
-  'tpope/vim-dispatch',
+  -- 'tpope/vim-surround',
+  -- 'tpope/vim-unimpaired',
+  -- 'tpope/vim-repeat',
+  -- 'tpope/vim-dispatch',
   'jiangmiao/auto-pairs',
   {
     'terryma/vim-smooth-scroll',
     config = function()
--- remap for smooth scroll
-      vim.keymap.set ( 'n', '<c-u>', ':call smooth_scroll#up(&scroll, 0, 2)<CR>' )
-      vim.keymap.set ( 'n', '<c-d>', ':call smooth_scroll#down(&scroll, 0, 2)<CR>' )
-      vim.keymap.set ( 'n', '<c-b>', ':call smooth_scroll#up(&scroll*2, 0, 4)<CR>' )
-      vim.keymap.set ( 'n', '<c-f>', ':call smooth_scroll#down(&scroll*2, 0, 4)<CR>' )
+      -- remap for smooth scroll
+      vim.keymap.set('n', '<c-u>', ':call smooth_scroll#up(&scroll, 0, 2)<CR>')
+      vim.keymap.set('n', '<c-d>', ':call smooth_scroll#down(&scroll, 0, 2)<CR>')
+      vim.keymap.set('n', '<c-b>', ':call smooth_scroll#up(&scroll*2, 0, 4)<CR>')
+      vim.keymap.set('n', '<c-f>', ':call smooth_scroll#down(&scroll*2, 0, 4)<CR>')
     end
   },
   {
@@ -31,7 +30,7 @@ return {
           precedes = "<",
         },
         notifications = true,
-        exclude_filetypes = {  },
+        exclude_filetypes = {},
         lighten_step = 10,
       })
     end,
