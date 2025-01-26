@@ -16,7 +16,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "z3" ];
+  zfsPools = [ ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -35,14 +35,20 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
+    usePredictableInterfaceNames = false;
     useDHCP = false;
+    interfaces.eth0.useDHCP = true;
+
     hostName = hostname;
     hostId = hostId;
-    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    nameservers = [ ];
     search = [ tailnetName ];
-    interfaces.enp4s0.useDHCP = true;
 
     networkmanager.enable = true;
+    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+
+    ### wireless.enable = true;
+
     firewall.enable = true;
     firewall.allowPing = true;
 # ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
@@ -57,6 +63,7 @@ in {
   services.tailscale.useRoutingFeatures = "server";
 # make sure tailscale starts with exit-node enabled
   systemd.services.tailscale-autoconnect = {
+    enable = tailscaleEnable;
     description = "Automatic connection to Tailscale";
 
     # make sure tailscale is running before trying to connect to tailscale
@@ -153,7 +160,7 @@ in {
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
-  services.openssh.openFirewall = false; # only allow tailscale
+  # services.openssh.openFirewall = false; # only allow tailscale
 
   programs.mosh.enable = true;
 
@@ -219,7 +226,7 @@ in {
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  hardware.pulseaudio.enable = true;
+  services.pulseaudio.enable = true;
 
 # Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
 # run `boltctl`, then for each device that is not authorized, execute 
