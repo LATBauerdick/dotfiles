@@ -1,6 +1,5 @@
 [
 #      "adobe-acrobat-reader"
-       "aerospace"
        "airbuddy"
      #  "alfred"
      #  "arc"
