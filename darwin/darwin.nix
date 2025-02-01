@@ -34,7 +34,7 @@
       dock.autohide = true;
       dock.largesize = 128;
       dock.magnification = true;
-      dock.orientation = "left";
+      dock.orientation = "bottom";
       dock.persistent-apps = [
         "${pkgs.obsidian}/Applications/Obsidian.app"
         "/System/Applications/Calendar.app"
@@ -42,7 +42,7 @@
         "/System/Applications/Mail.app"
         "/System/Applications/Safari.app"
       ];
-      # dock.expose-group-apps = true;
+      dock.expose-group-apps = true;
       finder = {
         AppleShowAllExtensions = true;
         AppleShowAllFiles = false;
@@ -53,7 +53,7 @@
         FXPreferredViewStyle = "clmv";
 
       };
-      spaces.spans-displays = false;
+      spaces.spans-displays = true;
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = false;
