@@ -16,7 +16,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ ];
+  zfsPools = [ "z3" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -156,11 +156,11 @@ in {
     ];
   };
 
-  services.openssh.enable = true;
+  services.openssh.enable = false; #####################!!!!! true;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
-  # services.openssh.openFirewall = false; # only allow tailscale
+  services.openssh.openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
 
   programs.mosh.enable = true;
 
