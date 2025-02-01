@@ -37,6 +37,7 @@
       neofetch
 #      neovim-unwrapped
 #      neuron-notes
+      nmap
       oh-my-zsh
       oh-my-posh
       ollama
