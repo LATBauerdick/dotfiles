@@ -39,6 +39,7 @@
 #      neuron-notes
       oh-my-zsh
       oh-my-posh
+      ollama
       pandoc
       pv
       python311Packages.pandoc-xnos
