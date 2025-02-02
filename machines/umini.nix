@@ -35,14 +35,20 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
+    usePredictableInterfaceNames = false;
     useDHCP = false;
+    interfaces.eth0.useDHCP = true;
+
     hostName = hostname;
     hostId = hostId;
-    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    nameservers = [ "1.1.1.1" ];
     search = [ tailnetName ];
-    interfaces.enp1s0f0.useDHCP = true;
 
     networkmanager.enable = true;
+    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+
+    ### wireless.enable = true;
+
     firewall.enable = true;
     firewall.allowPing = true;
 # ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
@@ -57,6 +63,7 @@ in {
   services.tailscale.useRoutingFeatures = "server";
 # make sure tailscale starts with exit-node enabled
   systemd.services.tailscale-autoconnect = {
+    enable = tailscaleEnable;
     description = "Automatic connection to Tailscale";
 
     # make sure tailscale is running before trying to connect to tailscale
@@ -88,8 +95,8 @@ in {
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
-    "net.ipv6.conf.enp1s0f0.accept_ra" = 2;
-    "net.ipv6.conf.enp1s0f0.autoconf" = 1;
+    "net.ipv6.conf.eth0.accept_ra" = 2;
+    "net.ipv6.conf.eth0.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -149,11 +156,13 @@ in {
     ];
   };
 
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
-  services.openssh.settings.PermitRootLogin = "yes";
+  services.openssh{
+    enable = ! tailscaleEnable;
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
-  services.openssh.openFirewall = false; # only allow tailscale
+    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
+  }
 
   programs.mosh.enable = true;
 
