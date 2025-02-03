@@ -17,7 +17,7 @@ let systemPackages = with pkgs; [
        obsidian
        raycast
        slack
-       tailscale
+#      tailscale
        xld
        # does not install xquartz
        zoom-us
