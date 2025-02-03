@@ -156,13 +156,13 @@ in {
     ];
   };
 
-  services.openssh{
+  services.openssh = {
     enable = ! tailscaleEnable;
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
     openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
-  }
+  };
 
   programs.mosh.enable = true;
 
