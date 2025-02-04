@@ -2,29 +2,11 @@
 # UseKeychain yes
 AddKeysToAgent yes
 
-Host lml
-  HostName lmini.local
-  User latb
-
-Host lmini
-  User latb
-
-Host ude
-  User latb
-
 Host wde
 HostName 116.203.126.183
   User latb
   LocalForward   *:8389  127.0.0.1:8384
   LocalForward   *:8089  127.0.0.1:8080
-
-Host umini
-  User latb
-
-Host wumini
-  HostName 116.203.126.183
-  Port 8387
-  User latb
 
 Host lpi
 # 192.168.0.193 eth, 192.168.0.106 wlan, 10.55.0.1 usb
@@ -58,7 +40,7 @@ Host *
 #   AddKeysToAgent yes
 #   UseKeychain yes
 #   IdentityFile ~/.ssh/id_rsa
-  ForwardX11 yes
-  ForwardX11Trusted yes
+#  ForwardX11 yes
+#  ForwardX11Trusted yes
   # GSSAPIAuthentication yes
   # GSSAPIDelegateCredentials yes
