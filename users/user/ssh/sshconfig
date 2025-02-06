@@ -28,9 +28,9 @@ Host gitlab.cern.ch
 #     UserKnownHostsFile /dev/null
 
 Host 131.225.* *.fnal.gov
-#    GSSAPIAuthentication yes
-#    GSSAPIDelegateCredentials yes
-    StrictHostKeyChecking no
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+#    StrictHostKeyChecking no
     ForwardX11Trusted yes
     ForwardX11 yes
 
@@ -40,7 +40,7 @@ Host *
 #   AddKeysToAgent yes
 #   UseKeychain yes
 #   IdentityFile ~/.ssh/id_rsa
-#  ForwardX11 yes
-#  ForwardX11Trusted yes
-  # GSSAPIAuthentication yes
-  # GSSAPIDelegateCredentials yes
+#   ForwardX11 yes
+#   ForwardX11Trusted yes
+#   GSSAPIAuthentication yes
+#   GSSAPIDelegateCredentials yes
