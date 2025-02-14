@@ -13,3 +13,4 @@ auto-update-channel = tip
 #window-padding-y=20
 window-padding-balance=true
 link-url=true
+font-size = 18.0
