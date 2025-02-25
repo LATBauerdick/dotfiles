@@ -19,9 +19,46 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 'exec-and-forget borders active_color=0xffed6b5f inactive_color=0xff494d64 width=5.0 style=round'
 ]
 
-# [[on-window-detected]]
-#   if.app-id = "com.apple.finder"
-#   run = 'layout floating'
+[[on-window-detected]]
+  if.app-id = "com.apple.finder"
+  run = 'layout floating'
+
+
+[[on-window-detected]]
+  if.app-id = "com.apple.ActivityMonitor"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.Dictionary"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.DiskUtility"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.Notes"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.keychainaccess"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "org.pqrs.Karabiner-Elements.Settings"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.reminders"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.systempreferences"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.apple.audio.AudioMIDISetup"
+  run = 'layout floating'
 
 [[on-window-detected]]
   if.app-id = "com.haystacksoftware.Arq"
@@ -32,13 +69,18 @@ exec-on-workspace-change = ['/bin/bash', '-c',
   run = 'layout floating'
 
 [[on-window-detected]]
+  if.app-id="com.mitchellh.ghostty"
+  run= "layout floating"
+
+[[on-window-detected]]
+  if.app-id="us.zoom.xos"
+  run= "layout floating"
+
+
+[[on-window-detected]]
   if.app-id = "com.devon-technologies.think3"
   if.during-aerospace-startup = true
   run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-  if.app-id="com.mitchellh.ghostty"
-  run= [ "layout floating", ]
 
 # Possible values: (qwerty|dvorak)
 [key-mapping]
