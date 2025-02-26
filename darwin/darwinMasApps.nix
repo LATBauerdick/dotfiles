@@ -10,6 +10,6 @@
        "Save to Raindrop.io" = 1549370672;
        "Vinegar" = 1591303229;
 #      "WhatsApp" = 310633997;
-       "WireGuard" = 1451685025;
+#       "WireGuard" = 1451685025;
 }
 
