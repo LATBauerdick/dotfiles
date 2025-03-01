@@ -21,6 +21,7 @@
        "iina"
        "karabiner-elements"
      #  "kicad"
+       "kobo"
        "launchcontrol"
      #  "ltspice"
 #      "mactex"

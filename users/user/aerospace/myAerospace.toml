@@ -20,9 +20,13 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 ]
 
 [[on-window-detected]]
+    if.app-id='com.kagi.kagimacOS'
+    if.window-title-regex-substring = '^orion preview'
+    run = 'layout floating'
+
+[[on-window-detected]]
   if.app-id = "com.apple.finder"
   run = 'layout floating'
-
 
 [[on-window-detected]]
   if.app-id = "com.apple.ActivityMonitor"
@@ -79,7 +83,6 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 [[on-window-detected]]
   if.app-id="us.zoom.xos"
   run= "layout floating"
-
 
 [[on-window-detected]]
   if.app-id = "com.devon-technologies.think3"
