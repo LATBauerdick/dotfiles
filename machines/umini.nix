@@ -20,7 +20,7 @@ let
   zfsPools = [ "h2" "z2" "z1" "z0" ];
 in {
   imports =
-    [ # Include the results of the hardware scan.
+    [ # Include the results of tbe hardware scan.
 # done elsewhere      ./hardware-configuration.nix
       ../pkgs/plex.nix
       ../pkgs/adguard.nix
@@ -189,7 +189,6 @@ in {
       };
     };
   };
-
 
   services.openssh = {
     enable = ! tailscaleEnable;
