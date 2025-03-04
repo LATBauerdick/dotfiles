@@ -37,6 +37,10 @@ exec-on-workspace-change = ['/bin/bash', '-c',
   run = 'layout floating'
 
 [[on-window-detected]]
+  if.app-id = "com.apple.AddressBook"
+  run = 'layout floating'
+
+[[on-window-detected]]
   if.app-id = "com.apple.Dictionary"
   run = 'layout floating'
 
@@ -50,6 +54,10 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 
 [[on-window-detected]]
   if.app-id = "com.apple.keychainaccess"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.bitwarden.desktop"
   run = 'layout floating'
 
 [[on-window-detected]]
