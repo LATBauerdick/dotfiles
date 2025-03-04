@@ -13,6 +13,7 @@ let
   unifiEnable = false;
   nextdnsEnable = false;
   adguardEnable = true;
+  krb5Enable = true;
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
@@ -103,6 +104,7 @@ in {
   nixpkgs.config.allowUnsupportedSystem = true;
 
   environment.systemPackages = with pkgs; [
+    krb5
     silver-searcher
     git
     gnumake
@@ -147,14 +149,47 @@ in {
 
   programs.zsh.enable = true;
 
-  security = {
-    sudo.wheelNeedsPassword = false;
-    sudo.extraRules = [
+  security.sudo = {
+    wheelNeedsPassword = false;
+    extraRules = [
       { users = [ "latb" ];
         commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
       }
     ];
   };
+
+  security.krb5 = {
+    package = pkgs.krb5;
+    enable = krb5Enable;
+    settings = {
+      libdefaults.default_realm = "FNAL.GOV";
+      realms."FNAL.GOV" = {
+        kdc = [
+                "krb-fnal-fcc3.fnal.gov:88"
+                "krb-fnal-2.fnal.gov:88"
+                "krb-fnal-3.fnal.gov:88"
+                "krb-fnal-1.fnal.gov:88"
+                "krb-fnal-4.fnal.gov:88"
+                "krb-fnal-enstore.fnal.gov:88"
+                "krb-fnal-fg2.fnal.gov:88"
+                "krb-fnal-cms188.fnal.gov:88"
+                "krb-fnal-cms204.fnal.gov:88"
+                "krb-fnal-d0online.fnal.gov:88"
+                "krb-fnal-nova-fd.fnal.gov:88"
+        ];
+        master_kdc = "elmo.fermi.win.fnal.gov:88";
+        admin_server = "krb-fnal-admin.fnal.gov";
+        default_domain = "fnal.gov";
+      };
+      realms."CERN.CH" = {
+        kdc = "cerndc.cern.ch:88";
+        default_domain = "cern.ch";
+        kpasswd_server = "afskrb5m.cern.ch";
+        admin_server = "afskrb5m.cern.ch";
+      };
+    };
+  };
+
 
   services.openssh = {
     enable = ! tailscaleEnable;
