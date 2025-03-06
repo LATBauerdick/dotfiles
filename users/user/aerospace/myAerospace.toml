@@ -148,9 +148,13 @@ outer.right =      5
 
 [mode.main.binding]
 
-ctrl-alt-f = '''exec-and-forget osascript -e '
+ctrl-alt-w = 'close'
+ctrl-alt-f = 'fullscreen'
+
+ctrl-alt-d = '''exec-and-forget osascript -e '
 tell application "Finder" to activate'
 '''
+
 ctrl-alt-enter = 'exec-and-forget open -a /apps/Applications/Ghostty.app'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
@@ -167,8 +171,6 @@ ctrl-alt-shift-h = 'move left'
 ctrl-alt-shift-n = 'move down'
 ctrl-alt-shift-e = 'move up'
 ctrl-alt-shift-i = 'move right'
-
-ctrl-alt-w = 'close'
 
 ctrl-alt-shift-minus = 'resize smart -50'
 ctrl-alt-shift-equal = 'resize smart +50'
