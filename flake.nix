@@ -21,7 +21,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
     };
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    limainit.url = "github:msgilligan/nixos-lima/msgilligan-main";
+    limainit.url = "github:nixos-lima/nixos-lima";
   };
 
   outputs = {
@@ -72,7 +72,6 @@
         { nixpkgs.overlays = overlays; }
       ];
     };
-
     mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [

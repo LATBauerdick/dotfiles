@@ -44,10 +44,9 @@
       ollama
       pandoc
       pv
-      python311Packages.pandoc-xnos
+      python313Packages.pandoc-xnos
       pandoc-fignos
       pandoc-eqnos
-      # python3
       qemu
       ranger
       ripgrep
