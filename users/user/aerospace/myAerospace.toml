@@ -25,15 +25,19 @@ exec-on-workspace-change = ['/bin/bash', '-c',
     run = 'layout floating'
 
 [[on-window-detected]]
+  if.app-id = "com.sindresorhus.Scratchpad"
+  run = 'layout floating'
+
+[[on-window-detected]]
+  if.app-id = "com.jordanbaird.Ice"
+  run = 'layout floating'
+
+[[on-window-detected]]
   if.app-id = "com.apple.finder"
   run = 'layout floating'
 
 [[on-window-detected]]
   if.app-id = "com.apple.ActivityMonitor"
-  run = 'layout floating'
-
-[[on-window-detected]]
-  if.app-id = "com.jordanbaird.Ice"
   run = 'layout floating'
 
 [[on-window-detected]]
