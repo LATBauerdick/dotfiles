@@ -15,6 +15,7 @@
       exiftool
       fd
       fzf
+      deluge
       dtach
       dvtm
       # emanote
