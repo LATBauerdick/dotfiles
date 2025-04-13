@@ -138,7 +138,7 @@
      enable = true;
      casks = myCasks;
      brews = myBrews;
-     masApps = myMasApps;
+     # masApps = myMasApps;
      onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;
      onActivation.upgrade = true;
