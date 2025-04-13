@@ -67,7 +67,7 @@
         ./hardware/${name}.nix
         ./machines/${name}.nix
         ./users/${user}/${user}.nix
-        lix-module.nixosModules.default
+        # lix-module.nixosModules.default
         home-manager.nixosModules.home-manager {
           # home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
