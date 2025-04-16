@@ -30,6 +30,7 @@
       htop
       imagemagick
       jq
+      julia-bin
       lilypond-unstable-with-fonts
       lima
       llvm
