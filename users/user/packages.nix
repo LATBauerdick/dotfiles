@@ -81,7 +81,6 @@
       # kitty
       bitwarden
       obsidian
-      skypeforlinux
       slack
       thunderbird
       vlc

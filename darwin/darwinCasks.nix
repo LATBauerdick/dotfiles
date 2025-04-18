@@ -44,7 +44,6 @@
 #      "quiet-reader"
        "raindropio"
        "roon"
-       "skype"
        "superduper"
        "switchresx"
        "tailscale"
