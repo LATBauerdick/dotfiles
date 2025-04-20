@@ -82,6 +82,10 @@ in {
 
       # otherwise authenticate with tailscale
       ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+
+      # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
+      # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
+      # /run/current-system/sw/bin/ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
     '';
   };
 
@@ -121,6 +125,7 @@ in {
     thunderbolt
 
     networkmanagerapplet
+    ethtool
     xorg.xbacklight
     lm_sensors
     acpi
