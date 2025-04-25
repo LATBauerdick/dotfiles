@@ -36,9 +36,9 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    usePredictableInterfaceNames = false;
-    useDHCP = false;
-    interfaces.eth0.useDHCP = true;
+    # usePredictableInterfaceNames = false;
+    # useDHCP = false;
+    # interfaces.eth0.useDHCP = true;
 
     hostName = hostname;
     hostId = hostId;
@@ -100,8 +100,8 @@ in {
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
-    "net.ipv6.conf.eth0.accept_ra" = 2;
-    "net.ipv6.conf.eth0.autoconf" = 1;
+    # "net.ipv6.conf.eth0.accept_ra" = 2;
+    # "net.ipv6.conf.eth0.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;
