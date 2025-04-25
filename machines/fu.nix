@@ -6,7 +6,7 @@
 let
   hostname = "fu";
   hostId = "48f2d09d"; # head -c 8 /etc/machine-id
-  plexEnable = true;
+  plexEnable = false;
   roonEnable = true;
   roonBridgeEnable = false;
   delugeEnable = false;
