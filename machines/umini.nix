@@ -37,8 +37,8 @@ in {
 
   networking = {
     # usePredictableInterfaceNames = false;
-    # useDHCP = false;
-    # interfaces.eth0.useDHCP = true;
+    useDHCP = false;
+    interfaces.enp1s0f0.useDHCP = true;
 
     hostName = hostname;
     hostId = hostId;
@@ -48,16 +48,19 @@ in {
     networkmanager.enable = true;
     ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
 
-    ### wireless.enable = true;
+    wireless.enable = false;
 
     firewall.enable = true;
     firewall.allowPing = true;
 # ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
     firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
+    firewall.allowedTCPPortRanges = [ { from = 9330; to = 9339; }
+                                      { from = 30000; to = 30010; }
+    ];
 # open firewall ports for mosh, wireguard
     firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
 # ports for NextDNS, `services.samba`, slimserver, roon ARC
-    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 9003 ];
   };
 
   services.tailscale.enable = tailscaleEnable;
@@ -81,7 +84,7 @@ in {
       sleep 2
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh --advertise-routes=10.23.1.0/24
 
       # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
       # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
@@ -100,8 +103,8 @@ in {
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
-    # "net.ipv6.conf.eth0.accept_ra" = 2;
-    # "net.ipv6.conf.eth0.autoconf" = 1;
+    "net.ipv6.conf.enp1s0f0.accept_ra" = 2;
+    "net.ipv6.conf.enp1s0f0.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -196,11 +199,11 @@ in {
   };
 
   services.openssh = {
-    enable = ! tailscaleEnable;
+    enable = true; # ! tailscaleEnable;
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
-    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
+    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
   };
 
   programs.mosh.enable = true;
