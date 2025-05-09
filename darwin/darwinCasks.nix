@@ -40,6 +40,7 @@
        "plex"
        "popclip"
 #      "qmk-toolbox"
+       "qobuz"
       # "quicksilver"
 #      "quiet-reader"
        "raindropio"
