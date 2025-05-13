@@ -84,6 +84,6 @@
       slack
       thunderbird
       vlc
-      zoom-us
+#     zoom-us
   ]
   /* ];} */
