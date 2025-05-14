@@ -6,7 +6,7 @@
      # "arq"
        "backuploupe"
        "balenaetcher"
-       "bartender"
+     # "bartender"
        "bitwarden"
        "bluos-controller"
      #  "brave-browser"
