@@ -12,7 +12,7 @@ let
   delugeEnable = false;
   unifiEnable = false;
   nextdnsEnable = false;
-  adguardEnable = true;
+  adguardEnable = false;
   krb5Enable = true;
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
@@ -405,7 +405,7 @@ in {
         "force group" = "users";
       };
       tm = { # configured for time machine backups
-          path = "/arq/tm";
+          path = "/tmf";
           "valid users" = "latb";
           public = "no";
           writeable = "yes";
@@ -415,7 +415,7 @@ in {
           "vfs objects" = "catia fruit streams_xattr";
       };
       arq = {
-        path = "/arq";
+        path = "/arqf";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
