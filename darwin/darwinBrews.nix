@@ -5,7 +5,7 @@
        "lua-language-server"
        "mas"
        "pngpaste"
-       "qmk/qmk/qmk"
+###       "qmk/qmk/qmk"
        "syncthing"
      ]
 

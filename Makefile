@@ -12,7 +12,7 @@ MACNAME ?= m1mac
 # btalmac btalintel intelmac rpi lima
 
 darwin:
-	darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
+	sudo darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
 home-manager:
 	nix build ".#${MACNAME}.${USER}.activationPackage"

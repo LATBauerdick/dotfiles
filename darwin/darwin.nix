@@ -24,6 +24,7 @@
     system.stateVersion = 4;
     ids.gids.nixbld = 350;
 
+####    system.primaryUser = "latb";
 
     nixpkgs.config.allowUnfree = true;
 
@@ -143,10 +144,10 @@
      onActivation.autoUpdate = true;
      onActivation.upgrade = true;
    };
-   system.activationScripts.postUserActivation.text = ''
-      # Following line should allow us to avoid a logout/login cycle
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-  '';
+#   system.activationScripts.postUserActivation.text = ''
+#      # Following line should allow us to avoid a logout/login cycle
+#      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+#  '';
 
   system.activationScripts.applications.text = let
     env = pkgs.buildEnv {
