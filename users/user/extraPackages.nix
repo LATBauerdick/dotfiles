@@ -9,7 +9,6 @@
     du-dust
     entr
     /* lima */
-    lilypond-unstable-with-fonts
   # ncdu
     procs
   #  qemu

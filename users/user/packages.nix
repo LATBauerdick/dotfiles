@@ -31,7 +31,7 @@
       imagemagick
       jq
       julia-bin
-      lilypond-unstable-with-fonts
+####      lilypond-unstable-with-fonts
       lima
       llvm
       lld
@@ -71,7 +71,7 @@
     #    nodePackages_latest.parcel
 
 # tex
-      texlive.combined.scheme-small
+####      texlive.combined.scheme-small
 
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       ddcutil # monitor brightness
