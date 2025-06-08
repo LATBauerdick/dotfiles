@@ -14,14 +14,14 @@
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
   fileSystems."/" =
-    # { device = "/dev/disk/by-uuid/e01e43a1-4a8a-4243-af8a-47ab1fcec0a7";
-    { device = "/dev/disk/by-label/nixos";
+    { device = "/dev/disk/by-uuid/ee0f112f-4a30-40d1-a39a-f0ba3db89b0f";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/67E3-17ED";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices = [ ];
@@ -33,7 +33,6 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp4s0f0.useDHCP = lib.mkDefault true;
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
 }

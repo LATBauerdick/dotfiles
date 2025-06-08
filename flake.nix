@@ -158,6 +158,16 @@
         isDesktop = true;
       };
     };
+    nixosConfigurations.umac = mkMachine "umac" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "x86_64-linux";
+      user   = "latb";
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
     nixosConfigurations.umini = mkMachine "umini" {
       nixpkgs = nixpkgs;
       home-manager = home-manager;

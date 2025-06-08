@@ -2,145 +2,200 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }@args:
+let
+  hostname = "umac";
+  hostId = "31df3e81"; # head -c 8 /etc/machine-id
+  plexEnable = false;
+  roonEnable = false;
+  roonBridgeEnable = false;
+  delugeEnable = false;
+  unifiEnable = false;
+  nextdnsEnable = false;
+  adguardEnable = false;
+  krb5Enable = true;
+  tailscaleEnable = true;
+  tailnetName = "taild2340b.ts.net";
 
-{
+  zfsPools = [ ];
+in {
   imports =
     [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
+      ../pkgs/plex.nix
+      ../pkgs/adguard.nix
     ];
+
+  system.stateVersion = "25.05"; # Did you read the comment?
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
+
+  # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
+  services.xserver.enable = true;
+
+  # Enable the KDE Plasma Desktop Environment.
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound with pipewire.
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.btal = {
+    isNormalUser = true;
+    description = "BTAL";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      kdePackages.kate
+    #  thunderbird
+    ];
+  };
+
+  # Enable automatic login for the user.
+  services.displayManager.autoLogin.enable = false;
+  services.displayManager.autoLogin.user = "latb";
+
+  # Install firefox.
+  programs.firefox.enable = true;
+
+
+
+  # use unstable nix so we can access flakes
+  nix.settings.trusted-users = [ "root" "latb" "btal" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking = {
+    usePredictableInterfaceNames = false;
+    useDHCP = false;
+    interfaces.eth0.useDHCP = true;
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+    hostName = hostname;
+    hostId = hostId;
+    nameservers = [ "1.1.1.1" ];
+    search = [ tailnetName ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+    networkmanager.enable = true;
+    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
 
-  system.stateVersion = "22.05"; # Did you read the comment?
+    ### wireless.enable = true;
 
-  boot.loader.efi.canTouchEfiVariables = false;
-
-  # let it never sleep
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;
-
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-#  boot.loader.grub.extraEntries = ''
-#    menuentry "Ubuntu" {
-#      search --set=ubuntu --fs-uuid a51a44ba-d008-4a1c-b590-43dafa7bf8d0
-#      configfile "($ubuntu)/boot/grub/grub.cfg"
-#    }
-#  '';
-
-  services.xrdp.enable = true;
-  /* services.xrdp.defaultWindowManager = "awesome-x11"; */
-  services.xrdp.defaultWindowManager = "startplasma-x11";
-
-  services.xserver = {
-    enable = true;
-    # dpi=130;
-    dpi=218;
-    # dpi=329;
-    displayManager = {
-      sddm.enable = true;
-      /* lightdm.enable = true; */
-      /* startx.enable = true; */
-      /* defaultSession = "none+awesome"; */
-    };
-
-    desktopManager.plasma5.enable = true;
-    /* windowManager.awesome = { */
-    /*   enable = true; */
-    /*   luaModules = with pkgs.luaPackages; [ */
-    /*     luarocks     # is the package manager for Lua modules */
-    /*     luadbi-mysql # Database abstraction layer */
-    /*   ]; */
-    /* }; */
-    # libinput.enable = true;
-  };
-  environment.variables = {
-    PLASMA_USE_QT_SCALING = "1";
-    /* GDK_SCALE = "2"; */
-    /* GDK_DPI_SCALE = "0.5"; */
-    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
+    firewall.enable = true;
+    firewall.allowPing = true;
+# ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
+    firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
+# open firewall ports for mosh, wireguard
+    firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
+# ports for NextDNS, `services.samba`, slimserver, roon ARC
+    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
   };
 
-  # setup i3 windowing environment
-  /* services.xserver = { */
-  /*   desktopManager = { */
-  /*     xterm.enable = false; */
-  /*     wallpaper.mode = "scale"; */
-  /*   }; */
-  /*   displayManager = { */
-  /*     defaultSession = "none+i3"; */
-  /*     lightdm.enable = true; */
-  /*   }; */
-  /*   windowManager = { */
-  /*     i3.enable = true; */
-  /*   }; */
-  /* }; */
+  services.tailscale.enable = tailscaleEnable;
+  services.tailscale.useRoutingFeatures = "server";
+# make sure tailscale starts with exit-node enabled
+  systemd.services.tailscale-autoconnect = {
+    enable = tailscaleEnable;
+    description = "Automatic connection to Tailscale";
 
-  # use unstable nix so we can access flakes
-  nix = {
-      package = pkgs.nixUnstable;
-      /* package = pkgs.nixFlakes; */
-      extraOptions = "experimental-features = nix-command flakes";
+    # make sure tailscale is running before trying to connect to tailscale
+    after = [ "network-pre.target" "tailscale.service" ];
+    wants = [ "network-pre.target" "tailscale.service" ];
+    wantedBy = [ "multi-user.target" ];
+
+    # set this service as a oneshot job
+    serviceConfig.Type = "oneshot";
+
+    # have the job run this shell script
+    script = with pkgs; ''
+      # wait for tailscaled to settle
+      sleep 2
+
+      # otherwise authenticate with tailscale
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+    '';
   };
 
-  networking.hostName = "umac"; # Define your hostname.
-  time.timeZone = "America/Chicago"; # Set your time zone.
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
+    "net.ipv6.conf.all.forwarding" = true;
 
- # Don't require password for sudo
-  security.sudo.wheelNeedsPassword = false;
+    /* # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52 */
+    /* # By default, not automatically configure any IPv6 addresses. */
+    /* "net.ipv6.conf.all.accept_ra" = 0; */
+    /* "net.ipv6.conf.all.autoconf" = 0; */
+    /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
-  # Virtualization settings
-#  virtualisation.docker.enable = true;
+# On WAN, allow IPv6 autoconfiguration and tempory address use.
+    "net.ipv6.conf.eth0.accept_ra" = 2;
+    "net.ipv6.conf.eth0.autoconf" = 1;
+  };
 
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnsupportedSystem = true;
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    silver-searcher  # ag
+    krb5
+    silver-searcher
     git
     gnumake
+    gcc
+    fzf
 #    killall
     psmisc # things like killall
     lshw
+    lzop
+    mbuffer
+    sanoid
+    pv
     usbutils
     thunderbolt
 
     networkmanagerapplet
+    ethtool
     xorg.xbacklight
     lm_sensors
     acpi
 
     vim
+    neovim
     curl
     # gui apps
     firefox
@@ -153,25 +208,81 @@
     cifs-utils
   ];
 
- # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.passwordAuthentication = true;
-  services.openssh.permitRootLogin = "yes";
-  services.openssh.forwardX11 = true;
-  users.users.root.initialPassword = "root";
-
-  services.autossh.sessions = [
-    { extraArguments = " -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17007;
-      name = "reverse";
-      user = "root"; }
+  fonts.fontDir.enable = true;
+  fonts.enableDefaultPackages = true;
+  # fonts.enableGhostscriptFonts = true;
+  fonts.packages = with pkgs; [
+#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
+#    corefonts
   ];
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnsupportedSystem = true;
+  programs.zsh.enable = true;
 
-  # nix.settings.trusted-users = [ "root" "btal" "bauerdic" ];
+  security.sudo = {
+    wheelNeedsPassword = false;
+    extraRules = [
+      { users = [ "latb" ];
+        commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
+      }
+    ];
+  };
 
+  security.krb5 = {
+    package = pkgs.krb5;
+    enable = krb5Enable;
+    settings = {
+      libdefaults.default_realm = "FNAL.GOV";
+      realms."FNAL.GOV" = {
+        kdc = [
+                "krb-fnal-fcc3.fnal.gov:88"
+                "krb-fnal-2.fnal.gov:88"
+                "krb-fnal-3.fnal.gov:88"
+                "krb-fnal-1.fnal.gov:88"
+                "krb-fnal-4.fnal.gov:88"
+                "krb-fnal-enstore.fnal.gov:88"
+                "krb-fnal-fg2.fnal.gov:88"
+                "krb-fnal-cms188.fnal.gov:88"
+                "krb-fnal-cms204.fnal.gov:88"
+                "krb-fnal-d0online.fnal.gov:88"
+                "krb-fnal-nova-fd.fnal.gov:88"
+        ];
+        master_kdc = "elmo.fermi.win.fnal.gov:88";
+        admin_server = "krb-fnal-admin.fnal.gov";
+        default_domain = "fnal.gov";
+      };
+      realms."CERN.CH" = {
+        kdc = "cerndc.cern.ch:88";
+        default_domain = "cern.ch";
+        kpasswd_server = "afskrb5m.cern.ch";
+        admin_server = "afskrb5m.cern.ch";
+      };
+    };
+  };
+
+  services.openssh = {
+    enable = true; # ! tailscaleEnable;
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "yes";
+  # services.openssh.settings.X11Forwarding = true;
+    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
+  };
+
+  programs.mosh.enable = true;
+
+  users.users.root.initialPassword = "root";
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOXZjedCEONef8tQoqk8iZYODg0VoONlyfIz5tFfWXz latb@lmini.local"
+  ];
+
+  time.timeZone = "America/Chicago";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  services.syncthing = {
+    enable = true;
+    dataDir = "/home/latb/";
+    user = "latb";
+  };
   boot.kernel.sysctl = {
     # Note that inotify watches consume 1kB on 64-bit machines.
     # needed for syncthing
@@ -179,30 +290,29 @@
   #  "fs.inotify.max_user_instances" =    1024;   # default:   128
   #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
   };
-  services.syncthing = {
-    enable = true;
-    dataDir = "/home/bauerdic/";
-    user = "bauerdic";
+
+
+  services.autossh.sessions = [
+    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
+      monitoringPort = 17008;
+      name = "reverse";
+      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
+  ];
+
+  # NextDNS config
+  services.nextdns = { enable = nextdnsEnable;
+    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
   };
 
-  networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
-  # open firewall ports for services.xrdp
-  # and the needed ports in the firewall for `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedTCPPorts = [ 445 139 3389 9000 3483 55000 ];
-  # open firewall ports for mosh, wireguard
-  networking.firewall.allowedUDPPortRanges = [
-    { from = 60001; to = 61000; }
-  ];
-  # the needed ports in the firewall for `services.samba`, slimserver, roon ARC
-  networking.firewall.allowedUDPPorts = [ 137 1383 3483 55000 ];
-
-
-  programs.mosh.enable = true;
+  # Binary Cache for Haskell.nix
+  # nix.settings.trusted-public-keys = [
+  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  # ];
+  # nix.settings.substituters = [
+  #   "https://cache.iog.io"
+  # ];
 
 # zfs setup
-  # usrv  networking.hostId = "41ca8470";
-  networking.hostId = "21e04432"; # head -c 8 /etc/machine-id
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
   services.udev.extraRules = ''
@@ -214,110 +324,102 @@
   /*     fsType = "zfs"; */
   /*     options = [ "zfsutil" ]; */
   /*   }; */
-  boot.zfs.extraPools = [ "z3" "z2" "z1" "h" ];
+  boot.zfs.extraPools = zfsPools;
 
-  fonts.fontDir.enable = true;
-  fonts.enableDefaultFonts = true;
-  fonts.enableGhostscriptFonts = true;
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
-#    corefonts
-#    dejavu_fonts
-#    font-awesome-ttf
-#    inconsolata
-#    liberation_ttf
-#    terminus_font
-#    ubuntu_font_family
-#    unifont
-  ];
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
+  # hardware.pulseaudio.enable = true;
+###  services.pulseaudio.enable = true;
+  services.pulseaudio.enable = false;
+
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+# run `boltctl`, then for each device that is not authorized, execute 
+# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
+  services.hardware.bolt.enable = true;
+
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
+
+  #services.xrdp.enable = true;
+  #/* services.xrdp.defaultWindowManager = "awesome-x11"; */
+  #services.xrdp.defaultWindowManager = "startplasma-x11";
+
+  #services.displayManager.sddm.enable = false;
+  #services.xserver = { enable = false;
+  #  dpi=130;
+  #  # dpi=218;
+  #  # dpi=329;
+  #  displayManager = {
+  #    /* lightdm.enable = true; */
+  #    /* startx.enable = true; */
+  #    /* defaultSession = "none+awesome"; */
+  #  };
+
+  #  desktopManager.plasma5.enable = false;
+  #  /* windowManager.awesome = { */
+  #  /*   enable = true; */
+  #  /*   luaModules = with pkgs.luaPackages; [ */
+  #  /*     luarocks     # is the package manager for Lua modules */
+  #  /*     luadbi-mysql # Database abstraction layer */
+  #  /*   ]; */
+  #  /* }; */
+  #  # libinput.enable = true;
+  #};
+  #environment.variables = {
+  #  PLASMA_USE_QT_SCALING = "1";
+  #  /* GDK_SCALE = "2"; */
+  #  /* GDK_DPI_SCALE = "0.5"; */
+  #  /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
+  # };
 
   nixpkgs.config.permittedInsecurePackages = [
                 "electron-13.6.9"
   ];
 
-  # appstream.enable = true;
+  services.adguardhome.enable = adguardEnable;
 
+  nixpkgs.config.plex.plexname = hostname;
+  services.plex.enable = plexEnable;
+
+  services.deluge.enable = delugeEnable;
   services.deluge = {
-    enable = true;
-    dataDir = "/data/deluge";
+    dataDir = "/data/deluge-${hostname}";
     web.enable = true;
     web.openFirewall = true;
   };
 
+  services.roon-server.enable = roonEnable;
   services.roon-server = {
-    enable = true;
     openFirewall = true;
   };
 
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    user = "plex";
-    group = "plex";
-    dataDir = "/data/plex";
+
+  services.unifi.enable = unifiEnable;
+  services.unifi.unifiPackage = pkgs.unifi;
+  services.unifi = {
+    openFirewall = unifiEnable;
   };
 
-  services.slimserver = {
-    enable = true;
-  };
+  services.slimserver.enable = false;
 
-# SMB file sharing
-  services.gvfs.enable = true;
-  services.samba = {
-    enable = true;
-    openFirewall = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = LATB
-      server string = umac
-      netbios name = umac
-      security = user
-      #use sendfile = yes
-      #max protocol = smb2
-      hosts allow = 192.168.0  localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-      #browseable = yes
-      #smb encrypt = required
-    '';
-
-    # You will still need to set up the user accounts to begin with:
-    # $ sudo smbpasswd -a yourusername
-
-    shares = {
-      public = {
-        path = "/media";
-        browseable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "bauerdic";
-        "force group" = "users";
-      };
-      private = {
-        path = "/media";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "bauerdic"; # smbpasswd -a bauerdic as root...
-        "force group" = "users";
-      };
-      homes = {
-        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
-        "read only" = "no";
-        "guest ok" = "no";
-      };
-    };
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-bridge"
+      "unrar"
+      "unifi"
+  ];
+  services.roon-bridge = {
+      enable = roonBridgeEnable;
+      openFirewall = roonBridgeEnable;
   };
 
   # mDNS, avahi
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
+  services.avahi = { enable = true;
+    nssmdns4 = true;
     publish = {
       enable = true;
       addresses = true;
@@ -341,5 +443,61 @@
     };
   };
 
-}
+# SMB file sharing
+  services.gvfs.enable = true;
+  services.samba = { enable = true;
+    openFirewall = true;
+    # settings = ''
+    #   workgroup = LATB
+    #   server string = hostname
+    #   netbios name = hostname
+    #   hosts allow = 192.168.0  localhost
+    #   hosts deny = 0.0.0.0/0
+    #   guest account = nobody
+    #   map to guest = bad user
+    # '';
 
+    # You will still need to set up the user accounts to begin with:
+    # $ sudo smbpasswd -a yourusername
+
+    settings = {
+      global.security = "user";
+      homes = {
+        browseable = "no";  # note: each home will be browseable; the "homes" share will not.
+        "read only" = "no";
+        "guest ok" = "no";
+      };
+      private = {
+        path = "/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force group" = "users";
+      };
+      tm = { # configured for time machine backups
+          path = "/tm";
+          "valid users" = "latb";
+          public = "no";
+          writeable = "yes";
+          "force user" = "latb";
+          "fruit:aapl" = "yes";
+          "fruit:time machine" = "yes";
+          "vfs objects" = "catia fruit streams_xattr";
+      };
+      arq = {
+        path = "/arq";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force group" = "users";
+      };
+    };
+  };
+
+}
