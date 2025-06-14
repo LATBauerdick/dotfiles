@@ -15,9 +15,9 @@ default-root-container-orientation = 'auto'
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 automatically-unhide-macos-hidden-apps = true
 
-exec-on-workspace-change = ['/bin/bash', '-c',
-'exec-and-forget borders active_color=0xffed6b5f inactive_color=0xff494d64 width=5.0 style=round'
-]
+# exec-on-workspace-change = ['/bin/bash', '-c',
+# 'exec-and-forget borders active_color=0xffed6b5f inactive_color=0xff494d64 width=5.0 style=round'
+# ]
 
 [[on-window-detected]]
     if.app-id='com.kagi.kagimacOS'
