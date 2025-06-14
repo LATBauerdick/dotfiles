@@ -77,7 +77,7 @@ in {
 
   xdg.configFile."aerospace/myAerospace.toml".source = ./aerospace/myAerospace.toml;
 
-  xdg.configFile."borders/bordersrc".source = ./borders/bordersrc;
+###  xdg.configFile."borders/bordersrc".source = ./borders/bordersrc;
   xdg.configFile."yabai/yabairc".source = ./yabai/yabairc;
   xdg.configFile."skhd/skhdrc".source = ./yabai/skhdrc;
   xdg.configFile."limelight/limelightrc".source = ./yabai/limelightrc;

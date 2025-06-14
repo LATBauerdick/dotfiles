@@ -1,6 +1,6 @@
      [
-       "FelixKratz/formulae/borders"
-       "FelixKratz/formulae/sketchybar"
+###       "FelixKratz/formulae/borders"
+###       "FelixKratz/formulae/sketchybar"
        "imagemagick"
        "lua-language-server"
        "mas"

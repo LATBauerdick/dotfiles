@@ -26,7 +26,7 @@
        "kobo"
        "launchcontrol"
      #  "ltspice"
-#      "mactex"
+       "mactex"
        "marked"
        "mattermost"
        "menubarx"
