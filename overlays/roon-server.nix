@@ -1,8 +1,8 @@
 
   let
-    version = "2.51.1534";
+    version = "2.52.1538";
     urlVersion = builtins.replaceStrings [ "." ] [ "0" ] version;
-    vhash = "sha256-x9zbWJ4lrqfC1CPquGsdgzhO3WBzd46dlZy6APqJbcg=";
+    vhash = "sha256-pWg1Cp8aNdR/hoVZDF3kUznJtYsjJYX9J4g1xbmn/lg=";
   in
 self: super: {
 
