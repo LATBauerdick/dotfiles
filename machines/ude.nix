@@ -37,53 +37,66 @@ in {
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "/dev/sda" ];
 
+  systemd.network.enable = true;
+  systemd.network.networks."30-wan" = {
+    matchConfig.Name = "enp1s0"; # either ens3 or enp1s0, check 'ip addr'
+    networkConfig.DHCP = "ipv4";
+    address = [
+      # replace this subnet with the one assigned to your instance
+      "2a01:4f8:c012:47ee::1/64"
+    ];
+    routes = [
+      { Gateway = "fe80::1"; }
+    ];
+  };
+
   networking = {
     useDHCP = false;
     hostName = hostname;
     # hostId = hostId;
     nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
     search = [ tailnetName ];
-    interfaces.ens3.useDHCP = true;
+    interfaces.enp1s0.useDHCP = true;
 
-    nat = {
-      enable = true;
-      externalInterface = "ens3";
-      internalInterfaces = [ "wg0" ];
-    };
-
-    wireguard.interfaces.wg0 = {
-      ips = [ "10.0.0.1/24" ];
-      listenPort = 60990;
-      privateKeyFile = "/etc/nixos/wg-priv";
-
-# This allows the wireguard server to route your traffic to the internet
-# you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
-      postSetup = ''
-        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o ens3 -j MASQUERADE
-      '';
-      postShutdown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o ens3 -j MASQUERADE
-      '';
-
-      peers = [
-        {
-          publicKey = "BOiWgg6uuKUm3+tnPdcvIp7LffxQjcoIaMZHbcuCsx8=";
-          allowedIPs = [ "10.0.0.0/24" "10.0.0.2/32" ];
-          persistentKeepalive = 25;
-        }
-        {
-          publicKey = "/xz3AXSHjuvNNDPxmvMWJIBNoTcEatfBldaS01EV1DM=";
-          allowedIPs = [ "10.0.0.3/32" ];
-          persistentKeepalive = 25;
-        }
-        {
-          publicKey = "bG6Ro8DiV144lGRGY0YLbasEyXDjkdl3GfZc7XVfm0c=";
-          allowedIPs = [ "10.0.0.4/32" ];
-          persistentKeepalive = 25;
-        }
-      ];
-
-    };
+#    nat = {
+#      enable = true;
+#      externalInterface = "enp1s0";
+#      internalInterfaces = [ "wg0" ];
+#    };
+#
+#    wireguard.interfaces.wg0 = {
+#      ips = [ "10.0.0.1/24" ];
+#      listenPort = 60990;
+#      privateKeyFile = "/etc/nixos/wg-priv";
+#
+## This allows the wireguard server to route your traffic to the internet
+## you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+#      postSetup = ''
+#        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o enp1s0 -j MASQUERADE
+#      '';
+#      postShutdown = ''
+#        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o enp1s0 -j MASQUERADE
+#      '';
+#
+#      peers = [
+#        {
+#          publicKey = "BOiWgg6uuKUm3+tnPdcvIp7LffxQjcoIaMZHbcuCsx8=";
+#          allowedIPs = [ "10.0.0.0/24" "10.0.0.2/32" ];
+#          persistentKeepalive = 25;
+#        }
+#        {
+#          publicKey = "/xz3AXSHjuvNNDPxmvMWJIBNoTcEatfBldaS01EV1DM=";
+#          allowedIPs = [ "10.0.0.3/32" ];
+#          persistentKeepalive = 25;
+#        }
+#        {
+#          publicKey = "bG6Ro8DiV144lGRGY0YLbasEyXDjkdl3GfZc7XVfm0c=";
+#          allowedIPs = [ "10.0.0.4/32" ];
+#          persistentKeepalive = 25;
+#        }
+#      ];
+#
+#    };
 
     firewall.enable = true;
     firewall.allowPing = true;
@@ -129,8 +142,8 @@ in {
     /* "net.ipv6.conf.all.use_tempaddr" = 0; */
 
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
-    "net.ipv6.conf.ens3.accept_ra" = 2;
-    "net.ipv6.conf.ens3.autoconf" = 1;
+    "net.ipv6.conf.enp1s0.accept_ra" = 2;
+    "net.ipv6.conf.enp1s0.autoconf" = 1;
   };
 
   nixpkgs.config.allowUnfree = true;

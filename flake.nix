@@ -182,7 +182,7 @@
     nixosConfigurations.ude = mkMachine "ude" {
       nixpkgs = nixpkgs;  
       home-manager = home-manager;
-      system = "x86_64-linux";
+      system = "aarch64-linux";
       user   = "latb";
       extraSpecialArgs = { # pass arguments
         withGUI = false;
