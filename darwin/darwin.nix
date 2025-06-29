@@ -136,7 +136,8 @@
 
       #services.karabiner-elements.enable = true;
    homebrew = {
-     enable = true;
+     # enable = true;
+     enable = false;
      casks = myCasks;
      brews = myBrews;
      # masApps = myMasApps;
