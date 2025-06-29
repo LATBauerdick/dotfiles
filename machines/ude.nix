@@ -229,12 +229,12 @@ in {
   };
 
   services.openssh = {
-    enable = true; # ! tailscaleEnable;
+    enable = ! tailscaleEnable;
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "prohibit-password";
     settings.X11Forwarding = true;
     settings.GatewayPorts = "yes";
-    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
+    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
   };
 
   programs.mosh.enable = true;
