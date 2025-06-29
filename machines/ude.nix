@@ -272,4 +272,7 @@ in {
 #    options = [ "nofail" ];
 #  };
 
+  nixpkgs.config.plex.plexname = hostname;
+  services.plex.enable = plexEnable;
+
 }
