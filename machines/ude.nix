@@ -5,7 +5,7 @@
 { config, pkgs, lib, ... }@args:
 let
   hostname = "ude";
-  /* hostId = "28c80f12"; # head -c 8 /etc/machine-id */
+  hostId = "272fb4a0"; # head -c 8 /etc/machine-id
   plexEnable = false;
   roonEnable = false;
   roonBridgeEnable = false;
@@ -13,6 +13,7 @@ let
   unifiEnable = false;
   nextdnsEnable = false;
   adguardEnable = false;
+  krb5Enable = true;
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
@@ -20,18 +21,15 @@ let
 in {
   imports =
     [ # Include the results of the hardware scan.
-#      ./hardware-configuration.nix
+      ../pkgs/plex.nix
+      ../pkgs/adguard.nix
 #      ./wireguard.nix
     ];
 
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 # use unstable nix so we can access flakes
-#  nix.package = pkgs.nixUnstable;
   nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # nix.extraOptions = ''
-  #     experimental-features = nix-command flakes
-  #   '';
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
@@ -51,12 +49,13 @@ in {
   };
 
   networking = {
+    # usePredictableInterfaceNames = false;
     useDHCP = false;
+    interfaces.enp1s0.useDHCP = true;
     hostName = hostname;
-    # hostId = hostId;
+    hostId = hostId;
     nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
     search = [ tailnetName ];
-    interfaces.enp1s0.useDHCP = true;
 
 #    nat = {
 #      enable = true;
@@ -127,7 +126,10 @@ in {
       sleep 2
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+      # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
+      # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
+      # /run/current-system/sw/bin/ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
     '';
   };
 
@@ -150,6 +152,7 @@ in {
   nixpkgs.config.allowUnsupportedSystem = true;
 
   environment.systemPackages = with pkgs; [
+      krb5
       silver-searcher
       wireguard-tools
       sshfs
@@ -184,19 +187,55 @@ in {
 
   programs.zsh.enable = true;
 
-  security = {
-    sudo.wheelNeedsPassword = false;
-    sudo.extraRules = [
+  security.sudo = {
+    wheelNeedsPassword = false;
+    extraRules = [
       { users = [ "latb" ];
         commands = [ { command = "ALL"; options = [ "NOPASSWD" "SETENV" ]; } ];
       }
     ];
   };
 
-  services.openssh.enable = true;
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
-  services.openssh.settings.X11Forwarding = true;
-  services.openssh.settings.GatewayPorts = "yes";
+  security.krb5 = {
+    package = pkgs.krb5;
+    enable = krb5Enable;
+    settings = {
+      libdefaults.default_realm = "FNAL.GOV";
+      realms."FNAL.GOV" = {
+        kdc = [
+                "krb-fnal-fcc3.fnal.gov:88"
+                "krb-fnal-2.fnal.gov:88"
+                "krb-fnal-3.fnal.gov:88"
+                "krb-fnal-1.fnal.gov:88"
+                "krb-fnal-4.fnal.gov:88"
+                "krb-fnal-enstore.fnal.gov:88"
+                "krb-fnal-fg2.fnal.gov:88"
+                "krb-fnal-cms188.fnal.gov:88"
+                "krb-fnal-cms204.fnal.gov:88"
+                "krb-fnal-d0online.fnal.gov:88"
+                "krb-fnal-nova-fd.fnal.gov:88"
+        ];
+        master_kdc = "elmo.fermi.win.fnal.gov:88";
+        admin_server = "krb-fnal-admin.fnal.gov";
+        default_domain = "fnal.gov";
+      };
+      realms."CERN.CH" = {
+        kdc = "cerndc.cern.ch:88";
+        default_domain = "cern.ch";
+        kpasswd_server = "afskrb5m.cern.ch";
+        admin_server = "afskrb5m.cern.ch";
+      };
+    };
+  };
+
+  services.openssh = {
+    enable = true; # ! tailscaleEnable;
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "prohibit-password";
+    settings.X11Forwarding = true;
+    settings.GatewayPorts = "yes";
+    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
+  };
 
   programs.mosh.enable = true;
 
