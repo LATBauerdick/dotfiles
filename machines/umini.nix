@@ -84,7 +84,7 @@ in {
       sleep 2
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh --advertise-routes=10.23.1.0/24
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh --advertise-routes="10.23.1.0/24,10.23.30.0/24"
 
       # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
       # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
