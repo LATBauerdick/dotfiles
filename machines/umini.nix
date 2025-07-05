@@ -405,8 +405,18 @@ in {
         "read only" = "no";
         "guest ok" = "no";
       };
-      private = {
+      media = {
         path = "/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force group" = "users";
+      };
+      sync = {
+        path = "/sync";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
