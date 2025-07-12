@@ -9,6 +9,7 @@
       ast-grep
       atuin
       bat
+      btop
       coreutils
       ctags
       eza

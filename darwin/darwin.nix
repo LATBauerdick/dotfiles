@@ -135,16 +135,15 @@
    services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
-   homebrew = {
-     # enable = true;
-     enable = false;
-     casks = myCasks;
-     brews = myBrews;
-     # masApps = myMasApps;
-     onActivation.cleanup = "zap";
-     onActivation.autoUpdate = true;
-     onActivation.upgrade = true;
-   };
+   # homebrew = {
+   #   enable = true;
+   #   casks = myCasks;
+   #   brews = myBrews;
+   #   masApps = myMasApps;
+   #   onActivation.cleanup = "zap";
+   #   onActivation.autoUpdate = true;
+   #   onActivation.upgrade = true;
+   # };
 #   system.activationScripts.postUserActivation.text = ''
 #      # Following line should allow us to avoid a logout/login cycle
 #      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
