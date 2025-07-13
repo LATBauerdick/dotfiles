@@ -2,7 +2,7 @@
   let
     version = "2.53.1544";
     urlVersion = builtins.replaceStrings [ "." ] [ "0" ] version;
-    vhash = "sha256-pWg1Cp8aNdR/hoVZDF3kUznJtYsjJYX9J4g1xbmn/lg=";
+    vhash = "sha256-Hbe2EfBbpA3Xzyh4ZYjm1G8qrwg+dEq5YAwZEG59ClI=";
   in
 self: super: {
 
