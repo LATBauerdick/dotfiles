@@ -76,15 +76,12 @@
 
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       ddcutil # monitor brightness
-      mutt-with-sidebar
       bitwarden-cli
   ] ++ pkgs.lib.optionals withGUI [
       # kitty
+      ghostty
       bitwarden
       obsidian
-      slack
-      thunderbird
-      vlc
 #     zoom-us
   ]
   /* ];} */

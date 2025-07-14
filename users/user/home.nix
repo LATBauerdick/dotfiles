@@ -6,7 +6,7 @@ let
     myPackages = import ./packages.nix { inherit pkgs; withGUI = specialArgs.withGUI;  };
     extraPackages = import ./extraPackages.nix;
     specialArgs = {
-        withGUI = false;
+        withGUI = true;
         isDesktop = true;
     };
 

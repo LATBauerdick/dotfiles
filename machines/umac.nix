@@ -42,17 +42,44 @@ in {
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  services.xserver = {
+    enable = true;
+    windowManager.qtile.enable = true;
+    dpi=130;
+  #  dpi=218;
+  #  # dpi=329;
+  #  displayManager = {
+  #    /* lightdm.enable = true; */
+  #    /* startx.enable = true; */
+  #    /* defaultSession = "none+awesome"; */
+  };
+
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.desktopManager.plasma6.enable = true;
+  #environment.variables = {
+  #  PLASMA_USE_QT_SCALING = "1";
+  #  /* GDK_SCALE = "2"; */
+  #  /* GDK_DPI_SCALE = "0.5"; */
+  #  /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
+  # };
+
 
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
+
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+# run `boltctl`, then for each device that is not authorized, execute 
+# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
+  services.hardware.bolt.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -334,48 +361,6 @@ in {
   # hardware.pulseaudio.enable = true;
 ###  services.pulseaudio.enable = true;
   services.pulseaudio.enable = false;
-
-# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
-# run `boltctl`, then for each device that is not authorized, execute 
-# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
-  services.hardware.bolt.enable = true;
-
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  #services.xrdp.enable = true;
-  #/* services.xrdp.defaultWindowManager = "awesome-x11"; */
-  #services.xrdp.defaultWindowManager = "startplasma-x11";
-
-  #services.displayManager.sddm.enable = false;
-  #services.xserver = { enable = false;
-  #  dpi=130;
-  #  # dpi=218;
-  #  # dpi=329;
-  #  displayManager = {
-  #    /* lightdm.enable = true; */
-  #    /* startx.enable = true; */
-  #    /* defaultSession = "none+awesome"; */
-  #  };
-
-  #  desktopManager.plasma5.enable = false;
-  #  /* windowManager.awesome = { */
-  #  /*   enable = true; */
-  #  /*   luaModules = with pkgs.luaPackages; [ */
-  #  /*     luarocks     # is the package manager for Lua modules */
-  #  /*     luadbi-mysql # Database abstraction layer */
-  #  /*   ]; */
-  #  /* }; */
-  #  # libinput.enable = true;
-  #};
-  #environment.variables = {
-  #  PLASMA_USE_QT_SCALING = "1";
-  #  /* GDK_SCALE = "2"; */
-  #  /* GDK_DPI_SCALE = "0.5"; */
-  #  /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
-  # };
 
   nixpkgs.config.permittedInsecurePackages = [
                 "electron-13.6.9"

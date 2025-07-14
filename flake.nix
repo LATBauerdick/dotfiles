@@ -164,7 +164,7 @@
       system = "x86_64-linux";
       user   = "latb";
       extraSpecialArgs = { # pass arguments
-        withGUI = false;
+        withGUI = true;
         isDesktop = true;
       };
     };
