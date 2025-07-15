@@ -20,13 +20,66 @@ let
   zfsPools = [ "h2" "z2" "z1" "z0" ];
 in {
   imports =
-    [ # Include the results of tbe hardware scan.
+    [ # Include the results of the hardware scan.
 # done elsewhere      ./hardware-configuration.nix
       ../pkgs/plex.nix
       ../pkgs/adguard.nix
     ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
+
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
+
+  # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
+  services.xserver = {
+    enable = false;
+    windowManager.qtile.enable = false;
+    dpi=130;
+    # dpi=218;
+    # dpi=329;
+  # Configure keymap in X11
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+    displayManager = {
+      /* lightdm.enable = true; */
+      /* startx.enable = true; */
+      /* defaultSession = "none+awesome"; */
+    };
+    # desktopManager.plasma5.enable = false;
+    /* windowManager.awesome = { */
+    /*   enable = true; */
+    /*   luaModules = with pkgs.luaPackages; [ */
+    /*     luarocks     # is the package manager for Lua modules */
+    /*     luadbi-mysql # Database abstraction layer */
+    /*   ]; */
+    /* }; */
+  # Enable touchpad support (enabled default in most desktopManager).
+  # libinput.enable = true;
+  };
+  # Enable the KDE Plasma Desktop Environment.
+  # services.displayManager.sddm.enable = false;
+  # services.xrdp.enable = true;
+  # services.xrdp.defaultWindowManager = "awesome-x11"; */
+  # services.xrdp.defaultWindowManager = "startplasma-x11";
+  # services.desktopManager.plasma6.enable = true;
+  environment.variables = {
+    PLASMA_USE_QT_SCALING = "1";
+    /* GDK_SCALE = "2"; */
+    /* GDK_DPI_SCALE = "0.5"; */
+    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
+  };
+
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+# run `boltctl`, then for each device that is not authorized, execute 
+# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
+  services.hardware.bolt.enable = true;
+
   # use unstable nix so we can access flakes
   nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -270,50 +323,7 @@ in {
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  # hardware.pulseaudio.enable = true;
   services.pulseaudio.enable = true;
-
-# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
-# run `boltctl`, then for each device that is not authorized, execute 
-# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
-  services.hardware.bolt.enable = true;
-
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  services.xrdp.enable = true;
-  /* services.xrdp.defaultWindowManager = "awesome-x11"; */
-  services.xrdp.defaultWindowManager = "startplasma-x11";
-
-  services.displayManager.sddm.enable = false;
-  services.xserver = { enable = false;
-    dpi=130;
-    # dpi=218;
-    # dpi=329;
-    displayManager = {
-      /* lightdm.enable = true; */
-      /* startx.enable = true; */
-      /* defaultSession = "none+awesome"; */
-    };
-
-    desktopManager.plasma5.enable = false;
-    /* windowManager.awesome = { */
-    /*   enable = true; */
-    /*   luaModules = with pkgs.luaPackages; [ */
-    /*     luarocks     # is the package manager for Lua modules */
-    /*     luadbi-mysql # Database abstraction layer */
-    /*   ]; */
-    /* }; */
-    # libinput.enable = true;
-  };
-  environment.variables = {
-    PLASMA_USE_QT_SCALING = "1";
-    /* GDK_SCALE = "2"; */
-    /* GDK_DPI_SCALE = "0.5"; */
-    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
-  };
 
   nixpkgs.config.permittedInsecurePackages = [
                 "electron-13.6.9"

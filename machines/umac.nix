@@ -17,7 +17,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ ];
+  # zfsPools = [ /* "h2" "z2" "z1" "z0" */ ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -28,17 +28,10 @@ in {
 
   system.stateVersion = "25.05"; # Did you read the comment?
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -46,34 +39,40 @@ in {
     enable = true;
     windowManager.qtile.enable = true;
     dpi=130;
-  #  dpi=218;
-  #  # dpi=329;
-  #  displayManager = {
-  #    /* lightdm.enable = true; */
-  #    /* startx.enable = true; */
-  #    /* defaultSession = "none+awesome"; */
-  };
-
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
-  };
-
-  # Enable the KDE Plasma Desktop Environment.
-  # services.displayManager.sddm.enable = true;
-  # services.desktopManager.plasma6.enable = true;
-  #environment.variables = {
-  #  PLASMA_USE_QT_SCALING = "1";
-  #  /* GDK_SCALE = "2"; */
-  #  /* GDK_DPI_SCALE = "0.5"; */
-  #  /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
-  # };
-
-
+    # dpi=218;
+    # dpi=329;
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+    displayManager = {
+      /* lightdm.enable = true; */
+      /* startx.enable = true; */
+      /* defaultSession = "none+awesome"; */
+    };
+    # desktopManager.plasma5.enable = false;
+    /* windowManager.awesome = { */
+    /*   enable = true; */
+    /*   luaModules = with pkgs.luaPackages; [ */
+    /*     luarocks     # is the package manager for Lua modules */
+    /*     luadbi-mysql # Database abstraction layer */
+    /*   ]; */
+    /* }; */
+  # Enable touchpad support (enabled default in most desktopManager).
+  # libinput.enable = true;
+  };
+  # Enable the KDE Plasma Desktop Environment.
+  # services.displayManager.sddm.enable = false;
+  # services.xrdp.enable = true;
+  # services.xrdp.defaultWindowManager = "awesome-x11"; */
+  # services.xrdp.defaultWindowManager = "startplasma-x11";
+  # services.desktopManager.plasma6.enable = true;
+  environment.variables = {
+    PLASMA_USE_QT_SCALING = "1";
+    /* GDK_SCALE = "2"; */
+    /* GDK_DPI_SCALE = "0.5"; */
+    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
   };
 
 # Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
@@ -99,20 +98,6 @@ in {
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.btal = {
-    isNormalUser = true;
-    description = "BTAL";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
-    #  thunderbird
-    ];
-  };
-
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = false;
   services.displayManager.autoLogin.user = "latb";
@@ -120,10 +105,8 @@ in {
   # Install firefox.
   programs.firefox.enable = true;
 
-
-
   # use unstable nix so we can access flakes
-  nix.settings.trusted-users = [ "root" "latb" "btal" ];
+  nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
@@ -143,16 +126,19 @@ in {
     networkmanager.enable = true;
     ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
 
-    ### wireless.enable = true;
+    wireless.enable = false;
 
     firewall.enable = true;
     firewall.allowPing = true;
 # ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
     firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
+    firewall.allowedTCPPortRanges = [ { from = 9330; to = 9339; }
+                                      { from = 30000; to = 30010; }
+    ];
 # open firewall ports for mosh, wireguard
     firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
 # ports for NextDNS, `services.samba`, slimserver, roon ARC
-    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 ];
+    firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 9003 ];
   };
 
   services.tailscale.enable = tailscaleEnable;
@@ -175,8 +161,12 @@ in {
       # wait for tailscaled to settle
       sleep 2
 
-      # otherwise authenticate with tailscale
+      # otherwise authenticate with tailscal
       ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+
+      # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
+      # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
+      # /run/current-system/sw/bin/ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
     '';
   };
 
@@ -358,8 +348,6 @@ in {
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  # hardware.pulseaudio.enable = true;
-###  services.pulseaudio.enable = true;
   services.pulseaudio.enable = false;
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -452,8 +440,18 @@ in {
         "read only" = "no";
         "guest ok" = "no";
       };
-      private = {
+      media = {
         path = "/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force group" = "users";
+      };
+      sync = {
+        path = "/sync";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
