@@ -6,10 +6,10 @@
 let
   hostname = "umac";
   hostId = "31df3e81"; # head -c 8 /etc/machine-id
-  plexEnable = false;
-  roonEnable = false;
+  plexEnable = true;
+  roonEnable = true;
   roonBridgeEnable = false;
-  delugeEnable = false;
+  delugeEnable = true;
   unifiEnable = false;
   nextdnsEnable = false;
   adguardEnable = false;
@@ -17,7 +17,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ /* "h2" "z2" "z1" "z0" */ ];
+  zfsPools = [ "h2" "z2" "z1" "z0" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
