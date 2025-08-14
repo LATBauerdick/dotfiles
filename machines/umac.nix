@@ -189,6 +189,11 @@ in {
   nixpkgs.config.allowUnsupportedSystem = true;
 
   environment.systemPackages = with pkgs; [
+
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+
     krb5
     silver-searcher
     git
@@ -414,6 +419,11 @@ in {
         </service-group>
       '';
     };
+  };
+
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
   };
 
 # SMB file sharing
