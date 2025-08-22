@@ -54,6 +54,7 @@
       ranger
       ripgrep
       silver-searcher
+      tgpt
       tmux
       tree
       unzip
