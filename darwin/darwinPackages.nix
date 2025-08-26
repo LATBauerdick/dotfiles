@@ -5,22 +5,22 @@ let systemPackages = with pkgs; [
        # alt-tab-macos
        # not on this platform bitwarden
        # marked as broken calibre
-       discord
+#       discord
        # not on this platform  firefox
-       google-chrome
-       grandperspective
-       iterm2
-       keycastr
-       kitty
-       mediathekview
-       mkalias
-       obsidian
-       raycast
-       slack
+#       google-chrome
+#       grandperspective
+#       iterm2
+#       keycastr
+#       kitty
+#       mediathekview
+#       mkalias
+#       obsidian
+#       raycast
+#       slack
 #      tailscale
-       xld
+#       xld
        # does not install xquartz
-       zoom-us
+#       zoom-us
 
       darwin.linux-builder
        vim

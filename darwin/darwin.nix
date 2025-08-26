@@ -24,7 +24,7 @@
     system.stateVersion = 4;
     ids.gids.nixbld = 350;
 
-    system.primaryUser = "latb";
+    system.primaryUser = "bauerdic"; #builtins.getEnv "USER";
 
     nixpkgs.config.allowUnfree = true;
 
