@@ -80,9 +80,9 @@
       bitwarden-cli
   ] ++ pkgs.lib.optionals withGUI [
       # kitty
-      ghostty
-      bitwarden
-      obsidian
-#     zoom-us
+####      ghostty
+####      bitwarden
+####      obsidian
+####      zoom-us
   ]
   /* ];} */

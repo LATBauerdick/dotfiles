@@ -60,6 +60,7 @@
                  ];
       config.allowUnfree = true;
     };
+
     darwinConfig = ./darwin/darwin.nix;
     mkMachine = name: { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
       inherit system;

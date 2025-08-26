@@ -47,6 +47,11 @@ in {
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
     MANPAGER = "less -FirSwX";
+    PATH = ''
+      ${config.home.homeDirectory}/bin:\
+      ${config.home.homeDirectory}/.local/bin:\
+      $PATH
+    '';
   };
 
   programs.zsh = {
