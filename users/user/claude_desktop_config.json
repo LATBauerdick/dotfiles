@@ -1,0 +1,28 @@
+{
+  "globalShortcut": "Shift+Alt+Cmd+Space",
+  "mcpServers": {
+    "devonthink": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-devonthink"]
+    },
+    "filesystem-notes": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "~/Notes/Notes"
+      ]
+    },
+    "git-clutter": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "~/clutter"
+      ]
+    },
+    "calendar": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-calendar"]
+    }
+  }
+}

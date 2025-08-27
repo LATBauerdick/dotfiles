@@ -61,7 +61,6 @@
       config.allowUnfree = true;
     };
 
-    darwinConfig = ./darwin/darwin.nix;
     mkMachine = name: { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
@@ -81,6 +80,7 @@
         { nixpkgs.overlays = overlays; }
       ];
     };
+    darwinConfig = import ./darwin/darwin.nix { primaryUser = "latb"; };
     mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [

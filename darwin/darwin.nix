@@ -1,4 +1,4 @@
- { pkgs, config, ... }:
+ { primaryUser ? "bauerdic" } : { pkgs, config, ... }:
   let
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
     # myCasks = import ./darwinCasks.nix;
@@ -24,7 +24,7 @@
     system.stateVersion = 4;
     ids.gids.nixbld = 350;
 
-    system.primaryUser = "bauerdic"; #builtins.getEnv "USER";
+    system.primaryUser = primaryUser;
 
     nixpkgs.config.allowUnfree = true;
 
