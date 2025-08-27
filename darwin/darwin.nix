@@ -1,8 +1,8 @@
  { pkgs, config, ... }:
   let
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
-    myCasks = import ./darwinCasks.nix;
-    myBrews = import ./darwinBrews.nix;
+    # myCasks = import ./darwinCasks.nix;
+    # myBrews = import ./darwinBrews.nix;
     myMasApps = import ./darwinMasApps.nix;
   in
   {
@@ -139,7 +139,7 @@
    #   enable = true;
    #   casks = myCasks;
    #   brews = myBrews;
-   #   masApps = myMasApps;
+   #   # masApps = myMasApps;
    #   onActivation.cleanup = "zap";
    #   onActivation.autoUpdate = true;
    #   onActivation.upgrade = true;
