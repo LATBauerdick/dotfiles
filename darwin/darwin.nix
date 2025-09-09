@@ -3,7 +3,7 @@
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
     # myCasks = import ./darwinCasks.nix;
     # myBrews = import ./darwinBrews.nix;
-    myMasApps = import ./darwinMasApps.nix;
+    # myMasApps = import ./darwinMasApps.nix;
   in
   {
     environment.systemPackages = myPackages.systemPackages;

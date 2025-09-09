@@ -24,6 +24,13 @@ automatically-unhide-macos-hidden-apps = true
     if.window-title-regex-substring = '^orion preview'
     run = 'layout floating'
 
+
+
+
+[[on-window-detected]]
+  if.app-id = "com.iconfactory.Tot"
+  run = 'layout floating'
+
 [[on-window-detected]]
   if.app-id = "com.sindresorhus.Scratchpad"
   run = 'layout floating'
