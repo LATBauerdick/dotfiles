@@ -19,6 +19,13 @@ automatically-unhide-macos-hidden-apps = true
 # 'exec-and-forget borders active_color=0xffed6b5f inactive_color=0xff494d64 width=5.0 style=round'
 # ]
 
+
+
+[[on-window-detected]]
+    if.app-id='com.kagi.kagimacOS'
+    if.window-title-regex-substring = 'com.iconfactory.Tot'
+    run = 'layout floating'
+
 [[on-window-detected]]
     if.app-id='com.kagi.kagimacOS'
     if.window-title-regex-substring = '^orion preview'
