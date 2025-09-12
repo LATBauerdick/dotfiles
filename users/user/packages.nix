@@ -4,7 +4,7 @@
 /*   home.packages = with pkgs; [ */
   { pkgs, withGUI }: with pkgs; [
   # these files are meant to be installed in all scenarios
-      abduco
+      # abduco
       aria
       ast-grep
       atuin
@@ -44,7 +44,6 @@
       nmap
       oh-my-zsh
       oh-my-posh
-      ollama
       pandoc
       pv
       python313Packages.pandoc-xnos
@@ -84,7 +83,5 @@
 ####      bitwarden
 ####      obsidian
 ####      zoom-us
-  ] ++ [
-    # pkgs-unstable.ollama
   ]
   /* ];} */

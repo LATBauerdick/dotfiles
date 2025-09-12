@@ -10,6 +10,18 @@ let
         isDesktop = true;
     };
 
+  # Override ollama with newer version
+    ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
+      version = "0.11.10";
+      src = pkgs.fetchFromGitHub {
+        owner = "ollama";
+        repo  = "ollama";
+        rev   = "v${version}";
+        hash  = "sha256-LeEyarYvHS0hvGu6Cksflrw+myYbl3OwzsFIONqeN4Q=";
+      };
+      vendorHash = "sha256-zTrBighPBqZ9hhkEV3UawJZUYyPRay7+P6wkhDtpY7M=";
+    });
+
 in {
 
   # Let Home Manager install and manage itself.
@@ -31,7 +43,11 @@ in {
   # changes in each release.
   home.stateVersion = "22.11";
 
-  home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs );
+  home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs ) ++ [
+      pkgs.abduco
+      # ollamaOverride
+      pkgs.ollama
+    ];
 
 # Tex installation
   fonts.fontconfig.enable = true;
