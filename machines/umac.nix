@@ -17,7 +17,7 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "h2" "z2" "z1" "z0" ];
+  zfsPools = [ "z3" "z2" "z1" "z0" ];
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -124,7 +124,7 @@ in {
     search = [ tailnetName ];
 
     networkmanager.enable = true;
-    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    # networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
 
     wireless.enable = false;
 
