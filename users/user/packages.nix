@@ -33,7 +33,7 @@
       jq
       julia-bin
 ####      lilypond-unstable-with-fonts
-      lima
+      # lima
       llvm
       lld
       lzop
@@ -50,7 +50,7 @@
       python313Packages.pandoc-xnos
       pandoc-fignos
       pandoc-eqnos
-      qemu
+      # qemu
       ranger
       ripgrep
       silver-searcher
@@ -84,5 +84,7 @@
 ####      bitwarden
 ####      obsidian
 ####      zoom-us
+  ] ++ [
+    # pkgs-unstable.ollama
   ]
   /* ];} */
