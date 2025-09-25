@@ -12,14 +12,14 @@ let
 
   # Override ollama with newer version
     ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-      version = "0.11.10";
+      version = "0.12.2";
       src = pkgs.fetchFromGitHub {
         owner = "ollama";
         repo  = "ollama";
         rev   = "v${version}";
-        hash  = "sha256-LeEyarYvHS0hvGu6Cksflrw+myYbl3OwzsFIONqeN4Q=";
+        hash  = "sha256-D3b3ddW6s9NqV8mJZboQ/z8IkId8h7a4eTh/MkjPNqg=";
       };
-      vendorHash = "sha256-zTrBighPBqZ9hhkEV3UawJZUYyPRay7+P6wkhDtpY7M=";
+      vendorHash = "sha256-SlaDsu001TUW+t9WRp7LqxUSQSGDF1Lqu9M1bgILoX4=";
     });
 
 in {
@@ -45,8 +45,8 @@ in {
 
   home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs ) ++ [
       pkgs.abduco
-      # ollamaOverride
-      pkgs.ollama
+      ollamaOverride
+      # pkgs.ollama
     ];
 
 # Tex installation
