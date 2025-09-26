@@ -113,6 +113,11 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    # "electron-13.6.9"
+    "broadcom-sta-6.30.223.271-57-6.12.46"
+  ];
+
   networking = {
     usePredictableInterfaceNames = false;
     useDHCP = false;
@@ -161,8 +166,8 @@ in {
       # wait for tailscaled to settle
       sleep 2
 
-      # otherwise authenticate with tailscal
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh
+      # otherwise authenticate with tailscale
+      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh --advertise-routes="10.23.1.0/24,10.23.30.0/24"
 
       # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
       # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
@@ -193,6 +198,8 @@ in {
     jellyfin
     jellyfin-web
     jellyfin-ffmpeg
+
+    ncurses
 
     krb5
     silver-searcher
@@ -354,10 +361,6 @@ in {
   systemd.targets.hybrid-sleep.enable = false;
 
   services.pulseaudio.enable = false;
-
-  nixpkgs.config.permittedInsecurePackages = [
-                "electron-13.6.9"
-  ];
 
   services.adguardhome.enable = adguardEnable;
 
