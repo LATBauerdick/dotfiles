@@ -116,6 +116,7 @@ in {
   nixpkgs.config.permittedInsecurePackages = [
     # "electron-13.6.9"
     "broadcom-sta-6.30.223.271-57-6.12.46"
+    "broadcom-sta-6.30.223.271-57-6.12.48"
   ];
 
   networking = {
