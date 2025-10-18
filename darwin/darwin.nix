@@ -1,8 +1,8 @@
  { primaryUser ? "bauerdic" } : { pkgs, config, ... }:
   let
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
-    # myCasks = import ./darwinCasks.nix;
-    # myBrews = import ./darwinBrews.nix;
+    myCasks = import ./darwinCasks.nix;
+    myBrews = import ./darwinBrews.nix;
     # myMasApps = import ./darwinMasApps.nix;
   in
   {
@@ -135,15 +135,15 @@
    services.skhd.enable = false;
 
       #services.karabiner-elements.enable = true;
-   # homebrew = {
-   #   enable = true;
-   #   casks = myCasks;
-   #   brews = myBrews;
-   #   # masApps = myMasApps;
-   #   onActivation.cleanup = "zap";
-   #   onActivation.autoUpdate = true;
-   #   onActivation.upgrade = true;
-   # };
+   homebrew = {
+     enable = true;
+     casks = myCasks;
+     brews = myBrews;
+     # masApps = myMasApps;
+     onActivation.cleanup = "zap";
+     onActivation.autoUpdate = true;
+     onActivation.upgrade = true;
+   };
 #   system.activationScripts.postUserActivation.text = ''
 #      # Following line should allow us to avoid a logout/login cycle
 #      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
