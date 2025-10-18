@@ -139,6 +139,7 @@
      enable = true;
      casks = myCasks;
      brews = myBrews;
+     taps = [ "nikitabobko/tap" ];
      # masApps = myMasApps;
      onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;

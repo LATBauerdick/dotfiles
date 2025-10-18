@@ -47,6 +47,7 @@
      # "quicksilver"
 #      "quiet-reader"
        "raindropio"
+       "raycast"
        "roon"
        "rustdesk"
        "superduper"
