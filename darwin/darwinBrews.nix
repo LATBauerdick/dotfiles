@@ -1,6 +1,7 @@
      [
 ###       "FelixKratz/formulae/borders"
 ###       "FelixKratz/formulae/sketchybar"
+       "gemini-cli"
        "imagemagick"
        "lua-language-server"
        "mas"
