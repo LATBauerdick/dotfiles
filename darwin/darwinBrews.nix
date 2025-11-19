@@ -5,6 +5,7 @@
        "imagemagick"
        "lua-language-server"
        "mas"
+       "opencode"
        "pngpaste"
 ###       "qmk/qmk/qmk"
        "syncthing"
