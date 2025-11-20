@@ -119,6 +119,8 @@ in {
   xdg.configFile."kitty/lightTheme.conf".source = ./kitty/lightTheme.conf;
   xdg.configFile."kitty/darkTheme.conf".source = ./kitty/darkTheme.conf;
 
+  xdg.configFile."leaderKey/config.json".source = ./leaderKey/config.json;
+
   programs.kitty.enable = true;
   # programs.kitty.font.name = "Iosevka Nerd Font";
   # programs.kitty.font.size = 14.0;

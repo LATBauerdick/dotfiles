@@ -33,6 +33,7 @@
        "kitty"
        "kobo"
        "launchcontrol"
+       "leader-key"
      #  "ltspice"
        "mactex"
        "marked-app"
