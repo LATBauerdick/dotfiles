@@ -35,7 +35,7 @@
        "launchcontrol"
        "leader-key"
      #  "ltspice"
-       "mactex"
+     #  "mactex"
        "marked-app"
        "mattermost"
        "mediathekview"

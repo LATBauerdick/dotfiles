@@ -72,7 +72,7 @@
     #    nodePackages_latest.parcel
 
 # tex
-####      texlive.combined.scheme-small
+      texlive.combined.scheme-full
 
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       ddcutil # monitor brightness
