@@ -14,4 +14,10 @@ return {
     -- vim.cmd.colorscheme = "solarized"
     -- end,
   },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "solarized",
+    },
+  },
 }

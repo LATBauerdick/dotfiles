@@ -32,6 +32,7 @@
       imagemagick
       jq
       julia-bin
+      lazygit
 ####      lilypond-unstable-with-fonts
       # lima
       llvm

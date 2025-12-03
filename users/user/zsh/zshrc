@@ -49,9 +49,10 @@ alias l=eza #'ls -alh'
 alias ll='eza -alh' #'ls -alh'
 alias tree='eza --tree'
 
-alias nv='nvim'
-alias nve='NVIM_APPNAME=nvimexample nvim'
+# alias nv='nvim'
+alias nv='NVIM_APPNAME=nvimlazy nvim'
 alias nvl='NVIM_APPNAME=nvimlazy nvim'
+alias nve='NVIM_APPNAME=nvimexample nvim'
 
 alias stss="(sleep 4; open vnc://127.0.0.1:5901) & ssh -C -4 -L 5901:127.0.0.1:5900"
 alias imac='sshpass -e ssh imac'  # put passwd into env SSHPASS
