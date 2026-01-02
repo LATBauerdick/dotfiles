@@ -33,7 +33,7 @@
       jq
       julia-bin
       lazygit
-####      lilypond-unstable-with-fonts
+      lilypond-with-fonts
       # lima
       llvm
       lld
