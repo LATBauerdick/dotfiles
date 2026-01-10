@@ -9,6 +9,7 @@
        "balenaetcher"
      # "bartender"
        "bitwarden"
+       "bloom"
        "bluos-controller"
      # "brave-browser"
        "calibre"
