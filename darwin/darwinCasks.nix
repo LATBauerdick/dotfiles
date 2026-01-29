@@ -25,6 +25,7 @@
        "grammarly-desktop"
        "grandperspective"
        "google-chrome"
+       "hamed-elfayome/claude-usage/claude-usage-tracker"
        "hookmark"
        "houdahspot"
        "iina"
