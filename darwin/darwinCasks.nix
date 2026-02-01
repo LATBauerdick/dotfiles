@@ -50,6 +50,7 @@
        "obsidian"
        "omnigraffle"
        "onyx"
+       "opera"
        "orion"
        "pdf-expert"
        "plex"
