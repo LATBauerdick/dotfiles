@@ -45,9 +45,14 @@ in {
 
   home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs ) ++ [
       pkgs.abduco
+      pkgs.nodejs_22
       ollamaOverride
       # pkgs.ollama
     ];
+  home.sessionPath = [ "$HOME/.npm-global/bin" ];
+  home.file.".npmrc".text = ''
+       prefix=~/.npm-global
+'';
 
 # Tex installation
   fonts.fontconfig.enable = true;
@@ -131,6 +136,7 @@ in {
   programs.direnv.nix-direnv.enable = true;
   # programs.direnv.nix-direnv.enableFlakes = true;
   programs.zsh.enable = true;
+
 
 
 #  xdg.configFile."alacritty".source=mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/dot/config/alacritty"

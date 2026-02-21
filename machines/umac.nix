@@ -176,6 +176,29 @@ in {
     '';
   };
 
+  # systemd.services.openclaw = {
+  #     description = "OpenClaw Gateway";
+  #     after = [ "network.target" ];
+  #     wantedBy = [ "multi-user.target" ];
+  #
+  #     serviceConfig = {
+  #       Type = "simple";
+  #       User = "latb";  # or whatever user
+  #       WorkingDirectory = "/home/latb/.openclaw/workspace";
+  #       ExecStart = "${pkgs.nodejs_22}/bin/node /home/latb/.npm-global/lib/node_modules/openclaw/dist/gateway.js";
+  #       # Or find the correct path with: which openclaw
+  #       Restart = "on-failure";
+  #       RestartSec = 5;
+  #
+  #       # Environment
+  #       Environment = [
+  #         "HOME=/home/latb"
+  #         "NODE_ENV=production"
+  #       ];
+  #     };
+  # };
+
+
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv6.conf.all.forwarding" = true;
