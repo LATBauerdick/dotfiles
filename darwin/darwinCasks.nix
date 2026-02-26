@@ -1,7 +1,7 @@
 [
 #      "adobe-acrobat-reader"
        "airbuddy"
-       "alt-tab"
+     # "alt-tab"
      # "alfred"
      # "arc"
      # "arq"
@@ -9,7 +9,7 @@
        "balenaetcher"
      # "bartender"
        "bitwarden"
-       "blackhole-2ch"
+       "blackhole-16ch"
        "bloom"
        "bluos-controller"
      # "brave-browser"
