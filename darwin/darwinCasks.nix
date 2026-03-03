@@ -9,6 +9,7 @@
        "balenaetcher"
      # "bartender"
        "bitwarden"
+       "blackhole-2ch"
        "blackhole-16ch"
        "bloom"
        "bluos-controller"
