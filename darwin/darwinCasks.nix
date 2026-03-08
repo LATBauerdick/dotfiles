@@ -75,6 +75,7 @@
      # "wezterm"
        "xld"
        "xquartz"
+       "xnviewmp"
        "zoom"
        #"eaglefiler"
        #"font-comic-mono"
