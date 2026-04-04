@@ -7,7 +7,8 @@ let
   hostname = "umac";
   hostId = "31df3e81"; # head -c 8 /etc/machine-id
   plexEnable = true;
-  roonEnable = true;
+  jellyfinEnable = true;
+  roonEnable = false;
   roonBridgeEnable = false;
   delugeEnable = true;
   unifiEnable = false;
@@ -391,22 +392,22 @@ in {
   nixpkgs.config.plex.plexname = hostname;
   services.plex.enable = plexEnable;
 
-  services.deluge.enable = delugeEnable;
   services.deluge = {
+    enable = delugeEnable;
     dataDir = "/data/deluge-${hostname}";
-    web.enable = true;
-    web.openFirewall = true;
+    web.enable = delugeEnable;
+    web.openFirewall = delugeEnable;
   };
 
-  services.roon-server.enable = roonEnable;
   services.roon-server = {
-    openFirewall = true;
+    enable = roonEnable;
+    openFirewall = roonEnable;
   };
 
 
-  services.unifi.enable = unifiEnable;
-  services.unifi.unifiPackage = pkgs.unifi;
   services.unifi = {
+    enable = unifiEnable;
+    unifiPackage = pkgs.unifi;
     openFirewall = unifiEnable;
   };
 
@@ -449,7 +450,7 @@ in {
   };
 
   services.jellyfin = {
-    enable = true;
+    enable = jellyfinEnable;
     openFirewall = true;
   };
 
