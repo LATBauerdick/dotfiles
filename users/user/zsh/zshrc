@@ -19,6 +19,9 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 # vi mode
 bindkey -v
 
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 #ZSH_THEME=powerlevel10k/powerlevel10k
