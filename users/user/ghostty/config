@@ -1,6 +1,6 @@
 #theme = dark:catppuccin-frappe,light:catppuccin-latte
-theme = dark:Solarized Dark,light:Solarized Light
-# theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+# theme = dark:Solarized Dark,light:Solarized Light
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 
 shell-integration-features = no-cursor
 

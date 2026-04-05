@@ -40,6 +40,13 @@ alias vi="vim"
 
 ### claude code openclaw ersatz
 alias openclaw='tmux -S ~/.tmux-openclaw.sock attach -t openclaw'
+alias openclaw-stop='touch ~/.openclaw-stop && echo "Daemon will stop after next /exit"'
+alias openclaw-start='rm -f ~/.openclaw-stop && bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown && echo "Daemon started"'
+
+# Ensure openclaw daemon is running (fallback if launchd didn't start it)
+if ! tmux -S ~/.tmux-openclaw.sock has-session -t openclaw 2>/dev/null; then
+  bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown
+fi
 
 
 ### LATB mods
