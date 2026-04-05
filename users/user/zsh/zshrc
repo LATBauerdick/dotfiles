@@ -38,6 +38,10 @@ export LANG=en_US.UTF-8
 # Alias' {{{
 alias vi="vim"
 
+### claude code openclaw ersatz
+alias openclaw='tmux -S ~/.tmux-openclaw.sock attach -t openclaw'
+
+
 ### LATB mods
 alias zl="zfs list -t all -r -o name,used,refer"
 
