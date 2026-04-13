@@ -82,8 +82,9 @@
         { nixpkgs.overlays = overlays; }
       ];
     };
-    darwinConfig = import ./darwin/darwin.nix { primaryUser = "latb"; };
-    mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:  nix-darwin.lib.darwinSystem {
+    mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:
+      let darwinConfig = import ./darwin/darwin.nix { primaryUser = user; };
+      in nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
         darwinConfig

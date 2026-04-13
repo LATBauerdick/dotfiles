@@ -88,7 +88,7 @@ in {
   #   mcpServers = {};
   # };
     
-  home.file."Library/Application Support/Claude/claude_desktop_config.json".source = ./claude/claude_desktop_config.json;
+  # home.file."Library/Application Support/Claude/claude_desktop_config.json".source = ./claude/claude_desktop_config.json;
 
   home.file.".tmux.conf".source = ./tmux/tmux.conf;
 
