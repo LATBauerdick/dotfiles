@@ -1,6 +1,7 @@
      [
 ###       "FelixKratz/formulae/borders"
 ###       "FelixKratz/formulae/sketchybar"
+       "ffmpeg"
        "gemini-cli"
        "gh"
        "imagemagick"
@@ -10,5 +11,6 @@
        "pngpaste"
 ###       "qmk/qmk/qmk"
        "syncthing"
+       "yt-dlp"
      ]
 
