@@ -39,7 +39,7 @@ export LANG=en_US.UTF-8
 alias vi="vim"
 
 ### claude code openclaw ersatz
-alias openclaw='abduco -a ~/.openclaw/openclaw.sock'
+alias openclaw='abduco -e ^B -a ~/.openclaw/openclaw.sock'
 alias openclaw-stop='touch ~/.openclaw-stop && echo "Daemon will stop after next /exit"'
 alias openclaw-start='rm -f ~/.openclaw-stop && bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown && echo "Daemon started"'
 
