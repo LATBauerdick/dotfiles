@@ -15,4 +15,4 @@ adjust-cell-height = 2
 
 keybind = global:cmd+escape=toggle_quick_terminal
 
-config-file = ?myConfig
+config-file = ?~/.config/ghostty/myConfig

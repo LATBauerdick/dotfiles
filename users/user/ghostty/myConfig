@@ -1,6 +1,6 @@
 
 
-macos-titlebar-style = hidden
+#macos-titlebar-style = hidden
 
 shell-integration-features = no-cursor, sudo, no-title
 
@@ -14,3 +14,8 @@ auto-update-channel = tip
 window-padding-balance=true
 link-url=true
 font-size = 18.0
+
+keybind = cmd+shift+k=scroll_page_up
+keybind = cmd+shift+j=scroll_page_down
+keybind = cmd+shift+u=scroll_to_top
+keybind = cmd+shift+d=scroll_to_bottom
