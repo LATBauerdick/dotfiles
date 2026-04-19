@@ -39,12 +39,12 @@ export LANG=en_US.UTF-8
 alias vi="vim"
 
 ### claude code openclaw ersatz
-alias openclaw='abduco -e ^B -a ~/.openclaw/openclaw.sock'
+alias openclaw='tmux attach-session -t openclaw'
 alias openclaw-stop='touch ~/.openclaw-stop && echo "Daemon will stop after next /exit"'
 alias openclaw-start='rm -f ~/.openclaw-stop && bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown && echo "Daemon started"'
 
 # Ensure openclaw daemon is running (fallback if launchd didn't start it)
-if [[ ! -S "${HOME}/.openclaw/openclaw.sock" ]]; then
+if ! tmux has-session -t openclaw 2>/dev/null; then
   bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown
 fi
 

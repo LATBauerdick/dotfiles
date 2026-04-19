@@ -32,7 +32,9 @@ automatically-unhide-macos-hidden-apps = true
     run = 'layout floating'
 
 
-
+[[on-window-detected]]
+  if.app-id = "com.Topping.Pro"
+  run = 'layout floating'
 
 [[on-window-detected]]
   if.app-id = "com.iconfactory.Tot"
