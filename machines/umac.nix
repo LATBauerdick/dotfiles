@@ -118,6 +118,7 @@ in {
     # "electron-13.6.9"
     "broadcom-sta-6.30.223.271-57-6.12.46"
     "broadcom-sta-6.30.223.271-57-6.12.48"
+    "broadcom-sta-6.30.223.271-59-6.12.63"
   ];
 
   networking = {
