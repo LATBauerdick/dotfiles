@@ -12,7 +12,7 @@ let
 
   # Override ollama with newer version
     ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-      version = "0.21.1";
+      version = "0.22.1";
       src = pkgs.fetchFromGitHub {
         owner = "ollama";
         repo  = "ollama";
