@@ -6,7 +6,7 @@
   # add some more, etc
     autossh
     duf
-    du-dust
+    dust
     entr
     /* lima */
   # ncdu

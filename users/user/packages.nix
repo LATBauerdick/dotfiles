@@ -1,11 +1,11 @@
 /* { config, pkgs, nixpkgs, eww, ... }: */
 /* let */
-/* in { */
+/* in fastfetch{ */
 /*   home.packages = with pkgs; [ */
   { pkgs, withGUI }: with pkgs; [
   # these files are meant to be installed in all scenarios
       # abduco
-      aria
+      # aria
       ast-grep
       atuin
       bat
@@ -14,6 +14,7 @@
       ctags
       eza
       exiftool
+      fastfetch
       fd
       fzf
       deluge
@@ -39,7 +40,6 @@
       lld
       lzop
       mosh
-      neofetch
 #      neovim-unwrapped
 #      neuron-notes
       nmap

@@ -12,7 +12,7 @@ let
 
   # Override ollama with newer version
     ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-      version = "0.12.2";
+      version = "0.21.1";
       src = pkgs.fetchFromGitHub {
         owner = "ollama";
         repo  = "ollama";
@@ -46,8 +46,8 @@ in {
   home.packages =  [ ] ++ myPackages ++ ( extraPackages pkgs ) ++ [
       pkgs.abduco
       pkgs.nodejs_22
-      ollamaOverride
-      # pkgs.ollama
+      # ollamaOverride
+      pkgs.ollama
     ];
   home.sessionPath = [ "$HOME/.npm-global/bin" ];
   home.file.".npmrc".text = ''
@@ -76,9 +76,10 @@ in {
   };
 
   programs.zsh = {
+    # dotDir = "${config.xdg.configHome}/zsh";
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "thefuck" ];
+      plugins = [ "git" ];
       theme = "robbyrussell";
     };
   };
@@ -101,6 +102,8 @@ in {
 
   programs.neovim = {
     enable = true;
+    withPython3 = false;
+    withRuby = false;
   };
 
   xdg.enable = true;

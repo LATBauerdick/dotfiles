@@ -4,30 +4,28 @@
 
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    home-manager = {
-      # url = "github:nix-community/home-manager";
-      url = "github:nix-community/home-manager/release-25.05";
-      # url = "/home/bauerdic/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
-    # nix-darwin.url = "github:nix-darwin/nix-darwin/NIX-DARWIN-BRANCH";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    # nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    # lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
+    # lix-module.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager.url = "github:nix-community/home-manager/master";
+    # home-manager.url = "github:nix-community/home-manager/release-25.11";
+      # url = "/home/bauerdic/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    nixvim = {
-        url = "github:nix-community/nixvim";
-        inputs.nixpkgs.follows = "nixpkgs";
-    };
+
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     limainit.url = "github:nixos-lima/nixos-lima";
   };
@@ -36,7 +34,7 @@
     self,
     home-manager,
     nixpkgs,
-    lix-module,
+    # lix-module,
     utils,
     nix-darwin,
     nix-homebrew,
@@ -88,7 +86,7 @@
       inherit system;
       modules = [
         darwinConfig
-        lix-module.nixosModules.default
+        # lix-module.nixosModules.default
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
@@ -100,7 +98,7 @@
         home-manager.darwinModules.home-manager {
           home-manager.users.${user} =
               import ./users/user/home.nix { user=user; dir=dir; };
-          home-manager.sharedModules = [ nixvim.homeManagerModules.nixvim ];
+          home-manager.sharedModules = [ nixvim.homeModules.nixvim ];
         # to fix some supposed bug in home-manager
           users.users."${user}".home = dir;
         }
@@ -125,7 +123,7 @@
         ./hardware/lima.nix
         ./machines/lima.nix
         ./users/latb/latb.nix
-        lix-module.nixosModules.default
+        # lix-module.nixosModules.default
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
