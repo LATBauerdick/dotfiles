@@ -11,16 +11,16 @@ let
     };
 
   # Override ollama with newer version
-    ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-      version = "0.22.1";
-      src = pkgs.fetchFromGitHub {
-        owner = "ollama";
-        repo  = "ollama";
-        rev   = "v${version}";
-        hash  = "sha256-D3b3ddW6s9NqV8mJZboQ/z8IkId8h7a4eTh/MkjPNqg=";
-      };
-      vendorHash = "sha256-SlaDsu001TUW+t9WRp7LqxUSQSGDF1Lqu9M1bgILoX4=";
-    });
+    # ollamaOverride = pkgs.ollama.overrideAttrs (oldAttrs: rec {
+    #   version = "0.22.1";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "ollama";
+    #     repo  = "ollama";
+    #     rev   = "v${version}";
+    #     hash  = "sha256-D3b3ddW6s9NqV8mJZboQ/z8IkId8h7a4eTh/MkjPNqg=";
+    #   };
+    #   vendorHash = "sha256-SlaDsu001TUW+t9WRp7LqxUSQSGDF1Lqu9M1bgILoX4=";
+    # });
 
 in {
 
@@ -47,7 +47,7 @@ in {
       pkgs.abduco
       pkgs.nodejs_22
       # ollamaOverride
-      pkgs.ollama
+      # pkgs.ollama
     ];
   home.sessionPath = [ "$HOME/.npm-global/bin" ];
   home.file.".npmrc".text = ''

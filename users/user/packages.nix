@@ -53,7 +53,7 @@
       # qemu
       ranger
       ripgrep
-      silver-searcher
+    # silver-searcher
       tgpt
       tmux
       tree

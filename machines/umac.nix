@@ -228,7 +228,7 @@ in {
     ncurses
 
     krb5
-    silver-searcher
+  # silver-searcher
     git
     gnumake
     gcc
