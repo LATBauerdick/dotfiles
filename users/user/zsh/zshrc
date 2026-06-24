@@ -21,7 +21,7 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 bindkey -v
 
 export BUN_INSTALL="$HOME/.bun"
-path=("$BUN_INSTALL/bin" $path)
+path=("$HOME/.pixi/bin" "$BUN_INSTALL/bin" $path)
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
