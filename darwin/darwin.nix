@@ -141,7 +141,7 @@
      brews = myBrews;
      taps = [ "nikitabobko/tap" ];
      # masApps = myMasApps;
-     onActivation.cleanup = "zap";
+   # onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;
      onActivation.upgrade = true;
    };
