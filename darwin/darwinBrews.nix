@@ -7,7 +7,7 @@
        "imagemagick"
        "lua-language-server"
        "mas"
-       "anomalyco/tap/opencode"
+     # "anomalyco/tap/opencode"
        "pngpaste"
 ###       "qmk/qmk/qmk"
        "syncthing"
