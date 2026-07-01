@@ -43,7 +43,7 @@
        "leader-key"
      # "ltspice"
      # "mactex"
-       "marked-app"
+     # "marked-app"
        "mattermost"
        "mediathekview"
        "menubarx"
