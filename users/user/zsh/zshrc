@@ -40,13 +40,13 @@ export LANG=en_US.UTF-8
 alias vi="vim"
 
 ### claude code openclaw ersatz
-alias openclaw='tmux attach-session -t openclaw'
-alias openclaw-stop='touch ~/.openclaw-stop && echo "Daemon will stop after next /exit"'
-alias openclaw-start='rm -f ~/.openclaw-stop && bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown && echo "Daemon started"'
+alias openclaude='tmux attach-session -t openclaude'
+alias openclaude-stop='touch ~/.openclaude-stop && echo "Daemon will stop after next /exit"'
+alias openclaude-start='rm -f ~/.openclaude-stop && bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown && echo "Daemon started"'
 
-# Ensure openclaw daemon is running (fallback if launchd didn't start it)
-if ! tmux has-session -t openclaw 2>/dev/null; then
-  bash ~/Sync/OpenClaw/scripts/openclaw-launchd-wrapper.sh &disown
+# Ensure openclaude daemon is running (fallback if launchd didn't start it)
+if ! tmux has-session -t openclaude 2>/dev/null; then
+  bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown
 fi
 
 
@@ -185,4 +185,29 @@ flakify() {
     direnv allow
   fi
   ${EDITOR:-vim} flake.nix
+}
+
+# Load git-ignored secrets (KAGI_API_KEY, ANTHROPIC_AUTH_TOKEN_FNAL, ...).
+# The file lives outside this repo; only the source line is tracked here.
+[ -f "$HOME/Sync/OpenClaw/credentials/secrets.env" ] && source "$HOME/Sync/OpenClaw/credentials/secrets.env"
+
+# Run Claude Code against Fermilab's LiteLLM (Azure) proxy in an isolated
+# config dir, so it does NOT inherit the claude.ai subscription login (which
+# would otherwise shadow ANTHROPIC_AUTH_TOKEN and cause 401s). Requires the
+# Fermilab network / Tailscale exit node to be up. The token comes from
+# secrets.env — no secret is stored in this file.
+claude-fnal() {
+  if [ -z "$ANTHROPIC_AUTH_TOKEN_FNAL" ]; then
+    echo "claude-fnal: ANTHROPIC_AUTH_TOKEN_FNAL not set — check credentials/secrets.env" >&2
+    return 1
+  fi
+  CLAUDE_CONFIG_DIR="$HOME/.claude-fnal" \
+  ANTHROPIC_BASE_URL="https://litellm.fnal.gov" \
+  ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_AUTH_TOKEN_FNAL" \
+  ANTHROPIC_MODEL="azure/claude-sonnet-4-6" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="azure/claude-haiku-4-5" \
+  DISABLE_NON_ESSENTIAL_MODEL_CALLS="1" \
+  DISABLE_TELEMETRY="1" \
+  CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
+  command claude "$@"
 }
