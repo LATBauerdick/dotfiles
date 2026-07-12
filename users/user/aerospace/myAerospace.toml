@@ -20,24 +20,27 @@ automatically-unhide-macos-hidden-apps = true
 # ]
 
 
-
 [[on-window-detected]]
-    if.app-id='com.kagi.kagimacOS'
-    if.window-title-regex-substring = 'com.iconfactory.Tot'
+    if.app-id='com.touchpress.henle'
     run = 'layout floating'
 
 [[on-window-detected]]
-    if.app-id='com.kagi.kagimacOS'
+    if.app-id='com.kagi.kagimacos'
+    if.window-title-regex-substring = 'com.iconfactory.tot'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.app-id='com.kagi.kagimacos'
     if.window-title-regex-substring = '^orion preview'
     run = 'layout floating'
 
 
 [[on-window-detected]]
-  if.app-id = "com.Topping.Pro"
+  if.app-id = "com.topping.pro"
   run = 'layout floating'
 
 [[on-window-detected]]
-  if.app-id = "com.iconfactory.Tot"
+  if.app-id = "com.iconfactory.tot"
   run = 'layout floating'
 
 [[on-window-detected]]

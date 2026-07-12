@@ -29,9 +29,9 @@ let systemPackages = with pkgs; [
     fontsPackages = [
           #"FiraCode"
           #"DroidSansMono"
-          pkgs.nerd-fonts.iosevka
-          pkgs.nerd-fonts.lekton
-          pkgs.nerd-fonts.jetbrains-mono
+          # pkgs.nerd-fonts.iosevka
+          # pkgs.nerd-fonts.lekton
+          # pkgs.nerd-fonts.jetbrains-mono
     ];
 in
   {
