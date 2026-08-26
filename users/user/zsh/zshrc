@@ -40,14 +40,14 @@ export LANG=en_US.UTF-8
 alias vi="vim"
 
 ### claude code openclaw ersatz
-alias openclaude='tmux attach-session -t openclaude'
-alias openclaude-stop='touch ~/.openclaude-stop && echo "Daemon will stop after next /exit"'
-alias openclaude-start='rm -f ~/.openclaude-stop && bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown && echo "Daemon started"'
-
-# Ensure openclaude daemon is running (fallback if launchd didn't start it)
-if ! tmux has-session -t openclaude 2>/dev/null; then
-  bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown
-fi
+# alias openclaude='tmux attach-session -t openclaude'
+# alias openclaude-stop='touch ~/.openclaude-stop && echo "Daemon will stop after next /exit"'
+# alias openclaude-start='rm -f ~/.openclaude-stop && bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown && echo "Daemon started"'
+#
+# # Ensure openclaude daemon is running (fallback if launchd didn't start it)
+# if ! tmux has-session -t openclaude 2>/dev/null; then
+#   bash ~/Sync/OpenClaw/scripts/openclaude-launchd-wrapper.sh &disown
+# fi
 
 
 ### LATB mods
