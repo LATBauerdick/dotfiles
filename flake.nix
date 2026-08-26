@@ -21,7 +21,7 @@
       # url = "/home/bauerdic/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -37,7 +37,7 @@
     # lix-module,
     utils,
     nix-darwin,
-    nix-homebrew,
+    # nix-homebrew,
     nixvim,
     limainit,
     ... }@inputs:
@@ -87,14 +87,13 @@
       modules = [
         darwinConfig
         # lix-module.nixosModules.default
-        nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = true;
-            # enableRosetta = true;
-            user=user;
-            autoMigrate=true;
-          };
-        }
+        # nix-homebrew.darwinModules.nix-homebrew {
+        #   nix-homebrew = {
+        #     enable = true;
+        #     user=user;
+        #     autoMigrate=true;
+        #   };
+        # }
         home-manager.darwinModules.home-manager {
           home-manager.users.${user} =
               import ./users/user/home.nix { user=user; dir=dir; };
