@@ -1,0 +1,39 @@
+# herdr configuration — deployed to ~/.config/herdr/config.toml
+# Full annotated defaults: `herdr --default-config`
+# Validate after editing:  `herdr config check`
+# Apply without restart:   `herdr server reload-config`  (or prefix+shift+R)
+
+[keys]
+# Leader/prefix key. Matches the tmux prefix in ../tmux/tmux.conf (C-a).
+# Pressing it twice sends a literal ctrl+a to the pane (herdr's built-in
+# send-prefix, equivalent to tmux's `bind-key a send-prefix`), so
+# beginning-of-line still works and a nested tmux still sees its prefix.
+# It is hardcoded, not a bindable action, so it does not appear below.
+prefix = "ctrl+a"
+
+# Everything below is prefix-relative, so it follows the prefix automatically:
+#   prefix+?  help          prefix+w  workspace picker   prefix+c  new tab
+#   prefix+q  detach        prefix+g  goto               prefix+n / prefix+p  next / prev tab
+#   prefix+s  settings      prefix+b  toggle sidebar     prefix+1..9  switch tab
+#   prefix+v  split vertical    prefix+minus  split horizontal
+#   prefix+h/j/k/l  focus pane   prefix+z  zoom          prefix+x  close pane
+#   prefix+shift+R  reload this file
+
+# tmux-style split bindings, so | and _ do here what they do in tmux.
+split_vertical = "prefix+|"
+split_horizontal = "prefix+_"
+
+# Toggle the Ghostty quick terminal from inside herdr.
+# Ghostty's `global:cmd+escape` binding does not fire while another Ghostty
+# window is focused (its global event tap skips when NSApp.isActive, and the
+# AppDelegate local monitor bails when NSApp.mainWindow != nil), so we drive
+# the View > Quick Terminal menu item instead, which calls toggleQuickTerminal:
+# directly and bypasses the keybind path entirely.
+# Not `ghostty +toggle-quick-terminal`: that IPC command is GTK-only and exits
+# 1 silently on macOS.
+# prefix+t is free: prefix+shift+t is rename_tab, and t is unused by defaults.
+# Note prefix+escape would NOT work - esc is hardcoded to cancel prefix mode.
+[[keys.command]]
+key = "prefix+t"
+type = "shell"
+command = "osascript -e 'tell application \"System Events\" to tell process \"Ghostty\" to click menu item \"Quick Terminal\" of menu \"View\" of menu bar item \"View\" of menu bar 1'"

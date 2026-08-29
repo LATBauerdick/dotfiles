@@ -129,6 +129,8 @@ in {
 
   xdg.configFile."leaderKey/config.json".source = ./leaderKey/config.json;
 
+  xdg.configFile."herdr/config.toml".source = ./herdr/config.toml;
+
   programs.kitty.enable = true;
   # programs.kitty.font.name = "Iosevka Nerd Font";
   # programs.kitty.font.size = 14.0;
