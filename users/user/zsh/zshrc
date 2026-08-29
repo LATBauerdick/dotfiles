@@ -211,3 +211,33 @@ claude-fnal() {
   CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
   command claude "$@"
 }
+
+# Run Claude Code against the local Qwen3.8-27B served by oMLX on lstu
+# (Mac Studio), reachable over Tailscale. oMLX speaks the Anthropic Messages
+# API natively, so no translation proxy is involved.
+#
+# Isolated CLAUDE_CONFIG_DIR for the same reason as claude-fnal: a claude.ai
+# subscription login in the default profile shadows ANTHROPIC_AUTH_TOKEN.
+# Do NOT run /login inside this profile.
+#
+# Requires Tailscale up; lstu serves it via `tailscale serve` (tailnet-only,
+# real TLS). The server itself only ever binds 127.0.0.1 on lstu.
+claude-lstu() {
+  local m="mlx-community--Qwen3.8-27B-8bit"
+  if ! curl -sf -m 5 -o /dev/null https://lstu.taild2340b.ts.net/v1/models; then
+    echo "claude-lstu: lstu not reachable — is Tailscale up, and is oMLX running?" >&2
+    echo "  check with: ssh lstu 'brew services list | grep omlx'" >&2
+    return 1
+  fi
+  CLAUDE_CONFIG_DIR="$HOME/.claude-lstu" \
+  ANTHROPIC_BASE_URL="https://lstu.taild2340b.ts.net" \
+  ANTHROPIC_AUTH_TOKEN="not-needed" \
+  ANTHROPIC_MODEL="$m" \
+  ANTHROPIC_DEFAULT_OPUS_MODEL="$m" \
+  ANTHROPIC_DEFAULT_SONNET_MODEL="$m" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="$m" \
+  DISABLE_NON_ESSENTIAL_MODEL_CALLS="1" \
+  DISABLE_TELEMETRY="1" \
+  CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
+  command claude "$@"
+}
