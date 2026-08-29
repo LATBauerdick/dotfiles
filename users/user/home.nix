@@ -76,6 +76,10 @@ in {
   };
 
   programs.zsh = {
+    # Pin the legacy default explicitly: our real .zshrc is placed by
+    # home.file.".zshrc" below, at $HOME. If dotDir ever moves to XDG,
+    # home-manager sets ZDOTDIR and zsh would stop reading ~/.zshrc entirely.
+    dotDir = config.home.homeDirectory;
     # dotDir = "${config.xdg.configHome}/zsh";
     oh-my-zsh = {
       enable = true;
