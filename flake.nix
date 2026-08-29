@@ -6,11 +6,11 @@
     utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.11";
     # nixpkgs.url = "/home/bauerdic/nixpkgs"; # sudo git config --global --add safe.directory /home/bauerdic/nixpkgs
 
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
-    # nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+    # nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";

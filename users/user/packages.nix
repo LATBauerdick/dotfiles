@@ -17,7 +17,6 @@
       fastfetch
       fd
       fzf
-      deluge
       dtach
       dvtm
       # emanote
@@ -28,6 +27,7 @@
       gnupg
       gnumake
       helix
+      herdr
       hpack
       htop
       imagemagick
@@ -73,9 +73,13 @@
     #    nodePackages_latest.parcel
 
 # tex
-      texlive.combined.scheme-full
+      texliveFull
 
-  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+  ] ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+      # Linux-only: on Darwin, deluge -> standard-pkg-resources -> jaraco-path,
+      # which nixpkgs marks broken on Darwin ("pyobjc is missing"), so the whole
+      # config fails to evaluate. See NixOS/nixpkgs#546761 and #333311.
+      deluge
       ddcutil # monitor brightness
       bitwarden-cli
   ] ++ pkgs.lib.optionals withGUI [
