@@ -116,6 +116,7 @@ in {
 
   nixpkgs.config.permittedInsecurePackages = [
     # "electron-13.6.9"
+    "broadcom-sta-6.30.223.271-59-6.18.31"
     "broadcom-sta-6.30.223.271-57-6.12.46"
     "broadcom-sta-6.30.223.271-57-6.12.48"
     "broadcom-sta-6.30.223.271-59-6.12.63"
@@ -134,7 +135,7 @@ in {
     networkmanager.enable = true;
     # networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
 
-    wireless.enable = false;
+    # wireless.enable = false;
 
     firewall.enable = true;
     firewall.allowPing = true;
