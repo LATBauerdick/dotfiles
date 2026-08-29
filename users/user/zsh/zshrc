@@ -222,16 +222,25 @@ claude-fnal() {
 #
 # Requires Tailscale up; lstu serves it via `tailscale serve` (tailnet-only,
 # real TLS). The server itself only ever binds 127.0.0.1 on lstu.
+# Pass "think" as the first argument to use the extended-reasoning profile:
+#   claude-lstu            -> fast, no reasoning block (good for agent loops)
+#   claude-lstu think ...  -> :thinking profile, reasoning_effort=medium
 claude-lstu() {
   local m="mlx-community--Qwen3.8-27B-8bit"
-  if ! curl -sf -m 5 -o /dev/null https://lstu.taild2340b.ts.net/v1/models; then
+  if [ "$1" = "think" ]; then m="$m:thinking"; shift; fi
+  if [ -z "$OMLX_API_KEY" ]; then
+    echo "claude-lstu: OMLX_API_KEY not set — check credentials/secrets.env" >&2
+    return 1
+  fi
+  if ! curl -sf -m 5 -o /dev/null -H "Authorization: Bearer $OMLX_API_KEY" \
+       https://lstu.taild2340b.ts.net/v1/models; then
     echo "claude-lstu: lstu not reachable — is Tailscale up, and is oMLX running?" >&2
     echo "  check with: ssh lstu 'brew services list | grep omlx'" >&2
     return 1
   fi
   CLAUDE_CONFIG_DIR="$HOME/.claude-lstu" \
   ANTHROPIC_BASE_URL="https://lstu.taild2340b.ts.net" \
-  ANTHROPIC_AUTH_TOKEN="not-needed" \
+  ANTHROPIC_AUTH_TOKEN="$OMLX_API_KEY" \
   ANTHROPIC_MODEL="$m" \
   ANTHROPIC_DEFAULT_OPUS_MODEL="$m" \
   ANTHROPIC_DEFAULT_SONNET_MODEL="$m" \
