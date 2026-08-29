@@ -9,9 +9,11 @@ return {
       opt = true,
     },
     config = function ()
-      local custom_solarized = require'lualine.themes.solarized_light'
-      custom_solarized.normal.a.bg = '#b58900'
       require('lualine').setup {
+          -- 'auto' follows the active colorscheme (catppuccin-mocha).
+          -- Do not use theme = 'catppuccin': no such lualine theme module
+          -- exists, and lualine falls back silently instead of erroring.
+          options = { theme = 'auto' },
           tabline = {
             lualine_a = {'buffers'},
             lualine_b = {},

@@ -18,13 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- { "ishan9299/nvim-solarized-lua", config = function()
-    -- 	vim.o.termguicolors = true
-    -- 	vim.cmd [[colorscheme solarized]]
-    -- 	vim.cmd [[ set background=light ]]
-    -- 	end
-    -- },
-    -- import your plugins
     { import = "config.plugins" },
   },
 })

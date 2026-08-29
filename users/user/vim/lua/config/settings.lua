@@ -1,181 +1,147 @@
-vim.opt.compatible = false
+local opt = vim.opt
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
--- Set spellfile to location that is guaranteed to exist
-vim.opt.spellfile = '~/.vim-spell-en.utf-8.add'
+-- spellfile: must be a real path, '~' is not expanded in this option
+opt.spellfile = vim.fn.expand('~/.vim-spell-en.utf-8.add')
 
--- make sure spelling is on for markdown etc
-vim.cmd [[autocmd FileType tex,latex,markdown setlocal spell spelllang=en_us]]
-
-vim.opt.wildmode = { 'longest', 'list', 'full' }
+opt.wildmode = { 'longest', 'list', 'full' }
 
 -- Softtabs, 2 spaces
 local indent = 2
-vim.opt.tabstop = indent
-vim.opt.shiftwidth = indent
-vim.opt.softtabstop = indent
-vim.opt.expandtab = true
-vim.opt.shiftround = true
+opt.tabstop = indent
+opt.shiftwidth = indent
+opt.softtabstop = indent
+opt.expandtab = true
+opt.shiftround = true
 
-vim.opt.conceallevel = 1
+opt.conceallevel = 1
+opt.hidden = true
 
--- Show trailing whitespace
-vim.opt.list = true
-vim.opt.hidden = true
+-- Show whitespace (replaces the nvim-listchars plugin)
+opt.list = true
+opt.listchars = {
+  trail = '·',
+  eol = '↲',
+  tab = '» ',
+  space = '·',
+  nbsp = '·',
+  extends = '>',
+  precedes = '<',
+}
 
--- set system clipboard to be default
-vim.opt.clipboard = 'unnamedplus' --  was { 'unnamed', 'unnamedplus' }
+-- system clipboard by default
+opt.clipboard = 'unnamedplus'
 
--- display incomplete command
-vim.opt.showcmd = true
+opt.showcmd = true
+opt.autowrite = true -- :write before running commands
+opt.autoread = true  -- reload files changed outside vim
+opt.visualbell = true
 
--- Automatically :write before running commands
-vim.opt.autowrite = true
+-- never have to type /g at the end of search / replace again
+opt.gdefault = true
 
--- Reload files changed outside vim
-vim.opt.autoread = true
+-- search
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.incsearch = true
+opt.showmatch = true
+opt.inccommand = 'split'
 
-vim.opt.linespace = 4
--- highlight the current line
--- vim.opt.cursorline = true
--- highlight the current column
--- vim.opt.cursorcolumn
--- stop that ANNOYING beeping
-vim.opt.visualbell = true
+-- make it obvious where 80 characters is
+opt.textwidth = 80
+opt.formatoptions = 'qrn1'
+opt.wrapmargin = 0
+opt.colorcolumn = '+1'
+opt.linebreak = true
 
--- Never have to type /g at the end of search / replace again
-vim.opt.gdefault = true
+-- numbers: relative while working, absolute when unfocused or inserting
+opt.numberwidth = 5
+opt.number = true
+opt.relativenumber = true
 
--- search options
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
-vim.opt.showmatch = true
--- see :h icm
-vim.opt.icm = 'split'
+local numbers = augroup('relative-numbers', { clear = true })
+autocmd({ 'FocusGained', 'InsertLeave' }, {
+  group = numbers,
+  callback = function() vim.opt.relativenumber = true end,
+})
+autocmd({ 'FocusLost', 'InsertEnter' }, {
+  group = numbers,
+  callback = function() vim.opt.relativenumber = false end,
+})
 
--- Make it obvious where 80 characters is
-vim.opt.textwidth = 80
--- vim.opt.formatoptions =  'cq'
-vim.opt.formatoptions = 'qrn1'
-vim.opt.wrapmargin = 0
-vim.opt.colorcolumn = '+1'
-vim.opt.linebreak = true
+-- open new splits to right and bottom, which feels more natural
+opt.splitbelow = true
+opt.splitright = true
 
--- Numbers
-vim.opt.numberwidth = 5
+-- scrolling
+opt.scrolloff = 8
+opt.sidescrolloff = 15
+opt.sidescroll = 1
 
-vim.opt.number = true
-vim.opt.rnu = true
+-- persistent undo
+local undodir = '/tmp/.undodir_' .. (vim.env.USER or 'nvim')
+vim.fn.mkdir(undodir, 'p', 0700)
+opt.undodir = undodir
+opt.undofile = true
 
--- Toggle relative numbering, and set to absolute on loss of focus or insert mode
-vim.cmd [[
-function! ToggleNumbersOn()
-    set nu!
-    set rnu
-endfunction
-function! ToggleRelativeOn()
-    set rnu!
-    set nu
-endfunction
-autocmd FocusLost * call ToggleRelativeOn()
-autocmd FocusGained * call ToggleRelativeOn()
-autocmd InsertEnter * call ToggleRelativeOn()
-autocmd InsertLeave * call ToggleRelativeOn()
-]]
+opt.backspace = { 'eol', 'start', 'indent' }
+opt.whichwrap:append '<,>,h,l'
 
--- Open new split panes to right and bottom, which feels more natural
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-
----------------------Scrolling-----------------------
--- Start scrolling when we're 8 lines away from margins
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 15
-vim.opt.sidescroll = 1
-
--- persistent undofiles
-vim.opt.undofile = true
-vim.cmd [[
-let s:undodir = "/tmp/.undodir_" . $USER
-if !isdirectory(s:undodir)
-    call mkdir(s:undodir, "", 0700)
-endif
-let &undodir=s:undodir
-set undofile
-]]
-
--- comments italic
-vim.cmd [[ highlight Comment cterm=italic ]]
--- redefine italics terminal codes so this works well in tmux
-vim.cmd [[
-set t_ZH=
-set t_ZR=
-]]
-
--- Configure backspace so it acts as it should act
-vim.cmd [[
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-]]
-
--- update dir to current file
--- vim.cmd [[
--- autocmd BufEnter * silent! cd %:p:h
--- ]]
-
--- define Wrap command to set text soft wrapping
--- vim.cmd [[
--- command! -nargs=* Wrap set wrap linebreak nolist
--- ]]
---
--- easy expansion of the Active File Directory
--- vim.cmd [[
--- cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
--- ]]
---
--- trigger autoread when changing buffers or coming back to vim in terminal
-vim.cmd [[
-au FocusGained,BufEnter * :silent! !
-]]
-
--- Save whenever switching windows or leaving vim
--- This is useful when running
--- the tests inside vim without having to save all files first
-vim.cmd [[
-au FocusLost,WinLeave * :silent! wa
-]]
-
--- automatically rebalance windows on vim resize
-vim.cmd [[
-autocmd VimResized * :wincmd =
-]]
-
--- When editing a file, always jump to the last known cursor position.
--- Don't do it for commit messages, when the position is invalid, or when
--- inside an event handler (happens when dropping a file on gvim).
-vim.cmd [[
-augroup vimrcEx
-  autocmd!
-
-  autocmd BufReadPost * if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |   exe "normal g`\"" | endif
-augroup END
-
-]]
-
--- Highlight when yanking
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+-- spelling on for prose filetypes
+autocmd('FileType', {
+  group = augroup('prose-spell', { clear = true }),
+  pattern = { 'tex', 'latex', 'markdown' },
   callback = function()
-    vim.highlight.on_yank()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = 'en_us'
   end,
 })
--- Terminal
-vim.api.nvim_create_autocmd('TermOpen', {
-  group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
+
+-- pick up external edits when refocusing
+autocmd({ 'FocusGained', 'BufEnter' }, {
+  group = augroup('auto-checktime', { clear = true }),
+  command = 'silent! checktime',
+})
+
+-- save whenever switching windows or leaving vim, so tests can run against
+-- the current state without saving everything by hand first
+autocmd({ 'FocusLost', 'WinLeave' }, {
+  group = augroup('auto-save', { clear = true }),
+  command = 'silent! wa',
+})
+
+-- rebalance windows on resize
+autocmd('VimResized', {
+  group = augroup('auto-balance', { clear = true }),
+  command = 'wincmd =',
+})
+
+-- jump to the last known cursor position, except for commit messages
+autocmd('BufReadPost', {
+  group = augroup('last-position', { clear = true }),
+  callback = function(ev)
+    if vim.bo[ev.buf].filetype == 'gitcommit' then return end
+    local mark = vim.api.nvim_buf_get_mark(ev.buf, '"')
+    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(ev.buf) then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- highlight on yank
+autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = augroup('highlight-yank', { clear = true }),
+  callback = function() vim.hl.on_yank() end,
+})
+
+-- no line numbers in terminal buffers
+autocmd('TermOpen', {
+  group = augroup('custom-term-open', { clear = true }),
   callback = function()
-    vim.opt.number = false
-    vim.opt.relativenumber = false
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
   end,
 })

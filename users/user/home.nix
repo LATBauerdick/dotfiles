@@ -115,6 +115,15 @@ in {
   xdg.configFile."nvim/after".source = ./vim/after;
   xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
 
+  # lazy.nvim writes its lockfile to stdpath('config'), so it must be
+  # WRITABLE -- a normal xdg.configFile would place a read-only nix store
+  # symlink and `:Lazy update` could never record anything. An out-of-store
+  # symlink points at the working tree instead, so lazy writes straight into
+  # the repo and plugin versions end up tracked in git.
+  xdg.configFile."nvim/lazy-lock.json".source =
+    config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/dotfiles/users/user/vim/lazy-lock.json";
+
   xdg.configFile."aerospace/myAerospace.toml".source = ./aerospace/myAerospace.toml;
 
 ###  xdg.configFile."borders/bordersrc".source = ./borders/bordersrc;

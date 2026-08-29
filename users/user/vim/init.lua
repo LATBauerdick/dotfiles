@@ -11,7 +11,6 @@ require("config.lazy")
 
 require("config.keymappings")
 
-vim.cmd [[ set background=dark ]]
-
-local x = "init done!"
-print(x)
+-- NOTE: background/colorscheme are owned by lua/config/plugins/colors.lua.
+-- Do not set background here: this file runs after lazy loads plugins, so a
+-- setting here silently overrides the colorscheme's own choice.

@@ -2,6 +2,10 @@
 *CONFLICT*
 result
 lazy-lock.json
+# ...except the neovim one: it is deployed via mkOutOfStoreSymlink in
+# users/user/home.nix so lazy writes through to the working tree, which
+# only pins plugin versions reproducibly if it is tracked here.
+!users/user/vim/lazy-lock.json
 vim/autoload/
 vim/bundle/
 vim/plugged/
