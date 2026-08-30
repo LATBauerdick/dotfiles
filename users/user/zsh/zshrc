@@ -250,3 +250,34 @@ claude-lstu() {
   CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
   command claude "$@"
 }
+
+# Run Claude Code against OpenRouter. OpenRouter exposes an Anthropic-compatible
+# /v1/messages route, so no translation proxy is needed -- Claude Code talks to
+# it directly, same as it does to oMLX on lstu.
+#
+#   claude-or              qwen3.8-flash  (1M context, ~$0.15/M prompt)
+#   claude-or 27b          qwen3.8-27b    (same model lstu runs, ~$0.425/M)
+#   OR_MODEL=x claude-or   any other openrouter model id
+#
+# NOTE: OpenRouter's per-account data policy must allow the provider serving the
+# model, or every call returns "No endpoints available matching your guardrail
+# restrictions and data policy". Fix at https://openrouter.ai/settings/privacy
+claude-or() {
+  local m="${OR_MODEL:-qwen/qwen3.8-flash}"
+  if [ "$1" = "27b" ]; then m="qwen/qwen3.8-27b"; shift; fi
+  if [ -z "$OPENROUTER_API_KEY" ]; then
+    echo "claude-or: OPENROUTER_API_KEY not set — check credentials/secrets.env" >&2
+    return 1
+  fi
+  CLAUDE_CONFIG_DIR="$HOME/.claude-or" \
+  ANTHROPIC_BASE_URL="https://openrouter.ai/api" \
+  ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY" \
+  ANTHROPIC_MODEL="$m" \
+  ANTHROPIC_DEFAULT_OPUS_MODEL="$m" \
+  ANTHROPIC_DEFAULT_SONNET_MODEL="$m" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="$m" \
+  DISABLE_NON_ESSENTIAL_MODEL_CALLS="1" \
+  DISABLE_TELEMETRY="1" \
+  CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
+  command claude "$@"
+}
