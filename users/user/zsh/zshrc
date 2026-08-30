@@ -255,16 +255,25 @@ claude-lstu() {
 # /v1/messages route, so no translation proxy is needed -- Claude Code talks to
 # it directly, same as it does to oMLX on lstu.
 #
-#   claude-or              qwen3.8-flash  (1M context, ~$0.15/M prompt)
-#   claude-or 27b          qwen3.8-27b    (same model lstu runs, ~$0.425/M)
+#   claude-or              qwen3.8-27b    1M context, ~$0.425/M. WORKS.
+#   claude-or flash        qwen3.8-flash  ~$0.15/M -- Alibaba-only, see below
+#   claude-or max          qwen3.8-max    ~$2/M    -- Alibaba-only, see below
 #   OR_MODEL=x claude-or   any other openrouter model id
 #
-# NOTE: OpenRouter's per-account data policy must allow the provider serving the
-# model, or every call returns "No endpoints available matching your guardrail
-# restrictions and data policy". Fix at https://openrouter.ai/settings/privacy
+# The default is 27b because it is the only one of these that our account's data
+# policy permits: flash and max are served *only* by Alibaba, which is blocked,
+# so they fail with "No endpoints available matching your guardrail restrictions
+# and data policy". 27b has six providers (Reka, AkashML, Chutes, Parasail,
+# Phala, CoreWeave), hence it works. To enable flash/max, permit Alibaba at
+# https://openrouter.ai/settings/privacy -- which means accepting that provider's
+# prompt-retention terms, so keep sensitive work on lstu regardless.
 claude-or() {
-  local m="${OR_MODEL:-qwen/qwen3.8-flash}"
-  if [ "$1" = "27b" ]; then m="qwen/qwen3.8-27b"; shift; fi
+  local m="${OR_MODEL:-qwen/qwen3.8-27b}"
+  case "$1" in
+    flash) m="qwen/qwen3.8-flash"; shift ;;
+    max)   m="qwen/qwen3.8-max";   shift ;;
+    27b)   m="qwen/qwen3.8-27b";   shift ;;
+  esac
   if [ -z "$OPENROUTER_API_KEY" ]; then
     echo "claude-or: OPENROUTER_API_KEY not set — check credentials/secrets.env" >&2
     return 1
