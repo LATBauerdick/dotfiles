@@ -256,6 +256,10 @@ claude-lstu() {
 # it directly, same as it does to oMLX on lstu.
 #
 #   claude-or              qwen3.8-27b    1M context, ~$0.425/M. WORKS.
+#   /model inside a session switches tiers:
+#     Opus   -> qwen3.8-2.4t-a95b  (2.4T MoE, ~$2/M    — most capable)
+#     Sonnet -> qwen3.8-27b        (           ~$0.425/M)
+#     Haiku  -> qwen3.8-27b        (also used for background tasks)
 #   claude-or flash        qwen3.8-flash  ~$0.15/M -- Alibaba-only, see below
 #   claude-or max          qwen3.8-max    ~$2/M    -- Alibaba-only, see below
 #   OR_MODEL=x claude-or   any other openrouter model id
@@ -278,13 +282,17 @@ claude-or() {
     echo "claude-or: OPENROUTER_API_KEY not set — check credentials/secrets.env" >&2
     return 1
   fi
+  # Map the three tiers to DIFFERENT models so /model works as a live switcher
+  # inside the session: Opus -> the big MoE, Sonnet/Haiku -> 27b.
+  # Both are Alibaba-free, so both actually run. An explicit first argument
+  # (flash/max/27b) or OR_MODEL overrides the starting model only.
   CLAUDE_CONFIG_DIR="$HOME/.claude-or" \
   ANTHROPIC_BASE_URL="https://openrouter.ai/api" \
   ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY" \
   ANTHROPIC_MODEL="$m" \
-  ANTHROPIC_DEFAULT_OPUS_MODEL="$m" \
-  ANTHROPIC_DEFAULT_SONNET_MODEL="$m" \
-  ANTHROPIC_DEFAULT_HAIKU_MODEL="$m" \
+  ANTHROPIC_DEFAULT_OPUS_MODEL="qwen/qwen3.8-2.4t-a95b" \
+  ANTHROPIC_DEFAULT_SONNET_MODEL="qwen/qwen3.8-27b" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen/qwen3.8-27b" \
   DISABLE_NON_ESSENTIAL_MODEL_CALLS="1" \
   DISABLE_TELEMETRY="1" \
   CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
