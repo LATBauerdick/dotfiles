@@ -37,8 +37,8 @@ in {
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver = {
-    enable = true;
-    windowManager.qtile.enable = true;
+    enable = false;
+    windowManager.qtile.enable = false;
     dpi=130;
     # dpi=218;
     # dpi=329;
@@ -116,6 +116,7 @@ in {
 
   nixpkgs.config.permittedInsecurePackages = [
     # "electron-13.6.9"
+    "broadcom-sta-6.30.223.271-63-6.18.46"
     "broadcom-sta-6.30.223.271-59-6.18.31"
     "broadcom-sta-6.30.223.271-57-6.12.46"
     "broadcom-sta-6.30.223.271-57-6.12.48"
@@ -246,7 +247,7 @@ in {
 
     networkmanagerapplet
     ethtool
-    xorg.xbacklight
+  # xorg.xbacklight
     lm_sensors
     acpi
 
@@ -257,7 +258,7 @@ in {
     firefox
     # window manager stuff
     xmobar
-    nitrogen
+  # nitrogen
     picom
     dmenu
   # To make SMB mounting easier on the command line
