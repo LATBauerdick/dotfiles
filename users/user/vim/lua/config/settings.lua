@@ -82,7 +82,10 @@ opt.sidescroll = 1
 
 -- persistent undo
 local undodir = '/tmp/.undodir_' .. (vim.env.USER or 'nvim')
-vim.fn.mkdir(undodir, 'p', 0700)
+-- NB: Lua has no octal literals -- 0700 here would be decimal 700, i.e. mode
+-- 0o1274, which leaves the owner write-but-not-execute and makes every undo
+-- write fail with E828. Convert explicitly.
+vim.fn.mkdir(undodir, 'p', tonumber('700', 8))
 opt.undodir = undodir
 opt.undofile = true
 

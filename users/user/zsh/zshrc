@@ -222,12 +222,20 @@ claude-fnal() {
 #
 # Requires Tailscale up; lstu serves it via `tailscale serve` (tailnet-only,
 # real TLS). The server itself only ever binds 127.0.0.1 on lstu.
-# Pass "think" as the first argument to use the extended-reasoning profile:
-#   claude-lstu            -> fast, no reasoning block (good for agent loops)
-#   claude-lstu think ...  -> :thinking profile, reasoning_effort=medium
+# Model ids changed 2026-09-06; the old mlx-community--* ids were deleted.
+# One checkpoint (Qwen3.8-27B-oQ8e-mtp, aliased qwen3.8-27b) with two oMLX
+# profiles overlaid on the same resident engine -- switching costs nothing.
+#   claude-lstu            -> thinking off (good for agent loops)
+#   claude-lstu think ...  -> :thinking, reasoning_effort=low (5/5 on the probe
+#                             where thinking-off scores 3/5, for ~3s)
+#   claude-lstu deep ...   -> :deep, reasoning_effort=xhigh (slow; rare)
+# Inside a session /model switches tiers, which are mapped below:
+#   Haiku -> base   Sonnet -> :thinking   Opus -> :deep
 claude-lstu() {
-  local m="mlx-community--Qwen3.8-27B-8bit"
-  if [ "$1" = "think" ]; then m="$m:thinking"; shift; fi
+  local base="qwen3.8-27b"
+  local m="$base"
+  if [ "$1" = "think" ]; then m="$base:thinking"; shift; fi
+  if [ "$1" = "deep" ]; then m="$base:deep"; shift; fi
   if [ -z "$OMLX_API_KEY" ]; then
     echo "claude-lstu: OMLX_API_KEY not set — check credentials/secrets.env" >&2
     return 1
@@ -235,16 +243,16 @@ claude-lstu() {
   if ! curl -sf -m 5 -o /dev/null -H "Authorization: Bearer $OMLX_API_KEY" \
        https://lstu.taild2340b.ts.net/v1/models; then
     echo "claude-lstu: lstu not reachable — is Tailscale up, and is oMLX running?" >&2
-    echo "  check with: ssh lstu 'brew services list | grep omlx'" >&2
+    echo "  check with: ssh lstu '/opt/homebrew/bin/brew services list | grep omlx'" >&2
     return 1
   fi
   CLAUDE_CONFIG_DIR="$HOME/.claude-lstu" \
   ANTHROPIC_BASE_URL="https://lstu.taild2340b.ts.net" \
   ANTHROPIC_AUTH_TOKEN="$OMLX_API_KEY" \
   ANTHROPIC_MODEL="$m" \
-  ANTHROPIC_DEFAULT_OPUS_MODEL="$m" \
-  ANTHROPIC_DEFAULT_SONNET_MODEL="$m" \
-  ANTHROPIC_DEFAULT_HAIKU_MODEL="$m" \
+  ANTHROPIC_DEFAULT_OPUS_MODEL="$base:deep" \
+  ANTHROPIC_DEFAULT_SONNET_MODEL="$base:thinking" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="$base" \
   DISABLE_NON_ESSENTIAL_MODEL_CALLS="1" \
   DISABLE_TELEMETRY="1" \
   CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
