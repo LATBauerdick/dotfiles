@@ -37,3 +37,14 @@ split_horizontal = "prefix+_"
 key = "prefix+t"
 type = "shell"
 command = "osascript -e 'tell application \"System Events\" to tell process \"Ghostty\" to click menu item \"Quick Terminal\" of menu \"View\" of menu bar item \"View\" of menu bar 1'"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[ui.toast]
+delivery = "system"
+
+[ui]
+show_agent_labels_on_pane_borders = true
+status_indicators = "symbols"
