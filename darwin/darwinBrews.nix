@@ -4,6 +4,7 @@
        "ffmpeg"
        "gemini-cli"
        "gh"
+       "herdr"
        "imagemagick"
        "lua-language-server"
        "mas"

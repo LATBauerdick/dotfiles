@@ -27,7 +27,7 @@
       gnupg
       gnumake
       helix
-      herdr
+    # herdr
       hpack
       htop
       imagemagick
