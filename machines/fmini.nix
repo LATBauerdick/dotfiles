@@ -337,6 +337,28 @@ in {
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
+  # Console screen blanking. This machine runs with no X and no display
+  # manager, so nothing else owns the screen. The kernel timer blanks the
+  # framebuffer (and survives an agetty reset); setterm's --powersave /
+  # --powerdown is what actually DPMS-offs the panel. Verified on umac:
+  # dpms=Off, /sys/class/graphics/fb0/blank=4 once the timer expires.
+  boot.kernelParams = [ "consoleblank=600" ];
+
+  systemd.services.console-blank = {
+    description = "Console blanking and DPMS powerdown on tty1";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "getty@tty1.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # --powersave needs stdin on the tty, not just stdout
+      StandardInput = "tty";
+      StandardOutput = "tty";
+      TTYPath = "/dev/tty1";
+      ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
+    };
+  };
+
   services.pulseaudio.enable = false;
 
   nixpkgs.config.permittedInsecurePackages = [
