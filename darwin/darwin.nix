@@ -11,6 +11,10 @@
 
     # Necessary for using flakes on this system.
     nix.settings.experimental-features = "nix-command flakes";
+    # Proper list syntax renders as "trusted-users = root <user>" in nix.conf.
+    # (fpro's Sep-10 build carried a malformed literal "[ \"root\" \"latb\"]",
+    # which made latb untrusted and triggered restricted-setting warnings.)
+    nix.settings.trusted-users = [ primaryUser ]; # module default already adds root
 
     # Create /etc/zshrc that loads the nix-darwin environment.
     programs.zsh.enable = true;  # default shell on catalina

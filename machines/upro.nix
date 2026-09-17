@@ -37,8 +37,8 @@ in {
 # ---- Apple Silicon (Asahi) ----
   hardware.asahi.enable = true;
   # Apple Video Decoder firmware: needs pkgs.avd-fw, which entered nixpkgs
-  # after this flake's current pin (2026-06-30). Flip to true (or drop the
-  # line, the default is on) after the next `nix flake update`.
+  # after this flake's current pin (2026-08-26). Flip to true (or drop the
+  # line, the default is on) once a flake update brings it in.
   hardware.asahi.avd.enable = false;
   # Peripheral firmware (Wi-Fi etc.) is read from the ESP at /boot/vendorfw,
   # which pure flake eval cannot see — rebuild with --impure. Do NOT copy
