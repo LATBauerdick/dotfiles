@@ -1,4 +1,4 @@
-{ user ? "bauerdic", dir ? "/home/bauerdic"  } : { config, pkgs,  ... }:
+{ user ? "latb", dir ? "/home/latb"  } : { config, pkgs,  ... }:
 
 let
     # hacky way of determining which machine I'm running this from

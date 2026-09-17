@@ -1,9 +1,4 @@
-# PLACEHOLDER — replace with the file nixos-generate-config produces during the
-# upro install (Phase 4 of the plan: mount root + ESP, nixos-generate-config
-# --root /mnt, then copy /mnt/etc/nixos/hardware-configuration.nix here).
-# The root entry below (by-label) matches the planned mkfs.ext4 -L nixos and
-# will survive the swap; the /boot partuuid MUST come from the generated file
-# (the Asahi installer creates the ESP, its partuuid is unknown until then).
+# Copied from nixos-generate-config output on upro (installed 2026-09-17).
 { config, lib, pkgs, modulesPath, ... }:
 
 {
@@ -11,15 +6,20 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  boot.initrd.availableKernelModules = [ "usb_storage" "usbhid" "sdhci_pci" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
+
   fileSystems."/" =
-    { device = "/dev/disk/by-label/nixos";
+    { device = "/dev/disk/by-uuid/ad089030-a264-4f56-a78a-d522c0371054";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-partuuid/REPLACE-WITH-GENERATED-PARTUUID";
+    { device = "/dev/disk/by-uuid/67F9-1804";
       fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];

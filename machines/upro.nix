@@ -57,6 +57,14 @@ in {
     options hid_apple iso_layout=0
   '';
 
+  # Readable console on the 254-ppi internal panel (the installer's
+  # `setfont ter-v32n` made permanent)
+  console = {
+    font = "ter-v32n";
+    packages = [ pkgs.terminus_font ];
+    earlySetup = true;
+  };
+
 # ---- server duty on a laptop ----
   # No hibernation on Asahi; this machine is an always-on server.
   systemd.targets.sleep.enable = false;

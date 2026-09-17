@@ -1,4 +1,4 @@
- { primaryUser ? "bauerdic" } : { pkgs, config, ... }:
+ { primaryUser ? "latb" } : { pkgs, config, ... }:
   let
     myPackages = import ./darwinPackages.nix { inherit pkgs; };
     myCasks = import ./darwinCasks.nix;
