@@ -28,6 +28,12 @@
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     limainit.url = "github:nixos-lima/nixos-lima";
+
+    # Apple Silicon (Asahi) support for upro. If the Asahi kernel ever fails to
+    # build against fresh unstable, drop the follows line to use the project's
+    # tested nixpkgs pin instead.
+    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
+    nixos-apple-silicon.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -40,6 +46,7 @@
     # nix-homebrew,
     nixvim,
     limainit,
+    nixos-apple-silicon,
     ... }@inputs:
   let
     globalPkgsConfig = {
@@ -61,7 +68,7 @@
       config.allowUnfree = true;
     };
 
-    mkMachine = name: { nixpkgs, home-manager, system, user, extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
+    mkMachine = name: { nixpkgs, home-manager, system, user, extraModules ? [], extraSpecialArgs ? {} }: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
         ./hardware/${name}.nix
@@ -78,7 +85,7 @@
           home-manager.extraSpecialArgs = extraSpecialArgs;
         }
         { nixpkgs.overlays = overlays; }
-      ];
+      ] ++ extraModules;
     };
     mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:
       let darwinConfig = import ./darwin/darwin.nix { primaryUser = user; };
@@ -177,6 +184,21 @@
       extraSpecialArgs = { # pass arguments
         withGUI = false;
         isDesktop = true;
+      };
+    };
+
+    # MacBook Pro 14" M1 Max (Asahi Linux). Firmware lives on the ESP
+    # (/boot/vendorfw), which pure flake eval can't read:
+    # nixos-rebuild switch --flake .#upro --impure
+    nixosConfigurations.upro = mkMachine "upro" {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-linux";
+      user   = "latb";
+      extraModules = [ nixos-apple-silicon.nixosModules.apple-silicon-support ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = true;
+        isDesktop = false;
       };
     };
 
