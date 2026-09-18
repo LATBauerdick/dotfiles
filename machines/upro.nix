@@ -122,6 +122,9 @@ in {
   fonts.packages = [
     # family name "Iosevka Term", as in users/user/ghostty/config (prebuilt, no compile)
     (pkgs.iosevka-bin.override { variant = "SGr-IosevkaTerm"; })
+    # oh-my-posh theme uses Nerd Font glyphs (os icon, git branch); fontconfig
+    # falls back to this for them, as macOS does with its Nerd Font casks
+    pkgs.nerd-fonts.symbols-only
   ];
 
   services.xserver = {
