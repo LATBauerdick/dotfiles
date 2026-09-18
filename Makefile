@@ -5,11 +5,16 @@
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-# The name of the nixosConfiguration in the flake
-NIXNAME ?= umini
-# umac   xmini x130314
+# The name of the nixosConfiguration in the flake. Defaults to this machine's
+# short hostname (umini umac upro xmini x130314 ...); override with
+# NIXNAME=<name> make switch
+NIXNAME ?= $(shell hostname -s)
 MACNAME ?= m1mac
 # btalmac btalintel intelmac rpi lima
+
+# upro (Asahi) reads Apple's peripheral firmware from /boot/vendorfw at eval
+# time, which pure flake evaluation cannot see.
+NIXOS_FLAGS := $(if $(filter upro,$(NIXNAME)),--impure,)
 
 darwin:
 	sudo darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
@@ -20,10 +25,10 @@ home-manager:
 	./result/activate
 
 switch:
-	sudo nixos-rebuild switch --flake ".#${NIXNAME}"
+	sudo nixos-rebuild switch --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
 
 test:
-	sudo nixos-rebuild test --flake ".#${NIXNAME}"
+	sudo nixos-rebuild test --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
 
 update:
 	nix flake update

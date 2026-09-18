@@ -77,6 +77,29 @@ in {
     HandleLidSwitchDocked = "ignore";
   };
 
+  # Console screen blanking (same recipe as umac/fmini). No X, no display
+  # manager, so nothing else owns the screen. The kernel timer blanks the
+  # framebuffer (and survives an agetty reset); setterm's --powersave /
+  # --powerdown is what actually DPMS-offs the panel. Verified on upro
+  # 2026-09-17: card1-eDP-1 dpms=Off and apple-panel-bl actual_brightness=0
+  # once the blank timer expires.
+  boot.kernelParams = [ "consoleblank=600" ];
+
+  systemd.services.console-blank = {
+    description = "Console blanking and DPMS powerdown on tty1";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "getty@tty1.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # --powersave needs stdin on the tty, not just stdout
+      StandardInput = "tty";
+      StandardOutput = "tty";
+      TTYPath = "/dev/tty1";
+      ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
+    };
+  };
+
   # 32 GB RAM runs this load on umac in 16 with no swap; zram is plenty.
   zramSwap.enable = true;
 
