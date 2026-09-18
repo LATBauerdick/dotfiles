@@ -26,6 +26,10 @@ let
   tailnetName = "taild2340b.ts.net";
 
   zfsPools = [ ]; # at cutover: [ "z3" "z2" "z1" "z0" ]
+
+  # keyd second-priority layers (space=raise, a=vi, right-shift number-row
+  # quirk) — off until the core remap has proven itself; see the keyd block
+  keydLayers = false;
 in {
   imports =
     [ # hardware scan results imported via hardware/upro.nix in the flake
@@ -128,6 +132,122 @@ in {
     # falls back to this for them, as macOS does with its Nerd Font casks
     pkgs.nerd-fonts.symbols-only
   ];
+
+# ---- keyboard: Colemak-wide on the internal keyboard only (2026-09-18) ----
+  # keyd remaps at the evdev layer, before console, cage or sway see the keys,
+  # so one config covers all three. Requirements (LATB, 2026-09-18): the
+  # alphanumeric remap and caps lock as control come first; the Karabiner
+  # layers are second priority and sit behind `keydLayers` above.
+  # Scope: ids = the Apple SPI Keyboard (05ac:0342) — USB keyboards such as the
+  # Planck are not touched. The trackpad shares that id but is not a keyboard,
+  # so keyd leaves it alone. `sudo keyd monitor` shows ids if this ever changes.
+  # Both sides of a binding are PHYSICAL evdev key names (apostrophe semicolon
+  # dot slash leftbrace rightbrace minus equal). Translated from the Karabiner
+  # rules active on lmini, where the macOS layout is plain "U.S." too.
+  # A syntax error leaves the keyboard unmapped rather than failing the build:
+  # check `journalctl -u keyd` after a switch; `systemctl stop keyd` = QWERTY.
+  services.keyd = {
+    enable = true;
+    keyboards.internal = {
+      ids = [ "05ac:0342" ];
+      settings = {
+        main = {
+          # Colemak Wide (ANSI): top row
+          e = "f"; r = "p"; t = "g"; y = "apostrophe"; u = "j"; i = "l"; o = "u"; p = "y";
+          # home row
+          s = "r"; d = "s"; f = "t"; g = "d"; h = "semicolon"; j = "h"; k = "n"; l = "e";
+          semicolon = "i"; apostrophe = "o";
+          # bottom row
+          n = "slash"; m = "k"; comma = "m"; dot = "comma"; slash = "dot";
+          # caps lock is control; a lone tap gives esc, as on the Mac.
+          # Plain control instead: capslock = "leftcontrol";
+          capslock = "overload(control, esc)";
+        } // lib.optionalAttrs keydLayers {
+          rightshift = "layer(rshift)";
+          space = "overloadt2(raise, space, 200)";             # hold 200 ms, or tap a key while held
+          a = "overloadi(a, overloadt2(vi, a, 200), 150)";     # plain a when typing flows (<150 ms)
+          "equal+backspace" = "delete";                        # Karabiner: = and backspace together
+        };
+      } // lib.optionalAttrs keydLayers {
+        # right shift is plain shift, except the right hand's number row and
+        # physical h, which Karabiner shifts one column (the "wide" quirk)
+        "rshift:S" = {
+          "7" = "S-equal"; "8" = "S-7"; "9" = "S-8"; "0" = "S-9";
+          minus = "S-0"; equal = "S-minus"; h = "S-rightbrace";
+        };
+        # space held: numbers on the home row, symbols above and below
+        raise = {
+          a = "1"; s = "2"; d = "3"; f = "4"; g = "5";
+          j = "6"; k = "7"; l = "8"; semicolon = "9"; apostrophe = "0";
+          q = "S-1"; w = "S-2"; e = "S-3"; r = "S-4"; t = "S-5";
+          u = "S-6"; i = "S-7"; o = "S-8"; p = "S-9"; leftbrace = "S-0";
+          rightbrace = "minus"; backslash = "S-equal";
+          z = "leftbrace"; x = "rightbrace"; c = "minus"; v = "equal";
+          b = "S-9"; m = "S-0"; comma = "apostrophe";
+        };
+        # a held: arrows on the right home row (physical j k l ; '), m = backspace
+        vi = {
+          j = "left"; k = "down"; l = "up"; semicolon = "right";
+          apostrophe = "enter"; m = "backspace";
+        };
+      };
+    };
+  };
+
+# ---- sway: same "one fullscreen terminal" idea, with input tuning (2026-09-18) ----
+  # cage has no configuration at all, so trackpad speed and scaling cannot be
+  # set there (accepted for cage — cage-ghostty stays as the simple option).
+  # sway can, and starts ghostty fullscreen so it looks the same.
+  # From a console login: `sway`. Mod4 is the command key. Mod4+Return opens
+  # another terminal, Mod4+Shift+BackSpace exits back to the VT (chosen to be
+  # layout-independent). /etc/sway/config is what NixOS's sway reads when the
+  # user has no ~/.config/sway/config; home-manager is untouched.
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    extraPackages = [ pkgs.swayidle pkgs.wl-clipboard ];
+  };
+  environment.etc."sway/config".text = ''
+    set $mod Mod4
+
+    # 254 ppi panel: integer 2x, so ghostty's 14 pt config is right as is
+    output eDP-1 scale 2
+
+    # Trackpad. pointer_accel runs -1..1; 0 is libinput's default, which felt
+    # far too slow on the Apple trackpad. Adjust and `swaymsg reload`.
+    input type:touchpad {
+        accel_profile adaptive
+        pointer_accel 0.8
+        natural_scroll enabled
+        tap enabled
+        click_method clickfinger
+        dwt enabled
+    }
+    # layout is plain us: keyd already produced Colemak-wide before sway sees it
+    input type:keyboard xkb_layout us
+
+    default_border none
+    focus_follows_mouse no
+    exec ghostty
+    for_window [app_id="com.mitchellh.ghostty"] fullscreen enable
+
+    bindsym $mod+Return exec ghostty
+    bindsym $mod+Shift+q kill
+    bindsym $mod+f fullscreen toggle
+    bindsym $mod+Left focus left
+    bindsym $mod+Right focus right
+    bindsym $mod+Up focus up
+    bindsym $mod+Down focus down
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Right move right
+    bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+BackSpace exit
+
+    # what cage could not do: panel off on lid close and after 10 min idle
+    bindswitch --reload --locked lid:on output eDP-1 power off
+    bindswitch --reload --locked lid:off output eDP-1 power on
+    exec swayidle -w timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+  '';
 
   services.xserver = {
     enable = false;
