@@ -34,6 +34,14 @@ Host gitlab.cern.ch
 Host mac-1*
     User bauerdic
 
+# nicknames for the two FNAL Macs (tailnet names stay mac-<property number>)
+Host fair
+    HostName mac-149207
+    User bauerdic
+Host ftop
+    HostName mac-147779
+    User bauerdic
+
 Host cmslpc*.fnal.gov
     User bauerdic
     GSSAPIAuthentication yes
