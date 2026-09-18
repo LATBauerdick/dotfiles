@@ -28,7 +28,12 @@ Host gitlab.cern.ch
   Preferredauthentications publickey
   IdentityFile ~/.ssh/id_rsa
 
-# Fermilab machines: account is bauerdic; everything else defaults to latb (Host *)
+# Fermilab machines: account is bauerdic (same uid 6170, different name);
+# everything else defaults to latb (Host *). The Fermilab Macs appear on the
+# tailnet as mac-<property number>[-n] (mac-147779, mac-149207, mac-132644).
+Host mac-1*
+    User bauerdic
+
 Host cmslpc*.fnal.gov
     User bauerdic
     GSSAPIAuthentication yes
