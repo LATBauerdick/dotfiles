@@ -139,8 +139,10 @@ in {
   # alphanumeric remap and caps lock as control come first; the Karabiner
   # layers are second priority and sit behind `keydLayers` above.
   # Scope: ids = the Apple SPI Keyboard (05ac:0342) — USB keyboards such as the
-  # Planck are not touched. The trackpad shares that id but is not a keyboard,
-  # so keyd leaves it alone. `sudo keyd monitor` shows ids if this ever changes.
+  # Planck are not touched. The trackpad shares that id and keyd DID grab it on
+  # the first switch ("appears to be a trackpad ... mouse movement is likely to
+  # break"); the k: prefix restricts the match to keyboards. `sudo keyd monitor`
+  # shows ids if this ever changes.
   # Both sides of a binding are PHYSICAL evdev key names (apostrophe semicolon
   # dot slash leftbrace rightbrace minus equal). Translated from the Karabiner
   # rules active on lmini, where the macOS layout is plain "U.S." too.
@@ -149,7 +151,7 @@ in {
   services.keyd = {
     enable = true;
     keyboards.internal = {
-      ids = [ "05ac:0342" ];
+      ids = [ "k:05ac:0342" ]; # k: = keyboard only; the trackpad shares the id and keyd would grab it too
       settings = {
         main = {
           # Colemak Wide (ANSI): top row
