@@ -38,7 +38,8 @@ in {
   # the ESP held a single stale entry (generation 1, NixOS 25.05, hostname
   # "nixos"), so every reboot would have returned to the original install.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
+  # The Hetzner ESP is only 253 MB and each kernel is 64 MB: two generations.
+  boot.loader.systemd-boot.configurationLimit = 2;
   boot.loader.efi.canTouchEfiVariables = false; # firmware already boots the fallback path
   boot.loader.grub.enable = false;
 

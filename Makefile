@@ -16,6 +16,21 @@ MACNAME ?= m1mac
 # time, which pure flake evaluation cannot see.
 NIXOS_FLAGS := $(if $(filter upro,$(NIXNAME)),--impure,)
 
+# ude only: run the rebuild in its own transient systemd unit, detached from
+# the ssh session. With Tailscale SSH the session is a child of
+# tailscaled.service, so a switch that restarts tailscaled kills the shell AND
+# the rebuild running in it — seen on ude 2026-09-17 (units left stopped).
+# ude has no console to fall back to; the other hosts do, so they run plainly.
+# --pty/--pipe keep the output on the terminal, --wait keeps make blocking,
+# --same-dir keeps the flake reference resolvable, --collect drops the unit
+# afterwards. SUDO_UID/SUDO_USER are forwarded because libgit2 (nix's flake
+# fetcher) only lets root read a repository owned by someone else when they
+# match the owner.
+DETACHED_HOSTS := ude
+DETACHED := $(if $(filter $(DETACHED_HOSTS),$(NIXNAME)),systemd-run --unit=nixos-rebuild-$(NIXNAME) --pty --pipe --wait --collect --same-dir --setenv=PATH=$$PATH --setenv=SUDO_UID --setenv=SUDO_USER --setenv=SUDO_GID --quiet,)
+# (no commas inside $(if …) — make would read them as argument separators)
+DETACHED_HINT := $(if $(DETACHED),@echo "detached rebuild - if this ssh session drops: reconnect and run   journalctl -fu nixos-rebuild-$(NIXNAME)",@:)
+
 darwin:
 	sudo darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
@@ -25,10 +40,12 @@ home-manager:
 	./result/activate
 
 switch:
-	sudo nixos-rebuild switch --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
+	$(DETACHED_HINT)
+	sudo $(DETACHED) nixos-rebuild switch --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
 
 test:
-	sudo nixos-rebuild test --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
+	$(DETACHED_HINT)
+	sudo $(DETACHED) nixos-rebuild test --flake ".#${NIXNAME}" $(NIXOS_FLAGS)
 
 update:
 	nix flake update
