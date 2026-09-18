@@ -148,7 +148,9 @@ in {
   # rules active on lmini, where the macOS layout is plain "U.S." too.
   # A syntax error leaves the keyboard unmapped rather than failing the build:
   # check `journalctl -u keyd` after a switch; `systemctl stop keyd` = QWERTY.
-  users.groups.keyd = { }; # keyd drops to this group; the module does not create it
+  # Do NOT create users.groups.keyd: keyd then tries setgid, the hardened unit
+  # denies it, and the service dies in a restart loop (seen 2026-09-18). The
+  # "failed to set effective group" warning without the group is harmless.
   services.keyd = {
     enable = true;
     keyboards.internal = {
