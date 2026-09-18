@@ -32,8 +32,15 @@ in {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.devices = [ "/dev/sda" ];
+  # ude is a Hetzner *aarch64* UEFI VM. The firmware boots
+  # \EFI\BOOT\BOOTAA64.EFI = systemd-boot, left there by the 2025-06-28
+  # install; grub.cfg was being written but never booted. Found 2026-09-17:
+  # the ESP held a single stale entry (generation 1, NixOS 25.05, hostname
+  # "nixos"), so every reboot would have returned to the original install.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
+  boot.loader.efi.canTouchEfiVariables = false; # firmware already boots the fallback path
+  boot.loader.grub.enable = false;
 
   systemd.network.enable = true;
   systemd.network.networks."30-wan" = {
@@ -153,7 +160,7 @@ in {
 
   environment.systemPackages = with pkgs; [
       krb5
-      silver-searcher
+      # silver-searcher  # removed from nixpkgs (2026); rg replaces it
       wireguard-tools
       sshfs
       mosh

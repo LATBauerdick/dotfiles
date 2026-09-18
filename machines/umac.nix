@@ -317,11 +317,11 @@ in {
   };
 
   services.openssh = {
-    enable = true; # ! tailscaleEnable;
+    enable = ! tailscaleEnable; # Tailscale SSH is the only way in (decided 2026-09-17)
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "yes";
   # services.openssh.settings.X11Forwarding = true;
-    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
+    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
   };
 
   programs.mosh.enable = true;
@@ -402,10 +402,13 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      # --powersave needs stdin on the tty, not just stdout
-      StandardInput = "tty";
-      StandardOutput = "tty";
-      TTYPath = "/dev/tty1";
+      # setterm issues its ioctls on stdin and writes escapes to stdout, so
+      # both must be the console. Open it as a plain file: StandardInput=tty
+      # waits for the tty's controlling process (agetty) to release it, which
+      # never happens, and the oneshot then hangs in "activating" forever
+      # (seen on upro 2026-09-17; umac only ever won the race at boot).
+      StandardInput = "file:/dev/tty1";
+      StandardOutput = "file:/dev/tty1";
       ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
     };
   };
