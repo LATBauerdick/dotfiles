@@ -1,7 +1,6 @@
 # BEGIN ALGO MANAGED BLOCK 162.243.79.69
-# NixOS's OpenSSH is built without Kerberos and warns "Unsupported option" on
-# every GSSAPI line below; this must come before them (added 2026-09-18).
-IgnoreUnknown GSSAPIAuthentication,GSSAPIDelegateCredentials
+# The GSSAPI lines below need an OpenSSH built with Kerberos; the NixOS hosts
+# get one via programs.ssh.package = openssh_gssapi (users/latb/latb.nix).
 # UseKeychain yes
 AddKeysToAgent yes
 
