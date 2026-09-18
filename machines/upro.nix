@@ -106,6 +106,24 @@ in {
   # 32 GB RAM runs this load on umac in 16 with no swap; zram is plenty.
   zramSwap.enable = true;
 
+# ---- ad-hoc graphical terminal (decided 2026-09-18) ----
+  # No desktop, no display manager, nothing running unless invoked. From a
+  # login on the laptop's own console (a VT — not over ssh, which holds no
+  # seat), run
+  #     cage-ghostty
+  # cage is a Wayland kiosk compositor: it takes the display, runs ghostty
+  # fullscreen, and returns to the text VT when the shell exits. The wrapper
+  # passes -s (keep Ctrl+Alt+Fn VT switching, off by default in a kiosk) and
+  # GDK_SCALE=2 (cage has no output-scale setting; the panel is 254 ppi).
+  # While cage holds the display nothing blanks the panel, lid closed or not
+  # — exit when done. Swap for sway later if idle/lid handling is wanted.
+  hardware.graphics.enable = true; # Asahi GPU is in mainline Mesa; the old
+                                   # hardware.asahi.useExperimentalGPUDriver is gone
+  fonts.packages = [
+    # family name "Iosevka Term", as in users/user/ghostty/config (prebuilt, no compile)
+    (pkgs.iosevka-bin.override { variant = "SGr-IosevkaTerm"; })
+  ];
+
   services.xserver = {
     enable = false;
     xkb = {
@@ -173,6 +191,12 @@ in {
   nixpkgs.config.allowUnsupportedSystem = true;
 
   environment.systemPackages = with pkgs; [
+
+    cage
+    ghostty
+    (writeShellScriptBin "cage-ghostty" ''
+      exec env GDK_SCALE=2 ${cage}/bin/cage -s -- ${ghostty}/bin/ghostty "$@"
+    '')
 
     jellyfin
     jellyfin-web
