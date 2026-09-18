@@ -1,6 +1,14 @@
 # BEGIN ALGO MANAGED BLOCK 162.243.79.69
+# NixOS's OpenSSH is built without Kerberos and warns "Unsupported option" on
+# every GSSAPI line below; this must come before them (added 2026-09-18).
+IgnoreUnknown GSSAPIAuthentication,GSSAPIDelegateCredentials
 # UseKeychain yes
 AddKeysToAgent yes
+
+# Own NixOS hosts: forward the agent so git on them can reach GitHub with the
+# (passphrase-protected) key held by the machine you connect from (2026-09-18).
+Host upro umac ude fmini
+  ForwardAgent yes
 
 Host wde
 HostName 116.203.126.183
@@ -21,13 +29,16 @@ Host gitlab.cern.ch
   Preferredauthentications publickey
   IdentityFile ~/.ssh/id_rsa
 
+# Fermilab machines: account is bauerdic; everything else defaults to latb (Host *)
 Host cmslpc*.fnal.gov
+    User bauerdic
     GSSAPIAuthentication yes
     GSSAPIDelegateCredentials yes
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 
 Host 131.225.* *.fnal.gov
+    User bauerdic
     GSSAPIAuthentication yes
     GSSAPIDelegateCredentials yes
 #    StrictHostKeyChecking no
@@ -35,6 +46,7 @@ Host 131.225.* *.fnal.gov
     ForwardX11 yes
 
 Host *
+  User latb
   Port 22
   IdentityFile   ~/.ssh/id_ed25519
 #   AddKeysToAgent yes
