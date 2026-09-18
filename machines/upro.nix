@@ -114,7 +114,9 @@ in {
   # cage is a Wayland kiosk compositor: it takes the display, runs ghostty
   # fullscreen, and returns to the text VT when the shell exits. The wrapper
   # passes -s (keep Ctrl+Alt+Fn VT switching, off by default in a kiosk) and
-  # GDK_SCALE=2 (cage has no output-scale setting; the panel is 254 ppi).
+  # --font-size=28: cage has no output-scale setting and GTK ignores GDK_SCALE
+  # on Wayland (tried 2026-09-18, font came out tiny), so compensate for the
+  # 254 ppi panel in ghostty itself.
   # While cage holds the display nothing blanks the panel, lid closed or not
   # — exit when done. Swap for sway later if idle/lid handling is wanted.
   hardware.graphics.enable = true; # Asahi GPU is in mainline Mesa; the old
@@ -198,7 +200,8 @@ in {
     cage
     ghostty
     (writeShellScriptBin "cage-ghostty" ''
-      exec env GDK_SCALE=2 ${cage}/bin/cage -s -- ${ghostty}/bin/ghostty "$@"
+      # 14 pt at the Mac's 2x scale == 28 pt at cage's 1x; later args override
+      exec ${cage}/bin/cage -s -- ${ghostty}/bin/ghostty --font-size=28 "$@"
     '')
 
     jellyfin
