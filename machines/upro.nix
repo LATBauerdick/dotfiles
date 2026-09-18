@@ -15,11 +15,11 @@
 { config, pkgs, lib, ... }@args:
 let
   hostname = "upro";
-  hostId = "8425e349"; # random; regenerate with head -c 8 /etc/machine-id if preferred
-  plexEnable = true;
-  jellyfinEnable = true;
+  hostId = "9e11c252"; # random; regenerate with head -c 8 /etc/machine-id if preferred
+  plexEnable = false;
+  jellyfinEnable = false;
   roonEnable = false;
-  delugeEnable = true;
+  delugeEnable = false;
   krb5Enable = true;
   tailscaleEnable = true;
   tailscaleRoutingServer = false; # flip at cutover, when umac stops advertising
