@@ -49,7 +49,15 @@ in {
       # ollamaOverride
       # pkgs.ollama
     ];
-  home.sessionPath = [ "$HOME/.npm-global/bin" ];
+  # Prepended to PATH in this order by hm-session-vars.sh. Do NOT express
+  # PATH as a multi-line '' string in sessionVariables: the trailing newline
+  # ends up inside $PATH, the last entry (/run/current-system/sw/bin) stops
+  # resolving, and NixOS's /etc/zshrc fails with "command not found: hostname".
+  home.sessionPath = [
+    "$HOME/.npm-global/bin"
+    "${config.home.homeDirectory}/bin"
+    "${config.home.homeDirectory}/.local/bin"
+  ];
   home.file.".npmrc".text = ''
        prefix=~/.npm-global
 '';
@@ -68,11 +76,6 @@ in {
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
     MANPAGER = "less -FirSwX";
-    PATH = ''
-      ${config.home.homeDirectory}/bin:\
-      ${config.home.homeDirectory}/.local/bin:\
-      $PATH
-    '';
   };
 
   programs.zsh = {

@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+  # terminfo for the terminal latb sshes in from, so TERM=xterm-ghostty is
+  # known system-wide (root included) and backspace/delete/colors work.
+  # The terminfo output is a separate store path; the cache serves it
+  # without building ghostty itself.
+  environment.systemPackages = [ pkgs.ghostty.terminfo ];
+
   users.users.latb = {
     isNormalUser = true;
     home = "/home/latb";
