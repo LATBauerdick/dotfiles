@@ -31,16 +31,16 @@
 let
   hostname = "upro";
   hostId = "9e11c252"; # random; regenerate with head -c 8 /etc/machine-id if preferred
-  plexEnable = false;
-  jellyfinEnable = false;
+  plexEnable = true;
+  jellyfinEnable = true;
   roonEnable = false;
-  delugeEnable = false;
+  delugeEnable = true;
   krb5Enable = true;
   tailscaleEnable = true;
-  tailscaleRoutingServer = false; # flip at cutover, when umac stops advertising
+  tailscaleRoutingServer = true; # since the 2026-09-19 cutover; umac is off
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ ]; # at cutover: [ "z3" "z2" "z1" "z0" ]
+  zfsPools = [ "z3" "z2" "z1" "z0" ]; # imported 2026-09-19 after a clean export on umac
 
   # keyd second-priority layers (space=raise, a=vi, right-shift number-row
   # quirk) — off until the core remap has proven itself; see the keyd block
