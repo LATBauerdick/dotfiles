@@ -134,6 +134,10 @@ in {
     # was a hand-made symlink (never in nix). Found the hard way at cutover:
     # without it every torrent's fastresume is rejected. Keep it declarative.
     "L+ /data/deluge - - - - deluge-umac"
+    # jellyfin's database stores library and metadata paths as
+    # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
+    # pool directly; this keeps the stored paths valid.
+    "L+ /var/lib/jellyfin - - - - /data/jellyfin-umac/jellyfin"
   ];
 
 # ---- ad-hoc graphical terminal (decided 2026-09-18) ----
