@@ -19,25 +19,8 @@ prefix = "ctrl+a"
 #   prefix+v  split vertical    prefix+minus  split horizontal
 #   prefix+h/j/k/l  focus pane   prefix+z  zoom          prefix+x  close pane
 #   prefix+shift+R  reload this file
-
-# tmux-style split bindings, so | and _ do here what they do in tmux.
-split_vertical = "prefix+|"
-split_horizontal = "prefix+_"
-
-# Toggle the Ghostty quick terminal from inside herdr.
-# Ghostty's `global:cmd+escape` binding does not fire while another Ghostty
-# window is focused (its global event tap skips when NSApp.isActive, and the
-# AppDelegate local monitor bails when NSApp.mainWindow != nil), so we drive
-# the View > Quick Terminal menu item instead, which calls toggleQuickTerminal:
-# directly and bypasses the keybind path entirely.
-# Not `ghostty +toggle-quick-terminal`: that IPC command is GTK-only and exits
-# 1 silently on macOS.
-# prefix+t is free: prefix+shift+t is rename_tab, and t is unused by defaults.
-# Note prefix+escape would NOT work - esc is hardcoded to cancel prefix mode.
-[[keys.command]]
-key = "prefix+t"
-type = "shell"
-command = "osascript -e 'tell application \"System Events\" to tell process \"Ghostty\" to click menu item \"Quick Terminal\" of menu \"View\" of menu bar item \"View\" of menu bar 1'"
+# Splits stay on the defaults (v / minus); the tmux-style | and _ overrides
+# and the Ghostty quick-terminal command were removed 2026-09-19.
 
 [theme]
 name = "catppuccin"
@@ -47,5 +30,10 @@ auto_switch = false
 delivery = "system"
 
 [ui]
+# tmux-style panes (chosen 2026-09-19 after trying off / framed / gapped):
+# thin inner splitters only, no outer frame, neighbours share one divider.
+pane_borders = "auto"
+pane_outer_borders = false
+pane_gaps = false
 show_agent_labels_on_pane_borders = true
 status_indicators = "symbols"
