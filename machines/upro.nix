@@ -42,6 +42,31 @@ let
 
   zfsPools = [ "z3" "z2" "z1" "z0" ]; # imported 2026-09-19 after a clean export on umac
 
+  # Role names announced over mDNS in addition to the hostname, so clients
+  # (Infuse on the Apple TV, Finder, Arq) can use e.g. usrv.local and keep
+  # working when the server role moves to another machine — move this list
+  # with it. Plain-DNS `usrv` is a UniFi local DNS record on the gateway.
+  mdnsAliases = [ "usrv" ];
+  # One unit per alias. avahi-publish-address stays in the foreground for as
+  # long as the record is announced; it advertises the address the default
+  # route uses (the Ethernet, not wlan0's second address).
+  aliasUnits = lib.listToAttrs (map (alias: lib.nameValuePair "avahi-alias-${alias}" {
+    description = "mDNS alias ${alias}.local for this host";
+    after = [ "avahi-daemon.service" "network-online.target" ];
+    requires = [ "avahi-daemon.service" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 10;
+    };
+    script = ''
+      ip=$(${pkgs.iproute2}/bin/ip -4 -o route get 1.1.1.1 | ${pkgs.gawk}/bin/awk '{ for (i = 1; i <= NF; i++) if ($i == "src") print $(i+1) }')
+      [ -n "$ip" ] || { echo "no default-route address yet"; exit 1; }
+      exec ${pkgs.avahi}/bin/avahi-publish-address -R ${alias}.local "$ip"
+    '';
+  }) mdnsAliases);
+
   # keyd second-priority layers (space=raise, a=vi, right-shift number-row
   # quirk) — off until the core remap has proven itself; see the keyd block
   keydLayers = false;
@@ -104,7 +129,8 @@ in {
   # once the blank timer expires.
   boot.kernelParams = [ "consoleblank=600" ];
 
-  systemd.services.console-blank = {
+  systemd.services = aliasUnits // {
+   console-blank = {
     description = "Console blanking and DPMS powerdown on tty1";
     wantedBy = [ "multi-user.target" ];
     after = [ "getty@tty1.service" ];
@@ -120,6 +146,7 @@ in {
       StandardOutput = "file:/dev/tty1";
       ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
     };
+   };
   };
 
   # 32 GB RAM runs this load on umac in 16 with no swap; zram is plenty.
