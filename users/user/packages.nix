@@ -27,7 +27,10 @@
       gnupg
       gnumake
       helix
-    # herdr
+    # herdr — deliberately NOT from nixpkgs on Linux (2026-09-18): the pin lags
+    # upstream (0.8.2 vs 0.9.1) and `herdr --remote` wants a compatible server.
+    # herdr bootstraps/updates its own static binary into ~/.local/bin on the
+    # remote (already on PATH there); macOS uses the Homebrew formula.
       hpack
       htop
       imagemagick
