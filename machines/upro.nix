@@ -262,11 +262,9 @@ in {
     # 2026-09-18, panel stayed dark after every idle period. Backlight 0 is
     # instant both ways and saves nearly the same power. `-s` saves, `-r`
     # restores the previous brightness.
-    set $bl_off brightnessctl -d apple-panel-bl -s set 0
-    set $bl_on  brightnessctl -d apple-panel-bl -r
-    bindswitch --reload --locked lid:on exec $bl_off
-    bindswitch --reload --locked lid:off exec $bl_on
-    exec swayidle -w timeout 600 '$bl_off' resume '$bl_on'
+    bindswitch --reload --locked lid:on exec brightnessctl -d apple-panel-bl -s set 0
+    bindswitch --reload --locked lid:off exec brightnessctl -d apple-panel-bl -r
+    exec swayidle -w timeout 600 'brightnessctl -d apple-panel-bl -s set 0' resume 'brightnessctl -d apple-panel-bl -r'
   '';
 
   services.xserver = {
