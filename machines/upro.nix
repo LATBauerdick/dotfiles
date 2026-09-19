@@ -250,10 +250,13 @@ in {
     bindsym $mod+Shift+c reload
     bindsym $mod+Shift+BackSpace exit
 
-    # what cage could not do: panel off on lid close and after 10 min idle
+    # what cage could not do: panel off on lid close and after 10 min idle.
+    # Name the panel explicitly: on sway 1.12 here, `output * power off` works
+    # but `output * power on` is a silent no-op (success, no DRM change), which
+    # left the screen dark after every idle period (found 2026-09-18).
     bindswitch --reload --locked lid:on output eDP-1 power off
     bindswitch --reload --locked lid:off output eDP-1 power on
-    exec swayidle -w timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+    exec swayidle -w timeout 600 'swaymsg output eDP-1 power off' resume 'swaymsg output eDP-1 power on'
   '';
 
   services.xserver = {
