@@ -224,12 +224,6 @@ in {
   };
 
 
-  services.autossh.sessions = [
-    { extraArguments = " -i ~/.ssh/id_auto -N -R 8387:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17008;
-      name = "reverse";
-      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
-  ];
 
   # NextDNS config
   services.nextdns = { enable = nextdnsEnable;
@@ -407,16 +401,6 @@ in {
         "directory mask" = "0755";
         "force user" = "latb"; # smbpasswd -a latb as root...
         "force group" = "users";
-      };
-      tm = { # configured for time machine backups
-          path = "/tm";
-          "valid users" = "latb";
-          public = "no";
-          writeable = "yes";
-          "force user" = "latb";
-          "fruit:aapl" = "yes";
-          "fruit:time machine" = "yes";
-          "vfs objects" = "catia fruit streams_xattr";
       };
       arq = {
         path = "/arq";

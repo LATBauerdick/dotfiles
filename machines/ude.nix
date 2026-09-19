@@ -108,8 +108,8 @@ in {
     firewall.enable = true;
     firewall.allowPing = true;
     firewall.checkReversePath = "loose";
-  # ports for autossh
-    firewall.allowedTCPPorts = [ 8385 8386 8387 8388 8389 8888 8080 32401 ];
+  # 8385-8389 were the autossh reverse tunnels, removed fleet-wide 2026-09-19 (Tailscale SSH replaces them)
+    firewall.allowedTCPPorts = [ 8888 8080 32401 ];
   # open firewall ports for mosh, wireguard
     firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
   };

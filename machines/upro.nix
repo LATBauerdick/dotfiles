@@ -1,15 +1,30 @@
 # upro — MacBook Pro 14" M1 Max running NixOS via Asahi (nixos-apple-silicon).
 # Derived from umac.nix (2026-09-17); upro takes over umac's ZFS/media-server role.
 #
-# Migration notes (do these at cutover, not before):
+# Migration notes (do these at cutover, not before). Full runbook:
+# ~/Notes/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
 #  - zfsPools below starts EMPTY; flip to the full list once the USB drives are
-#    attached. First import on this machine needs `zpool import -f <pool>` (new
-#    hostId), after exporting cleanly on umac.
-#  - deluge/plex data dirs are named after umac (z0/d/deluge-umac etc.); either
-#    `zfs rename` the datasets or keep the -umac paths — dataDir below keeps them.
+#    attached. NixOS never force-imports (ZFS_FORCE only via the `zfs_force=1`
+#    kernel parameter), so `zpool export` every pool on umac first; a cleanly
+#    exported pool imports here without -f. Only an unexported pool needs a
+#    one-time `zpool import -f`. Both hosts run OpenZFS 2.4.4 — do NOT
+#    `zpool upgrade`, so the pools can still go back to umac.
+#  - deluge/plex/jellyfin data dirs are named after umac (z0/d/deluge-umac
+#    etc.); dataDir below keeps the -umac paths, no `zfs rename` needed.
+#    Remove the stub /data/plex-umac and /data/deluge-umac dirs that the
+#    2026-09-17 switch created on the root fs BEFORE the pool mounts over them
+#    (the deluge stub has an empty ssl/ dir — that is what makes deluged crash
+#    with "no attribute X509Req": cert generation is dead on pyopenssl 26, but
+#    it only runs when daemon.cert/daemon.pkey are missing; umac's exist).
 #  - tailscale: upro joins as a NEW node; exit-node/route advertising stays on
 #    umac until cutover (flag below), else both advertise the home routes.
-#  - autossh reverse tunnel stays disabled while umac holds port 8387.
+#    Prefs persist in tailscaled state, so one `tailscale up --ssh
+#    --accept-routes --advertise-exit-node --advertise-routes=10.23.1.0/24,10.23.30.0/24`
+#    at cutover is enough; routes + exit node then need approval in the admin
+#    console.
+#  - autossh reverse tunnels and the `tm` Time Machine share were removed
+#    fleet-wide on 2026-09-19 (LATB): the tunnels' target was not even ude any
+#    more, and /tm on umac was an empty directory.
 #  - samba users need `sudo smbpasswd -a latb` once on this machine.
 
 { config, pkgs, lib, ... }@args:
@@ -109,6 +124,13 @@ in {
 
   # 32 GB RAM runs this load on umac in 16 with no swap; zram is plenty.
   zramSwap.enable = true;
+
+  # Always on mains as a server: cap the battery at 80 % (Asahi macsmc-battery
+  # exposes the standard charge_control_*_threshold knobs). Applied live and
+  # persisted here 2026-09-19.
+  systemd.tmpfiles.rules = [
+    "w /sys/class/power_supply/macsmc-battery/charge_control_end_threshold - - - - 80"
+  ];
 
 # ---- ad-hoc graphical terminal (decided 2026-09-18) ----
   # No desktop, no display manager, nothing running unless invoked. From a
@@ -500,7 +522,16 @@ in {
   services.jellyfin = {
     enable = jellyfinEnable;
     openFirewall = true;
+    # Dataset z0/d/jellyfin-umac mounts at /data/jellyfin-umac; umac reached it
+    # through a hand-made /var/lib/jellyfin -> /data/jellyfin-umac/jellyfin
+    # symlink that was never in nix. Declare it instead.
+    dataDir = "/data/jellyfin-umac/jellyfin";
   };
+  # umac's jellyfin user got dynamic ids 990/988 and the dataset is owned by
+  # them (23 GB). Pin the same ids here (both free on upro, checked
+  # 2026-09-19) so no chown -R is needed and the pools stay umac-compatible.
+  users.users.jellyfin = lib.mkIf jellyfinEnable { uid = 990; };
+  users.groups.jellyfin = lib.mkIf jellyfinEnable { gid = 988; };
 
 # SMB file sharing
   services.gvfs.enable = true;
@@ -534,16 +565,6 @@ in {
         "directory mask" = "0755";
         "force user" = "latb";
         "force group" = "users";
-      };
-      tm = { # configured for time machine backups
-          path = "/tm";
-          "valid users" = "latb";
-          public = "no";
-          writeable = "yes";
-          "force user" = "latb";
-          "fruit:aapl" = "yes";
-          "fruit:time machine" = "yes";
-          "vfs objects" = "catia fruit streams_xattr";
       };
       arq = {
         path = "/arq";

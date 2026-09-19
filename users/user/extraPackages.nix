@@ -4,7 +4,6 @@
 /*   home.packages = with pkgs; [ */
   pkgs: with pkgs; [
   # add some more, etc
-    autossh
     duf
     dust
     entr

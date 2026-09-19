@@ -171,12 +171,6 @@ in {
   services.openssh.settings.X11Forwarding = true;
   users.users.root.initialPassword = "root";
 
-  services.autossh.sessions = [
-    { extraArguments = " -i ~/.ssh/id_auto -N -R 8388:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17008;
-      name = "reverse";
-      user = "root"; } # make sure tat id_auto key is in remote root's authorized_keys
-  ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;

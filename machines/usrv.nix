@@ -184,12 +184,6 @@
   services.openssh.forwardX11 = true;
   users.users.root.initialPassword = "root";
 
-  services.autossh.sessions = [
-    { extraArguments = " -N -R 8388:127.0.0.1:22 116.203.126.183 sleep 99999999999";
-      monitoringPort = 17008;
-      name = "reverse";
-      user = "root"; }
-    ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
