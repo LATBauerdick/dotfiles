@@ -212,8 +212,12 @@ in {
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    extraPackages = [ pkgs.swayidle pkgs.wl-clipboard ];
+    extraPackages = [ pkgs.swayidle pkgs.wl-clipboard pkgs.brightnessctl ];
   };
+  # brightnessctl's udev rule makes the backlight writable for group video
+  # (latb is a member); applies on device add — `udevadm trigger -s backlight -c add`
+  # after the first switch, automatic on later boots.
+  services.udev.packages = [ pkgs.brightnessctl ];
   environment.etc."sway/config".text = ''
     set $mod Mod4
 
@@ -250,13 +254,19 @@ in {
     bindsym $mod+Shift+c reload
     bindsym $mod+Shift+BackSpace exit
 
-    # what cage could not do: panel off on lid close and after 10 min idle.
-    # Name the panel explicitly: on sway 1.12 here, `output * power off` works
-    # but `output * power on` is a silent no-op (success, no DRM change), which
-    # left the screen dark after every idle period (found 2026-09-18).
-    bindswitch --reload --locked lid:on output eDP-1 power off
-    bindswitch --reload --locked lid:off output eDP-1 power on
-    exec swayidle -w timeout 600 'swaymsg output eDP-1 power off' resume 'swaymsg output eDP-1 power on'
+    # what cage could not do: panel dark on lid close and after 10 min idle.
+    # Done via the BACKLIGHT, not DRM power: on this Asahi DCP + wlroots combo
+    # `output eDP-1 power off` works but the following `power on` mostly never
+    # lands (sway answers success, keeps power=false, the kernel sees no
+    # request; it only took effect after e.g. a config reload) — measured
+    # 2026-09-18, panel stayed dark after every idle period. Backlight 0 is
+    # instant both ways and saves nearly the same power. `-s` saves, `-r`
+    # restores the previous brightness.
+    set $bl_off brightnessctl -d apple-panel-bl -s set 0
+    set $bl_on  brightnessctl -d apple-panel-bl -r
+    bindswitch --reload --locked lid:on exec $bl_off
+    bindswitch --reload --locked lid:off exec $bl_on
+    exec swayidle -w timeout 600 '$bl_off' resume '$bl_on'
   '';
 
   services.xserver = {
