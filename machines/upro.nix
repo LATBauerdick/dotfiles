@@ -130,6 +130,10 @@ in {
   # persisted here 2026-09-19.
   systemd.tmpfiles.rules = [
     "w /sys/class/power_supply/macsmc-battery/charge_control_end_threshold - - - - 80"
+    # deluge's torrents are configured with /data/deluge/... paths; on umac that
+    # was a hand-made symlink (never in nix). Found the hard way at cutover:
+    # without it every torrent's fastresume is rejected. Keep it declarative.
+    "L+ /data/deluge - - - - deluge-umac"
   ];
 
 # ---- ad-hoc graphical terminal (decided 2026-09-18) ----
