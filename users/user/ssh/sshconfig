@@ -1,7 +1,11 @@
 # BEGIN ALGO MANAGED BLOCK 162.243.79.69
 # The GSSAPI lines below need an OpenSSH built with Kerberos; the NixOS hosts
 # get one via programs.ssh.package = openssh_gssapi (users/latb/latb.nix).
-# UseKeychain yes
+# macOS: remember key passphrases in the Keychain so background ssh (herdr saved
+# machines, launchd jobs) can sign without a prompt after `ssh-add --apple-use-keychain`.
+# UseKeychain is Apple-only; IgnoreUnknown keeps the NixOS OpenSSH from rejecting it (2026-09-20).
+IgnoreUnknown UseKeychain
+UseKeychain yes
 AddKeysToAgent yes
 
 # Own NixOS hosts: forward the agent so git on them can reach GitHub with the
