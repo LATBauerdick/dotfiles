@@ -1,0 +1,13 @@
+# ~/.zshenv for `make lite` machines (no nix). On nix machines home-manager
+# generates ~/.zshenv from home.sessionVariables / home.sessionPath in home.nix —
+# keep the two in step when either changes.
+
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export EDITOR="nvim"
+export PAGER="less -FirSwX"
+export MANPAGER="less -FirSwX"
+
+typeset -U path
+path=("$HOME/.npm-global/bin" "$HOME/bin" "$HOME/.local/bin" $path)

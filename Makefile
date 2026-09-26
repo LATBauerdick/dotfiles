@@ -1,6 +1,6 @@
 # Connectivity info for Linux VM
 
-.PHONY: darwin
+.PHONY: darwin lite
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
@@ -10,7 +10,13 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 # NIXNAME=<name> make switch
 NIXNAME ?= $(shell hostname -s)
 MACNAME ?= m1mac
-# btalmac btalintel intelmac rpi lima
+# btalmac rpi lima
+
+# nixpkgs 26.11 dropped x86_64-darwin, so the nix targets stop on an Intel Mac
+# and point at `make lite`. sysctl, not `uname -m`: a Rosetta shell on Apple
+# Silicon reports x86_64, but hw.optional.arm64 stays 1 (absent on Intel).
+INTEL_MAC := $(if $(filter 1,$(shell sysctl -n hw.optional.arm64 2>/dev/null)),,$(filter Darwin,$(shell uname -s)))
+NO_INTEL_MAC = @if [ -n "$(INTEL_MAC)" ]; then echo "Intel Mac: nixpkgs no longer supports x86_64-darwin - use  make lite" >&2; exit 1; fi
 
 # upro (Asahi) reads Apple's peripheral firmware from /boot/vendorfw at eval
 # time, which pure flake evaluation cannot see.
@@ -32,9 +38,16 @@ DETACHED := $(if $(filter $(DETACHED_HOSTS),$(NIXNAME)),systemd-run --unit=nixos
 DETACHED_HINT := $(if $(DETACHED),@echo "detached rebuild - if this ssh session drops: reconnect and run   journalctl -fu nixos-rebuild-$(NIXNAME)",@:)
 
 darwin:
+	$(NO_INTEL_MAC)
 	sudo darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
 
+# The same configs without nix (users/user/links.txt), CLI tools via mise.
+# Re-runnable; see lite/install.sh.
+lite:
+	./lite/install.sh
+
 home-manager:
+	$(NO_INTEL_MAC)
 	nix build ".#${MACNAME}.${USER}.activationPackage"
 	# rm -rf /nix/var/nix/profiles/per-user/${USER}/profile
 	./result/activate
@@ -51,6 +64,7 @@ update:
 	nix flake update
 
 build:
+	$(NO_INTEL_MAC)
 	nix build ".#${MACNAME}.bauerdic.activationPackage"
 
 activate:

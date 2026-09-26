@@ -1,0 +1,23 @@
+# Global mise config for `make lite` machines (no nix): the CLI essentials as
+# prebuilt release binaries — no compiling, which matters on Intel Macs, where
+# Homebrew stopped building bottles in September 2026. Linked to
+# ~/.config/mise/config.toml by lite/link.sh. `mise upgrade` updates everything.
+#
+# No prebuilt macOS binaries exist for eza, btop or tmux, so they are left out;
+# the zshrc falls back to ls when eza is missing.
+[tools]
+neovim = "latest"
+ripgrep = "latest"
+fd = "latest"
+bat = "latest"
+fzf = "latest"
+lazygit = "latest"
+zoxide = "latest"
+atuin = "latest"
+direnv = "latest"
+oh-my-posh = "latest"
+jq = "latest"
+"github:herdrdev/herdr" = "latest"
+
+[settings]
+experimental = true

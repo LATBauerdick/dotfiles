@@ -22,6 +22,20 @@ let
     #   vendorHash = "sha256-SlaDsu001TUW+t9WRp7LqxUSQSGDF1Lqu9M1bgILoX4=";
     # });
 
+  # Config links come from ./links.txt, which `make lite` (lite/link.sh) reads too.
+  # Each line: kind target source [live]; blank lines and # comments are skipped.
+  lib = pkgs.lib;
+  linkLines = builtins.filter (f: f != [ ] && !(lib.hasPrefix "#" (builtins.head f)))
+    (map (line: builtins.filter (s: builtins.isString s && s != "") (builtins.split "[ \t]+" line))
+      (lib.splitString "\n" (builtins.readFile ./links.txt)));
+  linksOf = kind: builtins.listToAttrs (map (f: {
+      name = builtins.elemAt f 1;
+      value.source =
+        if builtins.length f > 3 && builtins.elemAt f 3 == "live"
+        then config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/users/user/${builtins.elemAt f 2}"
+        else ./. + "/${builtins.elemAt f 2}";
+    }) (builtins.filter (f: builtins.head f == kind) linkLines));
+
 in {
 
   # Let Home Manager install and manage itself.
@@ -58,9 +72,11 @@ in {
     "${config.home.homeDirectory}/bin"
     "${config.home.homeDirectory}/.local/bin"
   ];
-  home.file.".npmrc".text = ''
+  home.file = linksOf "home" // {
+    ".npmrc".text = ''
        prefix=~/.npm-global
 '';
+  };
 
 # Tex installation
   fonts.fontconfig.enable = true;
@@ -98,15 +114,6 @@ in {
     
   # home.file."Library/Application Support/Claude/claude_desktop_config.json".source = ./claude/claude_desktop_config.json;
 
-  home.file.".tmux.conf".source = ./tmux/tmux.conf;
-
-  home.file.".zshrc".source = ./zsh/zshrc;
-  home.file.".p10k.zsh".source = ./zsh/p10k.zsh;
-  home.file.".oh-my-posh".source = ./zsh/oh-my-posh;
-  home.file.".ssh/config".source = ./ssh/sshconfig;
-  home.file.".gitconfig".source = ./git/gitconfig;
-  home.file.".editorconfig".source = ./vim/editorconfig;
-
   programs.neovim = {
     enable = true;
     withPython3 = false;
@@ -114,38 +121,11 @@ in {
   };
 
   xdg.enable = true;
-  xdg.configFile."nvim/lua".source = ./vim/lua;
-  xdg.configFile."nvim/after".source = ./vim/after;
-  xdg.configFile."nvim/init.lua".source = ./vim/init.lua;
-
-  # lazy.nvim writes its lockfile to stdpath('config'), so it must be
-  # WRITABLE -- a normal xdg.configFile would place a read-only nix store
-  # symlink and `:Lazy update` could never record anything. An out-of-store
-  # symlink points at the working tree instead, so lazy writes straight into
-  # the repo and plugin versions end up tracked in git.
-  xdg.configFile."nvim/lazy-lock.json".source =
-    config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/dotfiles/users/user/vim/lazy-lock.json";
-
-  xdg.configFile."aerospace/myAerospace.toml".source = ./aerospace/myAerospace.toml;
-
-###  xdg.configFile."borders/bordersrc".source = ./borders/bordersrc;
-  xdg.configFile."yabai/yabairc".source = ./yabai/yabairc;
-  xdg.configFile."skhd/skhdrc".source = ./yabai/skhdrc;
-  xdg.configFile."limelight/limelightrc".source = ./yabai/limelightrc;
-  xdg.configFile."awesome".source = ./awesome;
-  xdg.configFile."amethyst".source = ./amethyst;
-  xdg.configFile."karabiner/assets".source = ./karabiner/assets;
-
-  xdg.configFile."ghostty/config".source = ./ghostty/config;
-
-  xdg.configFile."kitty/kitty.conf".source = ./kitty/kitty.conf;
-  xdg.configFile."kitty/lightTheme.conf".source = ./kitty/lightTheme.conf;
-  xdg.configFile."kitty/darkTheme.conf".source = ./kitty/darkTheme.conf;
-
-  xdg.configFile."leaderKey/config.json".source = ./leaderKey/config.json;
-
-  xdg.configFile."herdr/myConfig.toml".source = ./herdr/myConfig.toml;
+  # All config links (.zshrc, nvim, herdr, ghostty, …) are listed in ./links.txt.
+  # nvim/lazy-lock.json is marked `live` there: lazy.nvim writes its lockfile to
+  # stdpath('config'), so a read-only store symlink would stop `:Lazy update`
+  # from recording anything; the out-of-store link lands the lock in git.
+  xdg.configFile = linksOf "xdg";
 
   programs.kitty.enable = true;
   # programs.kitty.font.name = "Iosevka Nerd Font";

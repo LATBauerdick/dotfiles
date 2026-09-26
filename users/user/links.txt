@@ -1,0 +1,43 @@
+# Config files placed into $HOME — the one list both setups read:
+#   home.nix      turns it into home.file / xdg.configFile (nix machines)
+#   lite/link.sh  symlinks the same entries into the working tree (`make lite`, no nix)
+#
+# kind    target (relative to $HOME, or to ~/.config for xdg)   source (relative to this dir)   [live]
+#
+# `live` = home.nix links into the working tree (mkOutOfStoreSymlink) instead of the store,
+# for files a program must be able to write. lite/link.sh always links into the working tree.
+
+home  .tmux.conf                    tmux/tmux.conf
+home  .zshrc                        zsh/zshrc
+home  .p10k.zsh                     zsh/p10k.zsh
+home  .oh-my-posh                   zsh/oh-my-posh
+home  .ssh/config                   ssh/sshconfig
+home  .gitconfig                    git/gitconfig
+home  .editorconfig                 vim/editorconfig
+
+xdg   nvim/lua                      vim/lua
+xdg   nvim/after                    vim/after
+xdg   nvim/init.lua                 vim/init.lua
+# lazy.nvim writes its lockfile to stdpath('config'), so it must be writable
+xdg   nvim/lazy-lock.json           vim/lazy-lock.json      live
+
+xdg   aerospace/myAerospace.toml    aerospace/myAerospace.toml
+# xdg borders/bordersrc          borders/bordersrc       (disabled)
+xdg   yabai/yabairc                 yabai/yabairc
+xdg   skhd/skhdrc                   yabai/skhdrc
+xdg   limelight/limelightrc         yabai/limelightrc
+xdg   awesome                       awesome
+xdg   amethyst                      amethyst
+xdg   karabiner/assets              karabiner/assets
+xdg   ghostty/config                ghostty/config
+xdg   kitty/kitty.conf              kitty/kitty.conf
+xdg   kitty/lightTheme.conf         kitty/lightTheme.conf
+xdg   kitty/darkTheme.conf          kitty/darkTheme.conf
+xdg   leaderKey/config.json         leaderKey/config.json
+xdg   herdr/myConfig.toml           herdr/myConfig.toml
+
+# lite only: on nix machines home-manager generates ~/.zshenv itself (hm-session-vars)
+lite  .zshenv                       zsh/zshenv-lite
+
+# lite only: global mise tool list (nix machines get these packages from packages.nix)
+lite  .config/mise/config.toml       mise/config.toml

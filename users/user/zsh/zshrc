@@ -13,7 +13,12 @@ fi
 PATH="${PATH%$'\n'}"
 
 ###echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
-[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrew lives in /opt/homebrew on Apple Silicon, /usr/local on Intel
+for b in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  [ -x "$b" ] && { eval "$("$b" shellenv)"; break; }
+done
+# `make lite` machines (no nix) get their CLI tools from mise
+command -v mise >/dev/null && eval "$(mise activate zsh)"
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 [ -d "/opt/tmp" ] && export HOMEBREW_TEMP="/opt/tmp"
 #
@@ -31,7 +36,7 @@ plugins=(git z history history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 export MYPOSHTHEME=~/.oh-my-posh/myPoshTheme.omp.json
-eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
+command -v oh-my-posh >/dev/null && eval "$(oh-my-posh --init --shell zsh --config $MYPOSHTHEME)"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -49,9 +54,14 @@ alias kdiff="kitty +kitten diff"
 alias kssh="kitty +kitten ssh"
 alias ktheme="kitty +kitten themes --reload-in=all --config-file-name=neuxxxx"
 
-alias l=eza #'ls -alh'
-alias ll='eza -alh' #'ls -alh'
-alias tree='eza --tree'
+if command -v eza >/dev/null; then
+  alias l=eza
+  alias ll='eza -alh'
+  alias tree='eza --tree'
+else
+  alias l=ls
+  alias ll='ls -alh'
+fi
 
 # alias nv='nvim'
 alias nv='NVIM_APPNAME=nvimlazy nvim'
@@ -145,9 +155,9 @@ autoload -U zmv
 
 # eval $(thefuck --alias)
 #
-eval "$(atuin init zsh --disable-up-arrow)"
+command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 nixify() {
   if [ ! -e ./.envrc ]; then
     echo "use nix" > .envrc

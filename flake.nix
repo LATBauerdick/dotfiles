@@ -301,28 +301,8 @@
       };
     };
 
-    darwinConfigurations.intelmac.bauerdic =  mkDarwin {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-darwin";
-      user   = "bauerdic";
-      dir    = "/home/bauerdic";
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
-    darwinConfigurations.intelmac.latb = mkDarwin {
-      nixpkgs = nixpkgs;
-      home-manager = home-manager;
-      system = "x86_64-darwin";
-      user   = "latb";
-      dir    = "/home/latb";
-      extraSpecialArgs = { # pass arguments
-        withGUI = false;
-        isDesktop = true;
-      };
-    };
+    # No x86_64-darwin configuration: nixpkgs 26.11 dropped Intel Macs.
+    # lbook (the last one) runs the same dotfiles without nix: `make lite`.
 
     # Expose the package set, including overlays, for convenience.
     # darwinPackages = self.darwinConfigurations."lair".pkgs;
