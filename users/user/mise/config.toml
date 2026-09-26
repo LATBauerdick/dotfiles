@@ -4,7 +4,8 @@
 # ~/.config/mise/config.toml by lite/link.sh. `mise upgrade` updates everything.
 #
 # No prebuilt macOS binaries exist for eza, btop or tmux, so they are left out;
-# the zshrc falls back to ls when eza is missing.
+# the zshrc falls back to ls when eza is missing. atuin is left out too: mise's
+# aqua registry has no darwin/amd64 entry for it (the zshrc skips it when absent).
 [tools]
 neovim = "latest"
 ripgrep = "latest"
@@ -13,7 +14,6 @@ bat = "latest"
 fzf = "latest"
 lazygit = "latest"
 zoxide = "latest"
-atuin = "latest"
 direnv = "latest"
 oh-my-posh = "latest"
 jq = "latest"
