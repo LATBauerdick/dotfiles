@@ -34,7 +34,7 @@ let
   plexEnable = true;
   jellyfinEnable = true;
   roonEnable = false;
-  delugeEnable = true;
+  delugeEnable = false; # moved to lmini 2026-09-26 (upro is FNAL property); data stays on z0 until reclaimed
   krb5Enable = true;
   tailscaleEnable = true;
   tailscaleRoutingServer = true; # since the 2026-09-19 cutover; umac is off
@@ -157,10 +157,12 @@ in {
   # persisted here 2026-09-19.
   systemd.tmpfiles.rules = [
     "w /sys/class/power_supply/macsmc-battery/charge_control_end_threshold - - - - 80"
+  ] ++ lib.optionals delugeEnable [
     # deluge's torrents are configured with /data/deluge/... paths; on umac that
     # was a hand-made symlink (never in nix). Found the hard way at cutover:
     # without it every torrent's fastresume is rejected. Keep it declarative.
     "L+ /data/deluge - - - - deluge-umac"
+  ] ++ [
     # jellyfin's database stores library and metadata paths as
     # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
     # pool directly; this keeps the stored paths valid.

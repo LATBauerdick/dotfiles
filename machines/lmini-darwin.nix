@@ -15,9 +15,15 @@
 #                 fstab: UUID=B3114219-1329-479E-87C5-164F39C0EA59 /data/deluge ... noauto,owners
 # Address the internal one by UUID or disk identifier, never by name: the
 # startup disk's own volume is called "Data", and name matching is ambiguous.
-# The bare mount point /data/deluge on the data volume is mode 000 root, so a
-# deluged started while the X5 is missing fails instead of filling the
-# internal disk (the upro stub-directory trap of 2026-09-17).
+# The bare mount point /data/deluge on the data volume is root-owned 755, so a
+# deluged started while the X5 is missing cannot write there instead of the
+# X5 (the upro stub-directory trap of 2026-09-17). NOT 000: the kernel resolves
+# ".." of a mounted volume root through the covered directory, so 000 broke
+# `ls -la`, `cd ..` and getcwd() inside /data/deluge for every non-root user
+# (seen 2026-09-26).
+#
+# TCC: a launchd daemon running as deluge can write/read/delete on the X5
+# volume — probed 2026-09-26 18:21, PASS; no Full Disk Access needed.
 #
 # Same paths as on upro: config in /data/deluge/.config/deluge, downloads in
 # /data/deluge/Downloads — torrents resume without a path rewrite.
@@ -86,7 +92,7 @@ in
         /usr/sbin/diskutil mount -mountPoint ${delugeDir} ${delugeVolume} || exit 1
       fi
       # ownership of the volume root, only ever while it is mounted: never
-      # touch the mode-000 mount point underneath
+      # touch the root-owned mount point underneath
       if ${mounted delugeDir}; then
         /usr/sbin/chown deluge:deluge ${delugeDir}
         /bin/chmod 2770 ${delugeDir}
@@ -97,32 +103,6 @@ in
       StartInterval = 300;
       StandardOutPath = "${logDir}/mount.log";
       StandardErrorPath = "${logDir}/mount.log";
-    };
-  };
-
-  # One-shot macOS privacy (TCC) probe: can a launchd daemon running as deluge
-  # read and write the X5 volume? On 2026-09-16 launchd jobs on lmini were
-  # denied /Volumes/syncthing. Result in /Library/Logs/deluge/probe.log; rerun
-  # with  sudo launchctl kickstart system/org.nixos.deluge-probe .
-  # Remove once it has passed.
-  launchd.daemons.deluge-probe = {
-    script = ''
-      echo "== $(/bin/date) as $(/usr/bin/id -un)"
-      ${mounted delugeDir} || { echo "FAIL: ${delugeDir} not mounted"; exit 1; }
-      f=${delugeDir}/.tcc-probe
-      if echo ok > "$f" && [ "$(/bin/cat "$f")" = ok ] && /bin/rm "$f"; then
-        echo "PASS: write/read/delete on ${delugeDir}"
-      else
-        echo "FAIL: write/read/delete on ${delugeDir}"
-      fi
-      /bin/ls -la ${delugeDir} || true
-    '';
-    serviceConfig = {
-      UserName = "deluge";
-      GroupName = "deluge";
-      RunAtLoad = true;
-      StandardOutPath = "${logDir}/probe.log";
-      StandardErrorPath = "${logDir}/probe.log";
     };
   };
 
