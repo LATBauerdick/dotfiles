@@ -12,6 +12,11 @@ NIXNAME ?= $(shell hostname -s)
 MACNAME ?= m1mac
 # btalmac rpi lima
 
+# Macs with their own darwinConfigurations.<hostname> (per-host split,
+# 2026-09-26); every other Mac keeps the shared <MACNAME>.<USER> config.
+DARWIN_HOSTS := lmini
+DARWIN_TARGET := $(if $(filter $(NIXNAME),$(DARWIN_HOSTS)),$(NIXNAME),$(MACNAME).$(USER))
+
 # nixpkgs 26.11 dropped x86_64-darwin, so the nix targets stop on an Intel Mac
 # and point at `make lite`. sysctl, not `uname -m`: a Rosetta shell on Apple
 # Silicon reports x86_64, but hw.optional.arm64 stays 1 (absent on Intel).
@@ -39,7 +44,7 @@ DETACHED_HINT := $(if $(DETACHED),@echo "detached rebuild - if this ssh session 
 
 darwin:
 	$(NO_INTEL_MAC)
-	sudo darwin-rebuild switch --flake ."#${MACNAME}.${USER}"
+	sudo darwin-rebuild switch --flake ".#$(DARWIN_TARGET)"
 
 # The same configs without nix (users/user/links.txt), CLI tools via mise.
 # Re-runnable; see lite/install.sh.

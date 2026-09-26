@@ -87,7 +87,7 @@
         { nixpkgs.overlays = overlays; }
       ] ++ extraModules;
     };
-    mkDarwin = { nixpkgs, home-manager, system, user, dir, extraSpecialArgs ? {} }:
+    mkDarwin = { nixpkgs, home-manager, system, user, dir, extraModules ? [], extraSpecialArgs ? {} }:
       let darwinConfig = import ./darwin/darwin.nix { primaryUser = user; };
       in nix-darwin.lib.darwinSystem {
       inherit system;
@@ -109,7 +109,7 @@
           users.users."${user}".home = dir;
         }
       # { nixpkgs.overlays = import ./overlays.nix ++ [ ]; }
-      ];
+      ] ++ extraModules;
     };
 
 
@@ -289,6 +289,22 @@
       };
     };
  
+    # Per-host darwin configs (2026-09-26): a Mac with server duties gets its
+    # own output so it can diverge from the shared m1mac.latb laptops. `make
+    # darwin` picks it by hostname (DARWIN_HOSTS in the Makefile).
+    darwinConfigurations.lmini = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "latb";
+      dir   =  "/home/latb";
+      extraModules = [ ./machines/lmini-darwin.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+
     darwinConfigurations.btalmac = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
