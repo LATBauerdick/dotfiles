@@ -18,8 +18,6 @@
 
 { config, pkgs, lib, ... }:
 {
-  # An always-on machine must not upgrade every cask and brew as a side effect
-  # of a switch (darwin/darwin.nix sets upgrade = true for the laptops). Upgrade
-  # by hand: brew upgrade. autoUpdate (brew's own metadata) stays as shared.
-  homebrew.onActivation.upgrade = lib.mkForce false;
+  # (homebrew.onActivation.upgrade = false lived here briefly; since
+  # 2026-09-26 it is the shared default in darwin/darwin.nix for every Mac)
 }
