@@ -16,7 +16,7 @@
        "brave-browser"
        "calibre"
        "claude"
-       "claude-code"
+     # "claude-code"
 #      "chatgpt"
        "darrylmorley/whatcable/whatcable"
        "devonthink"
