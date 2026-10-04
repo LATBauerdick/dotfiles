@@ -211,6 +211,12 @@ in {
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
     settings.PermitRootLogin = "no";
+    # Arq's SSH library offers only non-etm MACs ("no matching MAC found");
+    # allow the two SHA-2 ones next to NixOS's etm defaults (2026-10-04)
+    settings.Macs = [
+      "hmac-sha2-512-etm@openssh.com" "hmac-sha2-256-etm@openssh.com" "umac-128-etm@openssh.com"
+      "hmac-sha2-512" "hmac-sha2-256"
+    ];
     openFirewall = false;
   };
   networking.firewall.interfaces.enp1s0f0.allowedTCPPorts = [ 22 ];
