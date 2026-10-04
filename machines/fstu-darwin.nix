@@ -42,6 +42,18 @@
     }
   ];
 
+  # Upgrading Homebrew here is different from the other Macs (2026-10-04):
+  #  - formulae only: /opt/homebrew is the /opt volume shared with the Mac
+  #    Studio's other boots, whose casks (Chrome, Slack, ...) a plain
+  #    `brew upgrade` would install on this Fermilab boot;
+  #  - python@3.11 stays pinned (`brew pin python@3.11`, stored on /opt): oMLX's
+  #    HEAD build has its own venv on it and is never rebuilt by `brew upgrade`;
+  #  - tailscaled is a root service and needs a restart to pick up the upgrade.
+  # To move oMLX itself forward, deliberately: brew unpin python@3.11, then
+  # brew reinstall --HEAD jundot/omlx/omlx --with-custom-kernel, then pin again.
+  environment.shellAliases.brewup =
+    "brew pin python@3.11 && brew upgrade --formula && sudo brew services restart tailscale";
+
   # A server: never sleep, come back after a power cut (to the FileVault
   # prompt; see above). MDM energy settings, if any, win over these.
   power.sleep.computer = "never";
