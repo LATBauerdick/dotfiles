@@ -203,12 +203,21 @@ in {
     };
   };
 
+  # OpenSSH on the LAN only, for Arq's SFTP backups from lmini (2026-10-04,
+  # LATB). Interactive access stays Tailscale SSH: tailscaled answers port 22
+  # on the tailnet itself, and the firewall opens 22 on the Ethernet only.
   services.openssh = {
-    enable = ! tailscaleEnable; # Tailscale SSH is the only way in (decided 2026-09-17)
+    enable = true;
     settings.PasswordAuthentication = false;
-    settings.PermitRootLogin = "yes";
-    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
+    settings.KbdInteractiveAuthentication = false;
+    settings.PermitRootLogin = "no";
+    openFirewall = false;
   };
+  networking.firewall.interfaces.enp1s0f0.allowedTCPPorts = [ 22 ];
+  # lmini's ArqAgent key (~/.ssh/arq_lstu, no passphrase): file transfer only
+  users.users.latb.openssh.authorizedKeys.keys = [
+    ''restrict,command="${config.services.openssh.package}/libexec/sftp-server" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOG3S5B68n6W6Y5Jrjh/2nsszLsuACNtfM4v3T7buB1U arq-lmini''
+  ];
 
   programs.mosh.enable = true;
 
