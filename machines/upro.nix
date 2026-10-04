@@ -31,22 +31,22 @@
 let
   hostname = "upro";
   hostId = "9e11c252"; # random; regenerate with head -c 8 /etc/machine-id if preferred
-  plexEnable = true;
-  jellyfinEnable = true;
+  plexEnable = false; # server role moved to umini 2026-10-04
+  jellyfinEnable = false; # server role moved to umini 2026-10-04
   roonEnable = false;
   delugeEnable = false; # moved to lmini 2026-09-26 (upro is FNAL property); data stays on z0 until reclaimed
   krb5Enable = true;
   tailscaleEnable = true;
-  tailscaleRoutingServer = true; # since the 2026-09-19 cutover; umac is off
+  tailscaleRoutingServer = false; # routes + exit node on umini since 2026-10-04
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "z3" "z2" "z1" "z0" ]; # imported 2026-09-19 after a clean export on umac
+  zfsPools = [ ]; # pools on umini since 2026-10-04 (z0–z3); were here 2026-09-19..10-04
 
   # Role names announced over mDNS in addition to the hostname, so clients
   # (Infuse on the Apple TV, Finder, Arq) can use e.g. usrv.local and keep
   # working when the server role moves to another machine — move this list
   # with it. Plain-DNS `usrv` is a UniFi local DNS record on the gateway.
-  mdnsAliases = [ "usrv" ];
+  mdnsAliases = [ ]; # usrv moved to umini 2026-10-04
   # One unit per alias. avahi-publish-address stays in the foreground for as
   # long as the record is announced; it advertises the address the default
   # route uses (the Ethernet, not wlan0's second address).
@@ -494,8 +494,9 @@ in {
 
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # off since 2026-10-04: its identity (OMJXHGY, ex-umac) now runs on umini
   services.syncthing = {
-    enable = true;
+    enable = false;
     dataDir = "/home/latb/";
     user = "latb";
   };

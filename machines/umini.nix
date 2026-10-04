@@ -27,10 +27,10 @@ let
   delugeEnable = false; # runs on lmini since 2026-09-26
   krb5Enable = true;
   tailscaleEnable = true;
-  tailscaleRoutingServer = false; # true at cutover, when upro stops advertising
+  tailscaleRoutingServer = true; # since the 2026-10-04 cutover; upro is off
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ ]; # at cutover: [ "z3" "z2" "z1" "z0" ]
+  zfsPools = [ "z3" "z2" "z1" "z0" ]; # force-imported 2026-10-04 (upro could not export: z2 suspended)
   # plex, jellyfin and syncthing keep their state/folders on the pools; they
   # start only once pools are listed
   poolsAttached = zfsPools != [ ];
@@ -40,7 +40,7 @@ let
   # working when the server role moves to another machine — move this list
   # with it (at cutover: [ "usrv" ], and remove it from upro.nix). Plain-DNS
   # `usrv` is a UniFi local DNS record on the gateway.
-  mdnsAliases = [ ];
+  mdnsAliases = [ "usrv" ];
   aliasUnits = lib.listToAttrs (map (alias: lib.nameValuePair "avahi-alias-${alias}" {
     description = "mDNS alias ${alias}.local for this host";
     after = [ "avahi-daemon.service" "network-online.target" ];
@@ -67,6 +67,7 @@ in {
 
   nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.download-buffer-size = 268435456; # 256 MB; the 64 MB default warns on big closures
 
   # /boot is a 200 MB ESP; one kernel+initrd is ~45 MB
   boot.loader.systemd-boot.enable = true;
