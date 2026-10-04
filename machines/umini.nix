@@ -1,95 +1,91 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# umini — Mac mini Late 2012 (Macmini6,2, i7-3615QM, 16 GB), NixOS.
+# The home ZFS/media server before umac (until ~2023); takes the role back from
+# upro (decided 2026-10-03: upro and lstu are FNAL property, umini is private).
+# Rebuilt 2026-10-04 from upro.nix's server half on umac.nix's x86 base.
+#
+# Migration notes (do these at cutover, not before). Runbook pattern:
+# ~/Notes/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
+#  - zfsPools starts EMPTY; flip to the full list once the enclosures are
+#    attached. Export every pool on upro first: a cleanly exported pool imports
+#    here without -f. All hosts run OpenZFS 2.4.4 — do NOT `zpool upgrade`, so
+#    the pools can still go back to upro or umac.
+#  - delete the stub dirs under /data (left from 2025) BEFORE the pool mounts
+#    over them; an empty deluge ssl/ stub is what crashed deluged on upro.
+#  - plex/jellyfin data keep their -umac names (z0/d/plex-umac etc.).
+#  - syncthing: copy upro's ~/.config/syncthing (identity OMJXHGY) over umini's
+#    own (YNPSBSG, retired) with the service stopped on both.
+#  - tailscale: routes + exit node move from upro at cutover
+#    (tailscaleRoutingServer below, then approve in the admin console).
+#  - samba users need `sudo smbpasswd -a latb` once on this machine.
 
 { config, pkgs, lib, ... }@args:
 let
   hostname = "umini";
   hostId = "28c80f12"; # head -c 8 /etc/machine-id
   plexEnable = true;
-  roonEnable = true;
-  roonBridgeEnable = false;
-  delugeEnable = true;
-  unifiEnable = false;
-  nextdnsEnable = false;
-  adguardEnable = true;
+  jellyfinEnable = true;
+  delugeEnable = false; # runs on lmini since 2026-09-26
   krb5Enable = true;
   tailscaleEnable = true;
+  tailscaleRoutingServer = false; # true at cutover, when upro stops advertising
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "h2" "z2" "z1" "z0" ];
+  zfsPools = [ ]; # at cutover: [ "z3" "z2" "z1" "z0" ]
+  # plex, jellyfin and syncthing keep their state/folders on the pools; they
+  # start only once pools are listed
+  poolsAttached = zfsPools != [ ];
+
+  # Role names announced over mDNS in addition to the hostname, so clients
+  # (Infuse on the Apple TV, Finder, Arq) can use e.g. usrv.local and keep
+  # working when the server role moves to another machine — move this list
+  # with it (at cutover: [ "usrv" ], and remove it from upro.nix). Plain-DNS
+  # `usrv` is a UniFi local DNS record on the gateway.
+  mdnsAliases = [ ];
+  aliasUnits = lib.listToAttrs (map (alias: lib.nameValuePair "avahi-alias-${alias}" {
+    description = "mDNS alias ${alias}.local for this host";
+    after = [ "avahi-daemon.service" "network-online.target" ];
+    requires = [ "avahi-daemon.service" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 10;
+    };
+    script = ''
+      ip=$(${pkgs.iproute2}/bin/ip -4 -o route get 1.1.1.1 | ${pkgs.gawk}/bin/awk '{ for (i = 1; i <= NF; i++) if ($i == "src") print $(i+1) }')
+      [ -n "$ip" ] || { echo "no default-route address yet"; exit 1; }
+      exec ${pkgs.avahi}/bin/avahi-publish-address -R ${alias}.local "$ip"
+    '';
+  }) mdnsAliases);
 in {
   imports =
-    [ # Include the results of the hardware scan.
-# done elsewhere      ./hardware-configuration.nix
+    [ # hardware scan results imported via hardware/umini.nix in the flake
       ../pkgs/plex.nix
-      ../pkgs/adguard.nix
     ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
 
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver = {
-    enable = false;
-    windowManager.qtile.enable = false;
-    dpi=130;
-    # dpi=218;
-    # dpi=329;
-  # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-    displayManager = {
-      /* lightdm.enable = true; */
-      /* startx.enable = true; */
-      /* defaultSession = "none+awesome"; */
-    };
-    # desktopManager.plasma5.enable = false;
-    /* windowManager.awesome = { */
-    /*   enable = true; */
-    /*   luaModules = with pkgs.luaPackages; [ */
-    /*     luarocks     # is the package manager for Lua modules */
-    /*     luadbi-mysql # Database abstraction layer */
-    /*   ]; */
-    /* }; */
-  # Enable touchpad support (enabled default in most desktopManager).
-  # libinput.enable = true;
-  };
-  # Enable the KDE Plasma Desktop Environment.
-  # services.displayManager.sddm.enable = false;
-  # services.xrdp.enable = true;
-  # services.xrdp.defaultWindowManager = "awesome-x11"; */
-  # services.xrdp.defaultWindowManager = "startplasma-x11";
-  # services.desktopManager.plasma6.enable = true;
-  environment.variables = {
-    PLASMA_USE_QT_SCALING = "1";
-    /* GDK_SCALE = "2"; */
-    /* GDK_DPI_SCALE = "0.5"; */
-    /* _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2"; */
-  };
-
-# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
-# run `boltctl`, then for each device that is not authorized, execute 
-# `boltctl enroll --chain UUID_FROM_YOUR_DEVICE`
-  services.hardware.bolt.enable = true;
-
-  # use unstable nix so we can access flakes
   nix.settings.trusted-users = [ "root" "latb" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Use the systemd-boot EFI boot loader.
+  # /boot is a 200 MB ESP; one kernel+initrd is ~45 MB
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # hardware/umini.nix loads Broadcom's wl driver for the built-in Wi-Fi
+  nixpkgs.config.permittedInsecurePackages = [
+    "broadcom-sta-6.30.223.271-63-6.18.46"
+    "broadcom-sta-6.30.223.271-59-6.18.31"
+    "broadcom-sta-6.30.223.271-57-6.12.46"
+    "broadcom-sta-6.30.223.271-57-6.12.48"
+    "broadcom-sta-6.30.223.271-59-6.12.63"
+  ];
+
+# Thunderbolt support, see https://nixos.wiki/wiki/Thunderbolt
+  services.hardware.bolt.enable = true;
+
   networking = {
-    # usePredictableInterfaceNames = false;
     useDHCP = false;
     interfaces.enp1s0f0.useDHCP = true;
 
@@ -99,78 +95,50 @@ in {
     search = [ tailnetName ];
 
     networkmanager.enable = true;
-    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
-
-    wireless.enable = false;
 
     firewall.enable = true;
     firewall.allowPing = true;
-# ports for services.xrdp, NextDNS, samba, slimserver, roon ARC
+# ports for services (samba, slimserver, roon ARC, plex, deluge web) — as umac
     firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
     firewall.allowedTCPPortRanges = [ { from = 9330; to = 9339; }
                                       { from = 30000; to = 30010; }
     ];
-# open firewall ports for mosh, wireguard
+# open firewall ports for mosh
     firewall.allowedUDPPortRanges = [ { from = 60001; to = 61000; } ];
-# ports for NextDNS, `services.samba`, slimserver, roon ARC
     firewall.allowedUDPPorts = [ 53 137 1383 3483 55000 9003 ];
   };
 
   services.tailscale.enable = tailscaleEnable;
-  services.tailscale.useRoutingFeatures = "server";
-# make sure tailscale starts with exit-node enabled
-  systemd.services.tailscale-autoconnect = {
-    enable = tailscaleEnable;
-    description = "Automatic connection to Tailscale";
-
-    # make sure tailscale is running before trying to connect to tailscale
-    after = [ "network-pre.target" "tailscale.service" ];
-    wants = [ "network-pre.target" "tailscale.service" ];
-    wantedBy = [ "multi-user.target" ];
-
-    # set this service as a oneshot job
-    serviceConfig.Type = "oneshot";
-
-    # have the job run this shell script
-    script = with pkgs; ''
-      # wait for tailscaled to settle
-      sleep 2
-
-      # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up --advertise-exit-node --accept-routes --ssh --advertise-routes="10.23.1.0/24,10.23.30.0/24"
-
-      # see https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
-      # set NETDEV=$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")
-      # /run/current-system/sw/bin/ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
-    '';
-  };
+  services.tailscale.useRoutingFeatures =
+    if tailscaleRoutingServer then "server" else "client";
+# prefs persist in tailscaled state; at cutover run once
+#   tailscale up --ssh --accept-routes --advertise-exit-node --advertise-routes=10.23.1.0/24,10.23.30.0/24
 
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv6.conf.all.forwarding" = true;
-
-    /* # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52 */
-    /* # By default, not automatically configure any IPv6 addresses. */
-    /* "net.ipv6.conf.all.accept_ra" = 0; */
-    /* "net.ipv6.conf.all.autoconf" = 0; */
-    /* "net.ipv6.conf.all.use_tempaddr" = 0; */
-
 # On WAN, allow IPv6 autoconfiguration and tempory address use.
     "net.ipv6.conf.enp1s0f0.accept_ra" = 2;
     "net.ipv6.conf.enp1s0f0.autoconf" = 1;
+    # Note that inotify watches consume 1kB on 64-bit machines.
+    # needed for syncthing
+    "fs.inotify.max_user_watches" = 204800; # default: 8192
   };
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
   environment.systemPackages = with pkgs; [
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+
+    ncurses
     krb5
-    silver-searcher
     git
     gnumake
     gcc
     fzf
-#    killall
     psmisc # things like killall
     lshw
     lzop
@@ -179,33 +147,13 @@ in {
     pv
     usbutils
     thunderbolt
-
-    networkmanagerapplet
     ethtool
-    xorg.xbacklight
     lm_sensors
-    acpi
-
     vim
     neovim
     curl
-    # gui apps
-    firefox
-    # window manager stuff
-    xmobar
-    nitrogen
-    picom
-    dmenu
   # To make SMB mounting easier on the command line
     cifs-utils
-  ];
-
-  fonts.fontDir.enable = true;
-  fonts.enableDefaultPackages = true;
-  # fonts.enableGhostscriptFonts = true;
-  fonts.packages = with pkgs; [
-#    (nerdfonts.override { fonts = [ "Iosevka" "Lekton" ]; })
-#    corefonts
   ];
 
   programs.zsh.enable = true;
@@ -252,11 +200,10 @@ in {
   };
 
   services.openssh = {
-    enable = true; # ! tailscaleEnable;
+    enable = ! tailscaleEnable; # Tailscale SSH is the only way in (decided 2026-09-17)
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "yes";
-  # services.openssh.settings.X11Forwarding = true;
-    openFirewall = true; # ! tailscaleEnable; # if tailscale, no ssh on port 22
+    openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
   };
 
   programs.mosh.enable = true;
@@ -270,94 +217,76 @@ in {
 
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # off until cutover: umini's own 2023 identity (YNPSBSG) must not sync;
+  # at cutover it is replaced by upro's (OMJXHGY), see notes up top
   services.syncthing = {
-    enable = true;
+    enable = poolsAttached;
     dataDir = "/home/latb/";
     user = "latb";
   };
-  boot.kernel.sysctl = {
-    # Note that inotify watches consume 1kB on 64-bit machines.
-    # needed for syncthing
-    "fs.inotify.max_user_watches"   =  204800;   # default:  8192
-  #  "fs.inotify.max_user_instances" =    1024;   # default:   128
-  #  "fs.inotify.max_queued_events"  =   32768;   # default: 16384
-  };
 
-
-
-  # NextDNS config
-  services.nextdns = { enable = nextdnsEnable;
-    arguments = [ "-config" "59b664" "-listen" "0.0.0.0:53" ];
-  };
-
-  # Binary Cache for Haskell.nix
-  # nix.settings.trusted-public-keys = [
-  #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-  # ];
-  # nix.settings.substituters = [
-  #   "https://cache.iog.io"
-  # ];
-
-# zfs setup
-  boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
-  boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
+# zfs setup — pools stay on upro until cutover; see migration notes up top
+  boot.initrd.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = [ "zfs" ];
   services.udev.extraRules = ''
     ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
-  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
-
-  /* fileSystems."/media" = */
-  /*   { device = "h/m"; */
-  /*     fsType = "zfs"; */
-  /*     options = [ "zfsutil" ]; */
-  /*   }; */
+  ''; # zfs already has its own scheduler
   boot.zfs.extraPools = zfsPools;
+  boot.zfs.forceImportRoot = false; # root is ext4; never force-import (26.11 default)
 
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  services.pulseaudio.enable = true;
+  # Console screen blanking: no X, no display manager, nothing else owns the
+  # screen. setterm's --powersave/--powerdown is what DPMS-offs the panel.
+  boot.kernelParams = [ "consoleblank=600" ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-                "electron-13.6.9"
+  systemd.services = aliasUnits // {
+   console-blank = {
+    description = "Console blanking and DPMS powerdown on tty1";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "getty@tty1.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # StandardInput=tty would wait forever for agetty to release the tty
+      # (seen on upro 2026-09-17); open it as a plain file instead.
+      StandardInput = "file:/dev/tty1";
+      StandardOutput = "file:/dev/tty1";
+      ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
+    };
+   };
+  };
+
+  systemd.tmpfiles.rules = lib.optionals delugeEnable [
+    # deluge's torrents are configured with /data/deluge/... paths
+    "L+ /data/deluge - - - - deluge-umac"
+  ] ++ lib.optionals (jellyfinEnable && poolsAttached) [
+    # jellyfin's database stores library and metadata paths as
+    # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
+    # pool directly; this keeps the stored paths valid.
+    "L+ /var/lib/jellyfin - - - - /data/jellyfin-umac/jellyfin"
   ];
 
-  services.adguardhome.enable = adguardEnable;
+  services.pulseaudio.enable = false;
 
-  nixpkgs.config.plex.plexname = hostname;
-  services.plex.enable = plexEnable;
+  nixpkgs.config.plex.plexname = "umac"; # plex data dataset is z0/d/plex-umac; rename both or neither
+  services.plex.enable = plexEnable && poolsAttached;
 
-  services.deluge.enable = delugeEnable;
   services.deluge = {
-    dataDir = "/data/deluge-${hostname}";
-    web.enable = true;
-    web.openFirewall = true;
-  };
-
-  services.roon-server.enable = roonEnable;
-  services.roon-server = {
-    openFirewall = true;
-  };
-
-
-  services.unifi.enable = unifiEnable;
-  services.unifi.unifiPackage = pkgs.unifi;
-  services.unifi = {
-    openFirewall = unifiEnable;
+    enable = delugeEnable;
+    dataDir = "/data/deluge-umac"; # dataset is z0/d/deluge-umac
+    web.enable = delugeEnable;
+    web.openFirewall = delugeEnable;
   };
 
   services.slimserver.enable = false;
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "roon-bridge"
       "unrar"
-      "unifi"
   ];
-  services.roon-bridge = {
-      enable = roonBridgeEnable;
-      openFirewall = roonBridgeEnable;
-  };
 
   # mDNS, avahi
   services.avahi = { enable = true;
@@ -385,23 +314,23 @@ in {
     };
   };
 
+  services.jellyfin = {
+    enable = jellyfinEnable && poolsAttached;
+    openFirewall = true;
+    # Dataset z0/d/jellyfin-umac mounts at /data/jellyfin-umac
+    dataDir = "/data/jellyfin-umac/jellyfin";
+  };
+  # The dataset is owned by umac's dynamic jellyfin ids 990/988, pinned on upro
+  # too. Both free on umini (checked 2026-10-04), so no chown -R is needed.
+  users.users.jellyfin = lib.mkIf (jellyfinEnable && poolsAttached) { uid = 990; };
+  users.groups.jellyfin = lib.mkIf (jellyfinEnable && poolsAttached) { gid = 988; };
+
 # SMB file sharing
   services.gvfs.enable = true;
   services.samba = { enable = true;
     openFirewall = true;
-    # settings = ''
-    #   workgroup = LATB
-    #   server string = hostname
-    #   netbios name = hostname
-    #   hosts allow = 192.168.0  localhost
-    #   hosts deny = 0.0.0.0/0
-    #   guest account = nobody
-    #   map to guest = bad user
-    # '';
-
     # You will still need to set up the user accounts to begin with:
-    # $ sudo smbpasswd -a yourusername
-
+    # $ sudo smbpasswd -a latb
     settings = {
       global.security = "user";
       homes = {
@@ -416,7 +345,7 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force user" = "latb";
         "force group" = "users";
       };
       sync = {
@@ -426,7 +355,7 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force user" = "latb";
         "force group" = "users";
       };
       arq = {
@@ -436,7 +365,7 @@ in {
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "latb"; # smbpasswd -a latb as root...
+        "force user" = "latb";
         "force group" = "users";
       };
     };
