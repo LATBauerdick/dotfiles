@@ -96,6 +96,9 @@ in {
     search = [ tailnetName ];
 
     networkmanager.enable = true;
+    # wired only: with Wi-Fi up, Plex advertised 10.23.1.128 (wlp2s0) as its
+    # private address, so LAN clients could stream over Wi-Fi (2026-10-04)
+    networkmanager.unmanaged = [ "wlp2s0" ];
 
     firewall.enable = true;
     firewall.allowPing = true;
