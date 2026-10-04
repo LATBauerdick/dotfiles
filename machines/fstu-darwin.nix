@@ -9,8 +9,12 @@
 # bauerdic logs in at the console; macOS updates are installed on Fermilab's
 # schedule (the shared SoftwareUpdate user prefs in darwin.nix are moot here).
 #
-# Nix lives on its own APFS volume on this boot (fresh install, 2026-10-04),
-# not on ZFS pool z: that pool's z/nix belonged to the macOS 27 boot (MHD).
+# Nix: for now /nix is ZFS pool z's z/nix, shared with the macOS 27 boot (MHD),
+# so it needs OpenZFS loaded (2.4.1p1 since 2026-10-04). No nix-collect-garbage
+# on MHD: it deleted this boot's system once. A fresh APFS /nix comes with the
+# pool-z clean-out. If /run/current-system is ever missing:
+#   nix build .#darwinConfigurations.fstu.system
+#   sudo ./result/sw/bin/darwin-rebuild switch --flake .#fstu
 #
 # oMLX: the HEAD build with the custom kernel, from Jundot's tap, run as a brew
 # service for bauerdic (a LaunchAgent, so it starts at bauerdic's login).
