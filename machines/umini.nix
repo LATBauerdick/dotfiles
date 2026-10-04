@@ -24,7 +24,7 @@ let
   hostId = "28c80f12"; # head -c 8 /etc/machine-id
   plexEnable = true;
   jellyfinEnable = true;
-  delugeEnable = false; # runs on lmini since 2026-09-26
+  delugeEnable = true; # moved lmini -> umini 2026-10-04 (was on lmini since 09-26, upro before)
   krb5Enable = true;
   tailscaleEnable = true;
   tailscaleRoutingServer = true; # since the 2026-10-04 cutover; upro is off
@@ -279,10 +279,7 @@ in {
    };
   };
 
-  systemd.tmpfiles.rules = lib.optionals delugeEnable [
-    # deluge's torrents are configured with /data/deluge/... paths
-    "L+ /data/deluge - - - - deluge-umac"
-  ] ++ lib.optionals (jellyfinEnable && poolsAttached) [
+  systemd.tmpfiles.rules = lib.optionals (jellyfinEnable && poolsAttached) [
     # jellyfin's database stores library and metadata paths as
     # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
     # pool directly; this keeps the stored paths valid.
@@ -296,7 +293,8 @@ in {
 
   services.deluge = {
     enable = delugeEnable;
-    dataDir = "/data/deluge-umac"; # dataset is z0/d/deluge-umac
+    # dataset z0/d/deluge; same path as on lmini, so torrents resume as they are
+    dataDir = "/data/deluge";
     web.enable = delugeEnable;
     web.openFirewall = delugeEnable;
   };

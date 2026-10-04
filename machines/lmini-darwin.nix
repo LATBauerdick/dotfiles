@@ -30,9 +30,14 @@
 # deluged idles until core.conf exists, so this is inert until the migration.
 #
 # Web UI: http://lmini:8112 . Logs: /Library/Logs/deluge/ .
+#
+# 2026-10-04: Deluge moved on to umini (private hardware with the pools); the
+# daemons are off here (delugeEnable). The deluge user, the volumes and the
+# X5's contents stay as they are, so turning it back on is one flag.
 
 { config, pkgs, lib, ... }:
 let
+  delugeEnable = false;  # runs on umini since 2026-10-04
   delugeId = 480;   # uid = gid; 400–600 free on lmini except 400, 441, 501
                     # (checked 2026-09-26); upro's NixOS uid 83 is _amavisd here
   delugeVolume = "B3114219-1329-479E-87C5-164F39C0EA59";
@@ -79,11 +84,11 @@ in
     description = "Deluge BitTorrent";
   };
 
-  environment.systemPackages = [ deluged ];   # deluge-console for latb
+  environment.systemPackages = lib.optionals delugeEnable [ deluged ];   # deluge-console for latb
 
   # Root: wait for /data (fstab, auto), then put the X5 volume on /data/deluge.
   # Re-runs every 5 min, so the volume comes back by itself after a USB dropout.
-  launchd.daemons.deluge-mount = {
+  launchd.daemons.deluge-mount = lib.mkIf delugeEnable {
     script = ''
       for i in $(/usr/bin/seq 60); do ${mounted "/data"} && break; /bin/sleep 5; done
       ${mounted "/data"} || { echo "$(/bin/date) /data not mounted"; exit 1; }
@@ -106,7 +111,7 @@ in
     };
   };
 
-  launchd.daemons.deluged = {
+  launchd.daemons.deluged = lib.mkIf delugeEnable {
     script = ''
       # idle until the volume is up and the config has been migrated
       until [ -r ${configDir}/core.conf ]; do /bin/sleep 30; done
@@ -123,7 +128,7 @@ in
     };
   };
 
-  launchd.daemons.deluge-web = {
+  launchd.daemons.deluge-web = lib.mkIf delugeEnable {
     script = ''
       until [ -r ${configDir}/web.conf ]; do /bin/sleep 30; done
       exec ${deluged}/bin/deluge-web -d -c ${configDir} -p 8112 -L info
