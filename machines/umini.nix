@@ -260,7 +260,14 @@ in {
 
   # Console screen blanking: no X, no display manager, nothing else owns the
   # screen. setterm's --powersave/--powerdown is what DPMS-offs the panel.
-  boot.kernelParams = [ "consoleblank=600" ];
+  boot.kernelParams = [
+    "consoleblank=600"
+    # OWC Mercury Elite Pro Quad (1e91:a4a7): UAS aborts + device resets on the
+    # z0 disks under load — on upro (scrub suspended z3, 2026-09-26) and again
+    # at umini's boot (2026-10-04), different cables and hosts. Run the boxes
+    # as plain usb-storage (BOT) instead of UAS; the JMicron box already is.
+    "usb-storage.quirks=1e91:a4a7:u"
+  ];
 
   systemd.services = aliasUnits // {
    console-blank = {
