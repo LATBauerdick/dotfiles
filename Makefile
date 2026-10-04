@@ -15,7 +15,10 @@ MACNAME ?= m1mac
 # Macs with their own darwinConfigurations.<hostname> (per-host split,
 # 2026-09-26); every other Mac keeps the shared <MACNAME>.<USER> config.
 DARWIN_HOSTS := lmini
-DARWIN_TARGET := $(if $(filter $(NIXNAME),$(DARWIN_HOSTS)),$(NIXNAME),$(MACNAME).$(USER))
+# Fermilab Macs keep their MDM hostname mac-<property number>; map it to the
+# per-host config's nickname (case-folded: MDM may set it in upper case)
+DARWIN_ALIAS := $(if $(filter mac-144343,$(shell echo $(NIXNAME) | tr A-Z a-z)),fstu,)
+DARWIN_TARGET := $(or $(DARWIN_ALIAS),$(if $(filter $(NIXNAME),$(DARWIN_HOSTS)),$(NIXNAME),$(MACNAME).$(USER)))
 
 # nixpkgs 26.11 dropped x86_64-darwin, so the nix targets stop on an Intel Mac
 # and point at `make lite`. sysctl, not `uname -m`: a Rosetta shell on Apple

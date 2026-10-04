@@ -305,6 +305,21 @@
       };
     };
 
+    # The Mac Studio's Fermilab-managed boot (hostname mac-144343, tailnet fstu,
+    # 2026-10-04); `make darwin` maps the hostname to it (Makefile).
+    darwinConfigurations.fstu = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "bauerdic";
+      dir   =  "/home/bauerdic";
+      extraModules = [ ./machines/fstu-darwin.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+
     darwinConfigurations.btalmac = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;
