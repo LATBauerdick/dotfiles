@@ -17,14 +17,20 @@
 # Homebrew lives on the shared /opt volume, so the build that lstu's macOS 27
 # boot made is already installed; brew bundle only (re)starts the service.
 # Models and settings: /home/bauerdic/.omlx (moved from latb, 2026-10-04).
-# Tailnet exposure is not nix's business; once, by hand:
-#   /Applications/Tailscale.app/Contents/MacOS/Tailscale serve --bg 8000
-# -> https://fstu.taild2340b.ts.net/ (tailnet only), as on lstu.
+# Tailscale: the open-source tailscaled from Homebrew (not the GUI app), so
+# that Tailscale SSH can serve ssh with Remote Login OFF — no sshd for
+# Fermilab's scanners to find (2026-10-04, as on ftop; runbook
+# ~/Notes/Notes/Claude/2026-09-18-tailscale-ssh-macos-runbook.md). tailscaled
+# must run as root, which brew bundle's start_service cannot do; once, by hand:
+#   sudo brew services start tailscale
+#   sudo tailscale up --ssh --operator=bauerdic --hostname=fstu
+#   tailscale serve --bg 8000      # -> https://fstu.taild2340b.ts.net/
 
 { config, pkgs, lib, ... }:
 {
   homebrew.taps = [ "jundot/omlx" ];
   homebrew.brews = [
+    "tailscale"   # tailscaled runs as a root service: see the note above
     {
       name = "jundot/omlx/omlx";
       args = [ "HEAD" "with-custom-kernel" ];
