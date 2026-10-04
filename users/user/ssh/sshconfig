@@ -45,6 +45,8 @@ Host fair
 Host ftop
     HostName mac-147779
     User bauerdic
+Host fstu
+    User bauerdic
 
 Host cmslpc*.fnal.gov
     User bauerdic

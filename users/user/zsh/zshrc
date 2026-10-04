@@ -211,7 +211,8 @@ claude-fnal() {
   command claude "$@"
 }
 
-# Run Claude Code against the local Qwen3.8-27B served by oMLX on lstu
+# Run Claude Code against the local Qwen3.8-27B served by oMLX on fstu (the
+# Mac Studio, ex-lstu; its Fermilab boot since 2026-10-04)
 # (Mac Studio), reachable over Tailscale. oMLX speaks the Anthropic Messages
 # API natively, so no translation proxy is involved.
 #
@@ -219,8 +220,8 @@ claude-fnal() {
 # subscription login in the default profile shadows ANTHROPIC_AUTH_TOKEN.
 # Do NOT run /login inside this profile.
 #
-# Requires Tailscale up; lstu serves it via `tailscale serve` (tailnet-only,
-# real TLS). The server itself only ever binds 127.0.0.1 on lstu.
+# Requires Tailscale up; fstu serves it via `tailscale serve` (tailnet-only,
+# real TLS). The server itself only ever binds 127.0.0.1 on fstu.
 # Model ids changed 2026-09-06; the old mlx-community--* ids were deleted.
 # One checkpoint (Qwen3.8-27B-oQ8e-mtp, aliased qwen3.8-27b) with two oMLX
 # profiles overlaid on the same resident engine -- switching costs nothing.
@@ -240,13 +241,13 @@ claude-lstu() {
     return 1
   fi
   if ! curl -sf -m 5 -o /dev/null -H "Authorization: Bearer $OMLX_API_KEY" \
-       https://lstu.taild2340b.ts.net/v1/models; then
-    echo "claude-lstu: lstu not reachable — is Tailscale up, and is oMLX running?" >&2
-    echo "  check with: ssh lstu '/opt/homebrew/bin/brew services list | grep omlx'" >&2
+       https://fstu.taild2340b.ts.net/v1/models; then
+    echo "claude-lstu: fstu not reachable — is Tailscale up, and is oMLX running?" >&2
+    echo "  check with: ssh fstu '/opt/homebrew/bin/brew services list | grep omlx'" >&2
     return 1
   fi
   CLAUDE_CONFIG_DIR="$HOME/.claude-lstu" \
-  ANTHROPIC_BASE_URL="https://lstu.taild2340b.ts.net" \
+  ANTHROPIC_BASE_URL="https://fstu.taild2340b.ts.net" \
   ANTHROPIC_AUTH_TOKEN="$OMLX_API_KEY" \
   ANTHROPIC_MODEL="$m" \
   ANTHROPIC_DEFAULT_OPUS_MODEL="$base:deep" \
