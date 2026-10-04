@@ -51,8 +51,16 @@
   #  - tailscaled is a root service and needs a restart to pick up the upgrade.
   # To move oMLX itself forward, deliberately: brew unpin python@3.11, then
   # brew reinstall --HEAD jundot/omlx/omlx --with-custom-kernel, then pin again.
-  environment.shellAliases.brewup =
-    "brew pin python@3.11 && brew upgrade --formula && sudo brew services restart tailscale";
+  # a command, not an alias: nix-darwin's environment.shellAliases only reaches fish
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "brewup" ''
+      set -e
+      B=/opt/homebrew/bin/brew
+      "$B" pin python@3.11
+      "$B" upgrade --formula
+      sudo "$B" services restart tailscale
+    '')
+  ];
 
   # A server: never sleep, come back after a power cut (to the FileVault
   # prompt; see above). MDM energy settings, if any, win over these.
