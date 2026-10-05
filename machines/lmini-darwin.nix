@@ -32,8 +32,9 @@
 # Web UI: http://lmini:8112 . Logs: /Library/Logs/deluge/ .
 #
 # 2026-10-04: Deluge moved on to umini (private hardware with the pools); the
-# daemons are off here (delugeEnable). The deluge user, the volumes and the
-# X5's contents stay as they are, so turning it back on is one flag.
+# daemons are off here (delugeEnable). The X5's contents stay as they are.
+# 2026-10-04 DFU restore: the internal "data" volume (/data) is gone, so turning
+# Deluge back on now also means recreating /data first (see above).
 
 { config, pkgs, lib, ... }:
 let
@@ -67,14 +68,18 @@ in
   # (homebrew.onActivation.upgrade = false lived here briefly; since
   # 2026-09-26 it is the shared default in darwin/darwin.nix for every Mac)
 
-  users.knownGroups = [ "deluge" ];
-  users.knownUsers = [ "deluge" ];
-  users.groups.deluge = {
+  # Managed only while enabled: the DFU restore of 2026-10-04 erased the internal
+  # "data" volume, so /data no longer exists and nix-darwin's check of the home
+  # path fails (`realpath: /data/deluge: No such file or directory`). Dropping
+  # it from known* leaves the existing uid/gid 480 alone rather than deleting it.
+  users.knownGroups = lib.optionals delugeEnable [ "deluge" ];
+  users.knownUsers = lib.optionals delugeEnable [ "deluge" ];
+  users.groups.deluge = lib.mkIf delugeEnable {
     gid = delugeId;
     members = [ "latb" ];   # read finished downloads without sudo
     description = "Deluge BitTorrent";
   };
-  users.users.deluge = {
+  users.users.deluge = lib.mkIf delugeEnable {
     uid = delugeId;
     gid = delugeId;
     home = delugeDir;
