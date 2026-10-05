@@ -79,6 +79,7 @@ alias dri="docker run -it --privileged -v /Volumes/Data:/Volumes/Data"
 alias rust-musl-builder='docker run --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
 alias gs='git status '
+alias gd='git diff --staged --word-diff '  # what the next commit will contain, changed words marked
 alias ga='git add '
 alias gaa='git add -A '
 alias gb='git branch '
