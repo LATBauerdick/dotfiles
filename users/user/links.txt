@@ -18,8 +18,6 @@ home  .editorconfig                 vim/editorconfig
 xdg   nvim/lua                      vim/lua
 xdg   nvim/after                    vim/after
 xdg   nvim/init.lua                 vim/init.lua
-# lazy.nvim writes its lockfile to stdpath('config'), so it must be writable
-xdg   nvim/lazy-lock.json           vim/lazy-lock.json      live
 
 xdg   aerospace/myAerospace.toml    aerospace/myAerospace.toml
 # xdg borders/bordersrc          borders/bordersrc       (disabled)

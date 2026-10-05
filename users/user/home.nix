@@ -122,9 +122,6 @@ in {
 
   xdg.enable = true;
   # All config links (.zshrc, nvim, herdr, ghostty, …) are listed in ./links.txt.
-  # nvim/lazy-lock.json is marked `live` there: lazy.nvim writes its lockfile to
-  # stdpath('config'), so a read-only store symlink would stop `:Lazy update`
-  # from recording anything; the out-of-store link lands the lock in git.
   xdg.configFile = linksOf "xdg";
 
   programs.kitty.enable = true;

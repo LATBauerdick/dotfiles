@@ -20,4 +20,6 @@ require("lazy").setup({
   spec = {
     { import = "config.plugins" },
   },
+  -- per machine, outside the (read-only, store-linked) config dir and out of git
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
 })
