@@ -28,8 +28,10 @@ bindkey -v
 export BUN_INSTALL="$HOME/.bun"
 path=("$HOME/.pixi/bin" "$BUN_INSTALL/bin" $path)
 
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
+# Path to your oh-my-zsh installation: on nix machines home-manager's
+# programs.zsh.oh-my-zsh sets ZSH (read-only store copy, no self-update) in
+# ~/.zshenv; `make lite` machines clone it to ~/.oh-my-zsh (lite/install.sh).
+export ZSH=${ZSH:-~/.oh-my-zsh}
 #ZSH_THEME=powerlevel10k/powerlevel10k
 DEFAULT_USER=$USER
 plugins=(git z history history-substring-search)
