@@ -222,9 +222,11 @@ in {
     openFirewall = false;
   };
   networking.firewall.interfaces.enp1s0f0.allowedTCPPorts = [ 22 ];
-  # lmini's ArqAgent key (~/.ssh/arq_lstu, no passphrase): file transfer only
+  # lmini's ArqAgent key (~/.ssh/arq_umini, no passphrase — ArqAgent runs as
+  # root): file transfer only. Replaces arq_lstu, lost with lmini's disk on
+  # 2026-10-04. internal-sftp, not the store path, which changes on rebuild.
   users.users.latb.openssh.authorizedKeys.keys = [
-    ''restrict,command="${config.services.openssh.package}/libexec/sftp-server" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOG3S5B68n6W6Y5Jrjh/2nsszLsuACNtfM4v3T7buB1U arq-lmini''
+    ''restrict,command="internal-sftp" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICArs02DwrfZNXdYSal3YkTBTBvMtGEsI8Vng1iLPqg6 arq-lmini''
   ];
 
   programs.mosh.enable = true;
