@@ -32,7 +32,9 @@ xdg   kitty/kitty.conf              kitty/kitty.conf
 xdg   kitty/lightTheme.conf         kitty/lightTheme.conf
 xdg   kitty/darkTheme.conf          kitty/darkTheme.conf
 xdg   leaderKey/config.json         leaderKey/config.json
-xdg   herdr/myConfig.toml           herdr/myConfig.toml
+# herdr reads only config.toml; live, so `herdr server reload-config` picks up
+# edits without a make (and herdr may write to it)
+xdg   herdr/config.toml             herdr/myConfig.toml     live
 
 # lite only: on nix machines home-manager generates ~/.zshenv itself (hm-session-vars)
 lite  .zshenv                       zsh/zshenv-lite
