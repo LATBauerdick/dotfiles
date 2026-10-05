@@ -297,7 +297,13 @@
       home-manager = home-manager;
       system = "aarch64-darwin";
       user   = "latb";
-      dir   =  "/home/latb";
+      # /Users/latb, not /home/latb (2026-10-05): home now lives on the Data
+      # volume with /home -> Users (synthetic.conf). macOS sandbox profiles
+      # expand home rules from NFSHomeDirectory without resolving symlinks, so
+      # a /home/latb record vs the physical /Users/latb path gets every
+      # sandboxed daemon (fileproviderd/iCloud Drive, secd, Safari, Mail…)
+      # denied. /home/latb still resolves through the symlink.
+      dir   =  "/Users/latb";
       extraModules = [ ./machines/lmini-darwin.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
