@@ -19,7 +19,9 @@ xdg   nvim/lua                      vim/lua
 xdg   nvim/after                    vim/after
 xdg   nvim/init.lua                 vim/init.lua
 
-xdg   aerospace/myAerospace.toml    aerospace/myAerospace.toml
+# AeroSpace reads only aerospace.toml here (or ~/.aerospace.toml); live, so
+# `aerospace reload-config` picks up edits without a make
+xdg   aerospace/aerospace.toml      aerospace/myAerospace.toml   live
 # xdg borders/bordersrc          borders/bordersrc       (disabled)
 xdg   yabai/yabairc                 yabai/yabairc
 xdg   skhd/skhdrc                   yabai/skhdrc
@@ -27,7 +29,10 @@ xdg   limelight/limelightrc         yabai/limelightrc
 xdg   awesome                       awesome
 xdg   amethyst                      amethyst
 xdg   karabiner/assets              karabiner/assets
-xdg   ghostty/config                ghostty/config
+# config ends with `config-file = ?~/.config/ghostty/myConfig` (the ? skips it
+# silently when missing); both live, so cmd+shift+, reloads edits without a make
+xdg   ghostty/config                ghostty/config               live
+xdg   ghostty/myConfig              ghostty/myConfig             live
 xdg   kitty/kitty.conf              kitty/kitty.conf
 xdg   kitty/lightTheme.conf         kitty/lightTheme.conf
 xdg   kitty/darkTheme.conf          kitty/darkTheme.conf

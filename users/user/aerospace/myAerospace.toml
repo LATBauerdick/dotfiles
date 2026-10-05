@@ -1,5 +1,5 @@
-# Place a copy of this config to ~/.aerospace.toml
-# After that, you can edit ~/.aerospace.toml to your liking
+# Deployed as ~/.config/aerospace/aerospace.toml (live link, see ../links.txt):
+# edit here, then `aerospace reload-config`
 # See: https://nikitabobko.github.io/AeroSpace/guide
 config-version = 2
 
