@@ -17,6 +17,8 @@
 #  - tailscale: routes + exit node move from upro at cutover
 #    (tailscaleRoutingServer below, then approve in the admin console).
 #  - samba users need `sudo smbpasswd -a latb` once on this machine.
+#  - the tm (Time Machine) share needs dataset z3/tm created by hand first;
+#    see the share at the bottom.
 
 { config, pkgs, lib, ... }@args:
 let
@@ -335,6 +337,20 @@ in {
           </service>
         </service-group>
       '';
+      # advertises the tm share as a Time Machine destination, so it shows up
+      # in System Settings; tmutil setdestination works without it
+      timemachine = ''
+        <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+          <name replace-wildcards="yes">%h</name>
+          <service>
+            <type>_adisk._tcp</type>
+            <txt-record>sys=waMa=0,adVF=0x100</txt-record>
+            <txt-record>dk0=adVN=tm,adVF=0x82</txt-record>
+          </service>
+        </service-group>
+      '';
     };
   };
 
@@ -391,6 +407,26 @@ in {
         "directory mask" = "0755";
         "force user" = "latb";
         "force group" = "users";
+      };
+      # Time Machine for lmini (2026-10-05). Dataset z3/tm, created by hand:
+      #   zfs create -o mountpoint=/tm -o quota=400G -o compression=lz4 z3/tm
+      #   chown latb:users /tm
+      # z3 is the only pool with room and also holds Arq: one pool, two backups.
+      # The size cap here matches the zfs quota, so Time Machine prunes old
+      # backups instead of hitting a full disk.
+      tm = {
+        path = "/tm";
+        "valid users" = "latb";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "force user" = "latb";
+        "force group" = "users";
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:aapl" = "yes";
+        "fruit:metadata" = "stream";
+        "fruit:time machine" = "yes";
+        "fruit:time machine max size" = "400G";
       };
     };
   };
