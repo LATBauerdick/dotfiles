@@ -62,6 +62,22 @@
     '')
   ];
 
+  # /opt is its own APFS volume, mounted from fstab after launchd has already
+  # tried homebrew.mxcl.tailscale at boot: tailscaled never ran and fstu
+  # stayed off the tailnet until started by hand (2026-10-06, boot 13:02, first
+  # start 13:18). Wait for the binary, then kick the brew-installed daemon.
+  launchd.daemons.tailscale-kick = {
+    script = ''
+      /bin/wait4path /opt/homebrew/opt/tailscale/bin/tailscaled
+      /bin/launchctl kickstart system/homebrew.mxcl.tailscale
+    '';
+    serviceConfig = {
+      RunAtLoad = true;
+      StandardOutPath = "/var/log/tailscale-kick.log";
+      StandardErrorPath = "/var/log/tailscale-kick.log";
+    };
+  };
+
   # A server: never sleep, come back after a power cut (to the FileVault
   # prompt; see above). MDM energy settings, if any, win over these.
   power.sleep.computer = "never";
