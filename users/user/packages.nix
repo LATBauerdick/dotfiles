@@ -42,6 +42,8 @@
       llvm
       lld
       lzop
+      markitdown        # pptx/docx/xlsx/pdf -> Markdown
+      marp-cli          # Markdown -> slides (pdf/html/pptx)
       mosh
 #      neovim-unwrapped
 #      neuron-notes
@@ -60,6 +62,8 @@
       tgpt
       tmux
       tree
+      typst             # Touying slides: #import "@preview/touying:..."
+      tinymist          # typst LSP/preview
       unzip
       unrar
       wget
