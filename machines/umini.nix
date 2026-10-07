@@ -442,7 +442,9 @@ in {
       #   chown latb:users /tm
       # z3 is the only pool with room and also holds Arq: one pool, two backups.
       # The size cap here matches the zfs quota, so Time Machine prunes old
-      # backups instead of hitting a full disk.
+      # backups instead of hitting a full disk. Raised 400G -> 600G on
+      # 2026-10-06 when /Volumes/dt (DEVONthink databases, 161 G, ~4-5 G/day
+      # of rewritten metadata) joined the backup: `zfs set quota=600G z3/tm`.
       tm = {
         path = "/tm";
         "valid users" = "latb";
@@ -455,7 +457,7 @@ in {
         "fruit:aapl" = "yes";
         "fruit:metadata" = "stream";
         "fruit:time machine" = "yes";
-        "fruit:time machine max size" = "400G";
+        "fruit:time machine max size" = "600G";
       };
     };
   };
