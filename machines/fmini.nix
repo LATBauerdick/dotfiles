@@ -334,8 +334,10 @@ in {
   # backups and fmini is no longer a syncthing device. The z3/s datasets were
   # seeded by syncoid from umini in 2025-01 and still share that snapshot, so
   # the first run is incremental.
-  # Only the 18 datasets with that common snapshot for now; p2021, p2025,
-  # p2026, c1-p2024, c1-p2025, dtasync, dtpsync need a full send (step 2).
+  # Only the datasets with that common snapshot for now; p2021, p2025, p2026,
+  # c1-p2024, c1-p2025 need a full send (step 2). The DEVONthink sync stores
+  # (dtsync, dtpsync, dtasync) are not copied: ephemeral transport — the
+  # databases reach fmini through Arq.
   # umini side, once (persists in the pool):
   #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount z0/s
   # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
@@ -345,7 +347,7 @@ in {
     commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" ];
     commands = lib.genAttrs [
       "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "docs" "docsarchive"
-      "dtsync" "incoming" "jpegs" "lr" "mybooks" "p2022" "p2023" "p2024"
+      "incoming" "jpegs" "lr" "mybooks" "p2022" "p2023" "p2024"
       "screensaver" "sjpegs" "syncthing"
     ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; });
   };
@@ -358,16 +360,12 @@ in {
     templates = {
       history = { hourly = 24; daily = 30; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
       photos  = { hourly = 0;  daily = 14; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
-      store   = { hourly = 0;  daily = 14; monthly = 3;  yearly = 0; autosnap = false; autoprune = true; };
     };
     datasets = {
       "z3/s" = { useTemplate = [ "photos" ]; recursive = true; processChildrenOnly = true; };
     } // lib.genAttrs
       (map (d: "z3/s/${d}") [ "syncthing" "docs" "docsarchive" "mybooks" "lr" "incoming" ])
-      (_: { useTemplate = [ "history" ]; })
-    // lib.genAttrs
-      (map (d: "z3/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
-      (_: { useTemplate = [ "store" ]; });
+      (_: { useTemplate = [ "history" ]; });
   };
 
   systemd.targets.sleep.enable = false;

@@ -262,6 +262,9 @@ in {
   # syncoid and keeps them far longer). Kept short because z0 is ~94 % full
   # and snapshots pin deleted data; the one monthly exists only so fmini has
   # monthlies to keep. latb holds `zfs allow` send rights on z0/s for that pull.
+  # The DEVONthink sync stores are left out: they are ephemeral transport, and
+  # the databases themselves are versioned on lmini (Time Machine) and off-site
+  # (Arq -> fmini).
   # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
   services.sanoid = {
     enable = poolsAttached;
@@ -269,11 +272,16 @@ in {
       hourly = 24; daily = 7; monthly = 1; yearly = 0;
       autosnap = true; autoprune = true;
     };
-    datasets."z0/s" = {
-      useTemplate = [ "undo" ];
-      recursive = true;
-      processChildrenOnly = true;
-    };
+    templates.ignore = { autosnap = false; autoprune = false; };
+    datasets = {
+      "z0/s" = {
+        useTemplate = [ "undo" ];
+        recursive = true;
+        processChildrenOnly = true;
+      };
+    } // lib.genAttrs
+      (map (d: "z0/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
+      (_: { useTemplate = [ "ignore" ]; });
   };
 
   systemd.targets.sleep.enable = false;
