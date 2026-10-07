@@ -284,8 +284,11 @@ in {
 
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # Off the syncthing network since 2026-10: the z3/s copies now come from
+  # umini by syncoid (see the zfs section). ~/Notes and ~/Sync become
+  # symlinks into the read-only replica /sync/syncthing/{Notes,Sync}.
   services.syncthing = {
-    enable = true;
+    enable = false;
     dataDir = "/home/latb/";
     user = "latb";
   };
@@ -326,17 +329,36 @@ in {
   /*   }; */
   boot.zfs.extraPools = zfsPools;
 
-  # Snapshots of the syncthing replica (z3/s mirrors umini's z0/s): the
-  # off-site version history. umini keeps only a week for quick undo.
-  # Children default to `photos`; the edited folders and the DEVONthink sync
-  # stores override it below.
+  # Off-site copy of umini's syncthing datasets: fmini PULLS umini's sanoid
+  # snapshots (z0/s/* -> z3/s/*) every hour, so umini cannot touch these
+  # backups and fmini is no longer a syncthing device. The z3/s datasets were
+  # seeded by syncoid from umini in 2025-01 and still share that snapshot, so
+  # the first run is incremental.
+  # Only the 18 datasets with that common snapshot for now; p2021, p2025,
+  # p2026, c1-p2024, c1-p2025, dtasync, dtpsync need a full send (step 2).
+  # umini side, once (persists in the pool):
+  #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount z0/s
   # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
+  services.syncoid = {
+    enable = true;
+    interval = "*:15"; # after umini's sanoid run on the hour
+    commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" ];
+    commands = lib.genAttrs [
+      "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "docs" "docsarchive"
+      "dtsync" "incoming" "jpegs" "lr" "mybooks" "p2022" "p2023" "p2024"
+      "screensaver" "sjpegs" "syncthing"
+    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; });
+  };
+
+  # Long retention for what syncoid brings in. fmini takes no snapshots of its
+  # own (autosnap off) — it only prunes. umini makes no yearlies (they would pin
+  # a year of deletions on its ~94 %-full z0), so history is 36 monthlies.
   services.sanoid = {
     enable = true;
     templates = {
-      history = { hourly = 24; daily = 30; monthly = 12; yearly = 3; autosnap = true; autoprune = true; };
-      photos  = { hourly = 0;  daily = 14; monthly = 12; yearly = 3; autosnap = true; autoprune = true; };
-      store   = { hourly = 0;  daily = 14; monthly = 3;  yearly = 0; autosnap = true; autoprune = true; };
+      history = { hourly = 24; daily = 30; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
+      photos  = { hourly = 0;  daily = 14; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
+      store   = { hourly = 0;  daily = 14; monthly = 3;  yearly = 0; autosnap = false; autoprune = true; };
     };
     datasets = {
       "z3/s" = { useTemplate = [ "photos" ]; recursive = true; processChildrenOnly = true; };

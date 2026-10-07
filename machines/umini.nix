@@ -258,13 +258,15 @@ in {
   boot.zfs.forceImportRoot = false; # root is ext4; never force-import (26.11 default)
 
   # Snapshots of the syncthing datasets: short-term undo next to the master
-  # copy. Long history lives on fmini, which snapshots its own replica.
-  # Kept short because z0 is ~94 % full and snapshots pin deleted data.
+  # copy, and the source of fmini's off-site history (fmini pulls them with
+  # syncoid and keeps them far longer). Kept short because z0 is ~94 % full
+  # and snapshots pin deleted data; the one monthly exists only so fmini has
+  # monthlies to keep. latb holds `zfs allow` send rights on z0/s for that pull.
   # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
   services.sanoid = {
     enable = poolsAttached;
     templates.undo = {
-      hourly = 24; daily = 7; monthly = 0; yearly = 0;
+      hourly = 24; daily = 7; monthly = 1; yearly = 0;
       autosnap = true; autoprune = true;
     };
     datasets."z0/s" = {
