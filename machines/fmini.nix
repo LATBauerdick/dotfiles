@@ -354,10 +354,11 @@ in {
   services.syncoid = {
     enable = true;
     interval = "*:15"; # after umini's sanoid run on the hour
-    # Cap at 1.5 MB/s (~12 Mbit/s, under half of home's ~27 Mbit/s upload):
-    # the 2026-10-07 catch-up saturated the uplink and made home<->office
-    # traffic crawl (48 ms vs 19 ms). Hourly increments are far below this.
-    commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" "--target-bwlimit=1.5M" ];
+    # Cap at 2.5 MB/s (~20 Mbit/s): home is on cable with 35 Mbit/s promised
+    # upload (~45 measured). The uncapped 2026-10-07 catch-up saturated it and
+    # made home<->office traffic crawl (48 ms vs 19 ms). Hourly increments
+    # are far below this; it only paces catch-ups and full sends.
+    commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" "--target-bwlimit=2.5M" ];
     # module default plus destroy, so syncoid can prune its own old
     # syncoid_fmini_* marker snapshots on the target
     localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" ];
