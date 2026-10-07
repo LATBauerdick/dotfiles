@@ -66,10 +66,19 @@
   # tried sh.brew.tailscale at boot: tailscaled never ran and fstu
   # stayed off the tailnet until started by hand (2026-10-06, boot 13:02, first
   # start 13:18). Wait for the binary, then kick the brew-installed daemon.
+  # A kickstart is not enough: when the executable is missing at boot launchd
+  # logs "Missing executable detected" and drops the job, so kickstart answered
+  # "Could not find service" (2026-10-07, boot 16:43). Load it again instead.
   launchd.daemons.tailscale-kick = {
     script = ''
       /bin/wait4path /opt/homebrew/opt/tailscale/bin/tailscaled
-      /bin/launchctl kickstart system/sh.brew.tailscale
+      echo "$(/bin/date) /opt ready"
+      if /bin/launchctl print system/sh.brew.tailscale >/dev/null 2>&1; then
+        /bin/launchctl kickstart system/sh.brew.tailscale
+      else
+        /bin/launchctl bootstrap system /Library/LaunchDaemons/sh.brew.tailscale.plist
+      fi
+      echo "$(/bin/date) done ($?)"
     '';
     serviceConfig = {
       RunAtLoad = true;
