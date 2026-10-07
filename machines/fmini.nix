@@ -317,8 +317,15 @@ in {
 # zfs setup
   boot.initrd.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems) 
   boot.supportedFilesystems = [ "zfs" ]; # Not required if zfs is root-fs (extracted from filesystems)
+  # The z3 disks sit in an OWC ThunderBay 4 on Thunderbolt, and the domain's
+  # security level is "user": the box must be authorized before its disks
+  # appear. Nothing did that at boot (not enrolled in bolt), so
+  # zfs-import-z3's 60 s wait ran out and the pool, and everything on it, had
+  # to be imported by hand. Authorize this one enclosure, by unique_id, as
+  # soon as udev sees it.
   services.udev.extraRules = ''
     ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
+    ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="d6010000-0080-7d08-a375-e80984941820", ATTR{authorized}=="0", ATTR{authorized}="1"
   ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
 
   /* fileSystems."/media" = */
