@@ -327,6 +327,7 @@ in {
   /*     options = [ "zfsutil" ]; */
   /*   }; */
   boot.zfs.extraPools = zfsPools;
+  boot.zfs.forceImportRoot = false; # root is ext4; never force-import (26.11 default)
 
   # Off-site copy of umini's syncthing datasets: fmini PULLS umini's sanoid
   # snapshots (z0/s/* -> z3/s/*) every hour, so umini cannot touch these
