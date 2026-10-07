@@ -269,16 +269,15 @@ in {
 
   services.openssh.enable = false; #####################!!!!! true;
   services.openssh.settings.PasswordAuthentication = false;
-  services.openssh.settings.PermitRootLogin = "yes";
+  services.openssh.settings.PermitRootLogin = "no";
   # services.openssh.settings.X11Forwarding = true;
   services.openssh.openFirewall = ! tailscaleEnable; # if tailscale, no ssh on port 22
 
-  programs.mosh.enable = true;
+  # Hardened 2026-04-22 (was only in fmini's working tree until 2026-10-07):
+  # no root login, no mosh, no root ssh key.
+  programs.mosh.enable = false;
 
   users.users.root.initialPassword = "root";
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOXZjedCEONef8tQoqk8iZYODg0VoONlyfIz5tFfWXz latb@lmini.local"
-  ];
 
   time.timeZone = "America/Chicago";
 
