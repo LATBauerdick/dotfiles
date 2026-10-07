@@ -280,6 +280,9 @@ in {
   users.users.root.initialPassword = "root";
 
   time.timeZone = "America/Chicago";
+  # The lab network blocks the public NTP pool: fmini drifted 34 min unsynced
+  # (2026-10-07), which breaks Kerberos and skews snapshot times.
+  networking.timeServers = [ "ntp.fnal.gov" ];
 
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -352,6 +355,9 @@ in {
     enable = true;
     interval = "*:15"; # after umini's sanoid run on the hour
     commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" ];
+    # module default plus destroy, so syncoid can prune its own old
+    # syncoid_fmini_* marker snapshots on the target
+    localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" ];
     commands = lib.genAttrs [
       "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "docs" "docsarchive"
       "incoming" "jpegs" "lr" "mybooks" "p2022" "p2023" "p2024"
