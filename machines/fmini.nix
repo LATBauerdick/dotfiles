@@ -182,7 +182,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     krb5
-    silver-searcher
+    # silver-searcher  # removed from nixpkgs (2026); rg replaces it
     git
     gnumake
     gcc
@@ -198,7 +198,7 @@ in {
     thunderbolt
 
     networkmanagerapplet
-    xorg.xbacklight
+  # xorg.xbacklight
     lm_sensors
     acpi
 
@@ -209,7 +209,7 @@ in {
     firefox
     # window manager stuff
     xmobar
-    nitrogen
+  # nitrogen
     picom
     dmenu
   # To make SMB mounting easier on the command line
