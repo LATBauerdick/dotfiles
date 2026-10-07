@@ -326,6 +326,28 @@ in {
   /*   }; */
   boot.zfs.extraPools = zfsPools;
 
+  # Snapshots of the syncthing replica (z3/s mirrors umini's z0/s): the
+  # off-site version history. umini keeps only a week for quick undo.
+  # Children default to `photos`; the edited folders and the DEVONthink sync
+  # stores override it below.
+  # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
+  services.sanoid = {
+    enable = true;
+    templates = {
+      history = { hourly = 24; daily = 30; monthly = 12; yearly = 3; autosnap = true; autoprune = true; };
+      photos  = { hourly = 0;  daily = 14; monthly = 12; yearly = 3; autosnap = true; autoprune = true; };
+      store   = { hourly = 0;  daily = 14; monthly = 3;  yearly = 0; autosnap = true; autoprune = true; };
+    };
+    datasets = {
+      "z3/s" = { useTemplate = [ "photos" ]; recursive = true; processChildrenOnly = true; };
+    } // lib.genAttrs
+      (map (d: "z3/s/${d}") [ "syncthing" "docs" "docsarchive" "mybooks" "lr" "incoming" ])
+      (_: { useTemplate = [ "history" ]; })
+    // lib.genAttrs
+      (map (d: "z3/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
+      (_: { useTemplate = [ "store" ]; });
+  };
+
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
