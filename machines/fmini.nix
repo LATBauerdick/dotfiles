@@ -122,8 +122,9 @@ in {
     nameservers = [ ];
     search = [ tailnetName ];
 
-    networkmanager.enable = true;
-    ### networkmanager.insertNameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    # No NetworkManager: alongside interfaces.eth0.useDHCP (dhcpcd) it ran a
+    # second DHCP client on eth0, and the lab handed out two leases (.186, .52).
+    # Headless and wired-only, so dhcpcd alone is enough.
 
     ### wireless.enable = true;
 
@@ -197,7 +198,6 @@ in {
     usbutils
     thunderbolt
 
-    networkmanagerapplet
   # xorg.xbacklight
     lm_sensors
     acpi
