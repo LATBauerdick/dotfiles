@@ -68,6 +68,13 @@ in
   # (homebrew.onActivation.upgrade = false lived here briefly; since
   # 2026-09-26 it is the shared default in darwin/darwin.nix for every Mac)
 
+  # Always-on: never idle-sleep, come back after a power cut. The 2026-10-04 DFU
+  # restore reset pmset to the default `sleep 1`, and lmini slept/dark-woke
+  # hundreds of times a day (569 on 10-07) — late launchd jobs, cut-short
+  # backups, unreachable on the tailnet — until this pinned it.
+  power.sleep.computer = "never";
+  power.restartAfterPowerFailure = true;
+
   # Managed only while enabled: the DFU restore of 2026-10-04 erased the internal
   # "data" volume, so /data no longer exists and nix-darwin's check of the home
   # path fails (`realpath: /data/deluge: No such file or directory`). Dropping
