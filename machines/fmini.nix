@@ -192,6 +192,7 @@ in {
     psmisc # things like killall
     lshw
     lzop
+    smartmontools # smartctl; behind USB bridges add -d sat
     mbuffer
     sanoid
     pv
@@ -376,6 +377,17 @@ in {
   # Long retention for what syncoid brings in. fmini takes no snapshots of its
   # own (autosnap off) — it only prunes. umini makes no yearlies (they would pin
   # a year of deletions on its ~94 %-full z0), so history is 36 monthlies.
+  # Disk health. smartd watches every disk and runs a weekly short self-test
+  # (Sun 03:00); no long tests, which take a day on big disks behind USB and
+  # collide with scrubs. -d sat: the pool disks sit behind USB/Thunderbolt SATA
+  # bridges that smartd cannot autodetect (also correct for native SATA under
+  # libata). By hand: smartctl -a -d sat /dev/sdX
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+    defaults.autodetected = "-a -d sat -o on -S on -n standby,q -s S/../../7/03";
+  };
+
   services.sanoid = {
     enable = true;
     templates = {

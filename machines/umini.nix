@@ -148,6 +148,7 @@ in {
     psmisc # things like killall
     lshw
     lzop
+    smartmontools # smartctl; behind USB bridges add -d sat
     mbuffer
     sanoid
     pv
@@ -266,6 +267,17 @@ in {
   # the databases themselves are versioned on lmini (Time Machine) and off-site
   # (Arq -> fmini).
   # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
+  # Disk health. smartd watches every disk and runs a weekly short self-test
+  # (Sun 03:00); no long tests, which take a day on big disks behind USB and
+  # collide with scrubs. -d sat: the pool disks sit behind USB/Thunderbolt SATA
+  # bridges that smartd cannot autodetect (also correct for native SATA under
+  # libata). By hand: smartctl -a -d sat /dev/sdX
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+    defaults.autodetected = "-a -d sat -o on -S on -n standby,q -s S/../../7/03";
+  };
+
   services.sanoid = {
     enable = poolsAttached;
     templates.undo = {
