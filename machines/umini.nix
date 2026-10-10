@@ -285,7 +285,15 @@ in {
       autosnap = true; autoprune = true;
     };
     templates.ignore = { autosnap = false; autoprune = false; };
+    # Archive tier pulled by fmini into z4/z5 (2026-10-10). Mostly static, so
+    # snapshots cost ~nothing; they give fmini history to keep (30 d / 36 m)
+    # instead of only syncoid's latest marker.
+    templates.archive = {
+      hourly = 0; daily = 7; monthly = 3; yearly = 0;
+      autosnap = true; autoprune = true;
+    };
     datasets = {
+      "z1/p" = { useTemplate = [ "archive" ]; recursive = true; };
       "z0/s" = {
         useTemplate = [ "undo" ];
         recursive = true;
@@ -293,7 +301,10 @@ in {
       };
     } // lib.genAttrs
       (map (d: "z0/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
-      (_: { useTemplate = [ "ignore" ]; });
+      (_: { useTemplate = [ "ignore" ]; })
+    // lib.genAttrs
+      (map (d: "z1/${d}") [ "Else/Aperture" "Else/Picture-else" "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
+      (_: { useTemplate = [ "archive" ]; });
   };
 
   systemd.targets.sleep.enable = false;

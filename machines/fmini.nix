@@ -17,7 +17,12 @@ let
   tailscaleEnable = true;
   tailnetName = "taild2340b.ts.net";
 
-  zfsPools = [ "z3" ];
+  zfsPools = [ "z3" "z4" "z5" ];
+  # syncoid pulls umini:z1/<d> -> <pool>/<d>; unit names use "-" for "/"
+  archivePull = pool: ds: builtins.listToAttrs (map (d: {
+    name = "z1-" + builtins.replaceStrings [ "/" ] [ "-" ] d;
+    value = { source = "latb@umini:z1/${d}"; target = "${pool}/${d}"; };
+  }) ds);
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -371,7 +376,20 @@ in {
       "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks"
       "p2021" "p2022" "p2023" "p2024" "p2025" "p2026"
       "screensaver" "selects" "sjpegs" "syncthing"
-    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; });
+    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; })
+    # Archive tier (2026-10-10): photos/videos and music from umini's z1, into
+    # two single-disk pools (z4 = 8 TB SkyHawk, z5 = 3 TB WD Red; separate
+    # pools, not a stripe, so one dead disk loses one copy). Seeded locally
+    # on umini from snapshot seed_2026-10-10 (destroy it on both sides after
+    # the first incremental pull). hirez, audiobooks, z1/m/books: not backed
+    # up (LATB). umini side, once:
+    #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount <each source>
+    # Plan: ~/Notes/Notes/Claude/2026-10-10-photos-setup.md
+    // {
+      z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; };
+    }
+    // archivePull "z4" [ "Else/Aperture" "Else/Picture-else" "m/musicorigs" "m/musicjohannes" "m/musicam" ]
+    // archivePull "z5" [ "m/music" "m/classical" "m/opera" ];
   };
 
   # Long retention for what syncoid brings in. fmini takes no snapshots of its
@@ -393,9 +411,12 @@ in {
     templates = {
       history = { hourly = 24; daily = 30; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
       photos  = { hourly = 0;  daily = 14; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
+      archive = { hourly = 0;  daily = 30; monthly = 36; yearly = 0; autosnap = false; autoprune = true; };
     };
     datasets = {
       "z3/s" = { useTemplate = [ "photos" ]; recursive = true; processChildrenOnly = true; };
+      "z4"   = { useTemplate = [ "archive" ]; recursive = true; processChildrenOnly = true; };
+      "z5"   = { useTemplate = [ "archive" ]; recursive = true; processChildrenOnly = true; };
     } // lib.genAttrs
       (map (d: "z3/s/${d}") [ "syncthing" "docs" "docsarchive" "mybooks" "lr" "incoming" ])
       (_: { useTemplate = [ "history" ]; });
