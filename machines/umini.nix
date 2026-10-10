@@ -321,6 +321,9 @@ in {
     # at umini's boot (2026-10-04), different cables and hosts. Run the boxes
     # as plain usb-storage (BOT) instead of UAS; the JMicron box already is.
     "usb-storage.quirks=1e91:a4a7:u"
+    # Cap the ARC at 6 GiB of 16. Uncapped it reached 11.6 G (2026-10-10), and
+    # the fragmentation left the ThunderBay's AHCI probe without an order-5 page.
+    "zfs.zfs_arc_max=6442450944"
   ];
 
   systemd.services = aliasUnits // {
@@ -338,6 +341,10 @@ in {
       ExecStart = "${pkgs.util-linux}/bin/setterm --blank 10 --powersave powerdown --powerdown 15 --term linux";
     };
    };
+   # libtorrent 2.0 mmaps the torrent files, so deluged's RSS is mostly page
+   # cache (peak 7.4 G). On 2026-10-10 that plus a seed swapped umini to a
+   # standstill. MemoryHigh is soft: the kernel reclaims deluged first, no kill.
+   deluged.serviceConfig.MemoryHigh = lib.mkIf delugeEnable "2G";
   };
 
   systemd.tmpfiles.rules = lib.optionals (jellyfinEnable && poolsAttached) [
