@@ -344,8 +344,11 @@ in {
   # backups and fmini is no longer a syncthing device. The z3/s datasets were
   # seeded by syncoid from umini in 2025-01 and still share that snapshot, so
   # the first run is incremental.
-  # Only the datasets with that common snapshot for now; p2021, p2025, p2026,
-  # c1-p2024, c1-p2025 need a full send (step 2). The DEVONthink sync stores
+  # p2021, p2025, p2026, c1-p2024, c1-p2025 and selects had no common snapshot;
+  # they were full-sent locally on 2026-10-10 with the disks at home on umini
+  # (the uplink is too slow for a seed), so they pull incrementally too.
+  # selects = Capture One "JPEG - Select" exports, split out of P2022/P2023 so
+  # the per-year originals can go read-only. The DEVONthink sync stores
   # (dtsync, dtpsync, dtasync) are not copied: ephemeral transport — the
   # databases reach fmini through Arq.
   # umini side, once (persists in the pool):
@@ -363,9 +366,10 @@ in {
     # syncoid_fmini_* marker snapshots on the target
     localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" ];
     commands = lib.genAttrs [
-      "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "docs" "docsarchive"
-      "incoming" "jpegs" "lr" "mybooks" "p2022" "p2023" "p2024"
-      "screensaver" "sjpegs" "syncthing"
+      "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
+      "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks"
+      "p2021" "p2022" "p2023" "p2024" "p2025" "p2026"
+      "screensaver" "selects" "sjpegs" "syncthing"
     ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; });
   };
 
