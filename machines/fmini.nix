@@ -353,8 +353,11 @@ in {
   # p2021, p2025, p2026, c1-p2024, c1-p2025 and selects had no common snapshot;
   # they were full-sent locally on 2026-10-10 with the disks at home on umini
   # (the uplink is too slow for a seed), so they pull incrementally too.
-  # selects = Capture One "JPEG - Select" exports, split out of P2022/P2023 so
-  # the per-year originals can go read-only. The DEVONthink sync stores
+  # selects = Capture One "JPEG - Select" exports, split out of P2022/P2023.
+  # Finished years (p2021-p2025) left z0/s on 2026-10-10: their originals now
+  # live only in umini's frozen z1/p/P20xx (read-only), pulled into z4/p below;
+  # the old z3/s/p2021-p2025 copies here are stale and can be destroyed once
+  # z4 is verified. c1-p2020 (the 2020 Capture One catalog) joined z0/s then. The DEVONthink sync stores
   # (dtsync, dtpsync, dtasync) are not copied: ephemeral transport — the
   # databases reach fmini through Arq.
   # umini side, once (persists in the pool):
@@ -372,9 +375,8 @@ in {
     # syncoid_fmini_* marker snapshots on the target
     localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" ];
     commands = lib.genAttrs [
-      "books" "c1" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
-      "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks"
-      "p2021" "p2022" "p2023" "p2024" "p2025" "p2026"
+      "books" "c1" "c1-p2020" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
+      "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks" "p2026"
       "screensaver" "selects" "sjpegs" "syncthing"
     ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; })
     # Archive tier (2026-10-10): photos/videos and music from umini's z1, into
