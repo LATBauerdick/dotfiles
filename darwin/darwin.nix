@@ -16,6 +16,17 @@
     # which made latb untrusted and triggered restricted-setting warnings.)
     nix.settings.trusted-users = [ primaryUser ]; # module default already adds root
 
+    # SMB client: no packet signing — noticeably faster to umini, whose shares
+    # are reachable from the LAN and the tailnet only (2026-10-11). The hash
+    # lets nix-darwin take over lmini's hand-made copy of the same text.
+    environment.etc."nsmb.conf" = {
+      text = ''
+        [default]
+        signing_required=no
+      '';
+      knownSha256Hashes = [ "992344f015898df5cd839f795bda683b91eb21830bf09da66092f6d8f1f78ddd" ];
+    };
+
     # Create /etc/zshrc that loads the nix-darwin environment.
     programs.zsh.enable = true;  # default shell on catalina
     # programs.fish.enable = true;

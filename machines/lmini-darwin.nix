@@ -75,6 +75,25 @@ in
   power.sleep.computer = "never";
   power.restartAfterPowerFailure = true;
 
+  # /home is a synthetic link to /Users (/etc/synthetic.conf, set up by hand
+  # with /etc/fstab — boot-critical, kept out of nix; copies and notes in
+  # ~/Sync/_configs/config/lmini). The automounter must not claim /home, so
+  # its auto_home line stays commented out. The hash is the hand-edited file
+  # of 2026-10-05, which this replaces with identical text.
+  environment.etc."auto_master" = {
+    text = ''
+      #
+      # Automounter master map
+      #
+      +auto_master		# Use directory service
+      #/net			-hosts		-nobrowse,hidefromfinder,nosuid
+      #/home			auto_home	-nobrowse,hidefromfinder
+      /Network/Servers	-fstab
+      /-			-static
+    '';
+    knownSha256Hashes = [ "bef61b8cb1855b966cf841c0b231676979c44dae2a14de2708a43b1b1feef33e" ];
+  };
+
   # Managed only while enabled: the DFU restore of 2026-10-04 erased the internal
   # "data" volume, so /data no longer exists and nix-darwin's check of the home
   # path fails (`realpath: /data/deluge: No such file or directory`). Dropping
