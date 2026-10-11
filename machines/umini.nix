@@ -104,8 +104,10 @@ in {
 
     firewall.enable = true;
     firewall.allowPing = true;
-# ports for services (samba, slimserver, roon ARC, plex, deluge web) — as umac
-    firewall.allowedTCPPorts = [ 53 445 139 3389 9000 3483 32400 55000 55002 3000 ];
+# ports for services (slimserver, roon ARC, plex, deluge web) — as umac.
+# SMB (445/139) is not here: it is opened on the LAN and tailnet interfaces
+# only, next to sshd's rule below.
+    firewall.allowedTCPPorts = [ 53 3389 9000 3483 32400 55000 55002 3000 ];
     firewall.allowedTCPPortRanges = [ { from = 9330; to = 9339; }
                                       { from = 30000; to = 30010; }
     ];
@@ -222,7 +224,9 @@ in {
     ];
     openFirewall = false;
   };
-  networking.firewall.interfaces.enp1s0f0.allowedTCPPorts = [ 22 ];
+  # sshd LAN-only; SMB on the LAN and the tailnet only (2026-10-11)
+  networking.firewall.interfaces.enp1s0f0.allowedTCPPorts = [ 22 445 139 ];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 445 ];
   # lmini's ArqAgent key (~/.ssh/arq_umini, no passphrase — ArqAgent runs as
   # root): file transfer only. Replaces arq_lstu, lost with lmini's disk on
   # 2026-10-04. internal-sftp, not the store path, which changes on rebuild.
@@ -427,11 +431,29 @@ in {
 # SMB file sharing
   services.gvfs.enable = true;
   services.samba = { enable = true;
-    openFirewall = true;
+    openFirewall = false; # ports opened per interface (LAN, tailscale0) above
     # You will still need to set up the user accounts to begin with:
     # $ sudo smbpasswd -a latb
     settings = {
-      global.security = "user";
+      global = {
+        security = "user";
+        # Second layer behind the firewall: localhost, the LAN, the tailnet
+        # (100.64/10 and its IPv6 ULA) and IPv6 link-local; nothing else.
+        "hosts allow" = "127. 10.23.1. 100.64.0.0/10 ::1 fd7a:115c:a1e0::/48 fe80::/10";
+        "hosts deny" = "ALL";
+        # Mac clients (Samba vfs_fruit recommendations). Until 2026-10-11 only
+        # [tm] loaded fruit, so media/sync/arq were served to Finder without
+        # the Apple extensions (AppleDouble ._ files, slow listings). Global
+        # now; it must be on every share for the AAPL negotiation to stick.
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:metadata" = "stream";
+        "fruit:model" = "MacSamba";
+        "fruit:posix_rename" = "yes";
+        "fruit:veto_appledouble" = "no";
+        "fruit:nfs_aces" = "no";
+        "fruit:wipe_intentionally_left_blank_rfork" = "yes";
+        "fruit:delete_empty_adfiles" = "yes";
+      };
       homes = {
         browseable = "no";  # note: each home will be browseable; the "homes" share will not.
         "read only" = "no";
