@@ -32,20 +32,26 @@
 
 { config, pkgs, lib, ... }:
 {
-  homebrew.taps = [ "jundot/omlx" ];
-  homebrew.brews = [
+  # Since 2026-10-13 /opt is this boot's own (on the Data volume; the shared /opt
+  # volume is gone) and Homebrew was reinstalled fresh. fstu is a model server:
+  # only what it runs, not the common casks/brews of darwin/darwin.nix.
+  homebrew.taps = lib.mkForce [ "jundot/omlx" ];
+  homebrew.casks = lib.mkForce [ ];
+  homebrew.brews = lib.mkForce [
     "tailscale"   # tailscaled runs as a root service: see the note above
     {
       name = "jundot/omlx/omlx";
       args = [ "HEAD" "with-custom-kernel" ];
       start_service = true;
     }
+    { name = "syncthing"; start_service = true; }
+    "herdr"       # its agent, local.herdr.server, comes from darwin/darwin.nix
   ];
 
   # Upgrading Homebrew here is different from the other Macs (2026-10-04):
-  #  - formulae only: /opt/homebrew is the /opt volume shared with the Mac
-  #    Studio's other boots, whose casks (Chrome, Slack, ...) a plain
-  #    `brew upgrade` would install on this Fermilab boot;
+  #  - formulae only: no casks here (until 2026-10-13 /opt was a volume shared
+  #    with the Studio's other boots, and a plain `brew upgrade` would have
+  #    installed their casks on this Fermilab boot);
   #  - python@3.11 stays pinned (`brew pin python@3.11`, stored on /opt): oMLX's
   #    HEAD build has its own venv on it and is never rebuilt by `brew upgrade`;
   #  - tailscaled is a root service and needs a restart to pick up the upgrade.
