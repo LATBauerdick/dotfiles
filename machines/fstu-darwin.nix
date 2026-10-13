@@ -35,7 +35,11 @@
   # Since 2026-10-13 /opt is this boot's own (on the Data volume; the shared /opt
   # volume is gone) and Homebrew was reinstalled fresh. fstu is a model server:
   # only what it runs, not the common casks/brews of darwin/darwin.nix.
-  homebrew.taps = lib.mkForce [ "jundot/omlx" ];
+  # the separate jundot/homebrew-omlx tap repo is gone (2026-10-13); the formula
+  # now lives in the main repo, so the tap needs its URL
+  homebrew.taps = lib.mkForce [
+    { name = "jundot/omlx"; clone_target = "https://github.com/jundot/omlx"; }
+  ];
   homebrew.casks = lib.mkForce [ ];
   homebrew.brews = lib.mkForce [
     "tailscale"   # tailscaled runs as a root service: see the note above
