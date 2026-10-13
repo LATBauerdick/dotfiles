@@ -47,7 +47,7 @@ pkgs: withGUI: with pkgs; [
 #####      texlive.combined.scheme-full
 
 
-] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+] ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       bitwarden-cli
 ] ++ pkgs.lib.optionals withGUI [
 ]

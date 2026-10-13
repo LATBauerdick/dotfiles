@@ -105,7 +105,7 @@ in {
     # SSH session's TCC context. Start the launchd one (darwin.nix,
     # local.herdr.server) instead, and refuse if there is no GUI login yet.
     # `herdr status server` exits 0 either way; read its output.
-    envExtra = pkgs.lib.optionalString pkgs.stdenv.isDarwin ''
+    envExtra = pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
       if [[ -n ''${SSH_CONNECTION-} && ''${ZSH_EXECUTION_STRING-} == *"herdr remote-client-bridge"* ]] \
          && [[ $(/opt/homebrew/bin/herdr status server 2>/dev/null) != *"status: running"* ]]; then
         /bin/launchctl kickstart "gui/$UID/local.herdr.server" >/dev/null 2>&1
