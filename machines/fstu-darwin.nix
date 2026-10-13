@@ -33,41 +33,38 @@
 { config, pkgs, lib, ... }:
 {
   # Since 2026-10-13 /opt is this boot's own (on the Data volume; the shared /opt
-  # volume is gone) and Homebrew was reinstalled fresh. fstu is a model server:
-  # only what it runs, not the common casks/brews of darwin/darwin.nix.
+  # volume is gone) and Homebrew was reinstalled fresh. fstu gets the common
+  # casks/brews of darwin/darwin.nix (LATB) plus these, merged:
   # the separate jundot/homebrew-omlx tap repo is gone (2026-10-13); the formula
   # now lives in the main repo, so the tap needs its URL
-  homebrew.taps = lib.mkForce [
+  homebrew.taps = [
     { name = "jundot/omlx"; clone_target = "https://github.com/jundot/omlx"; }
   ];
-  homebrew.casks = lib.mkForce [ ];
-  homebrew.brews = lib.mkForce [
+  homebrew.brews = [
     "tailscale"   # tailscaled runs as a root service: see the note above
     {
       name = "jundot/omlx/omlx";
       args = [ "HEAD" "with-custom-kernel" ];
       start_service = true;
     }
-    { name = "syncthing"; start_service = true; }
-    "herdr"       # its agent, local.herdr.server, comes from darwin/darwin.nix
   ];
 
   # Upgrading Homebrew here is different from the other Macs (2026-10-04):
-  #  - formulae only: no casks here (until 2026-10-13 /opt was a volume shared
-  #    with the Studio's other boots, and a plain `brew upgrade` would have
-  #    installed their casks on this Fermilab boot);
   #  - python@3.11 stays pinned (`brew pin python@3.11`, stored on /opt): oMLX's
   #    HEAD build has its own venv on it and is never rebuilt by `brew upgrade`;
   #  - tailscaled is a root service and needs a restart to pick up the upgrade.
   # To move oMLX itself forward, deliberately: brew unpin python@3.11, then
   # brew reinstall --HEAD jundot/omlx/omlx --with-custom-kernel, then pin again.
+  # Needs full Xcode (+ Metal toolchain). Its post_install SIGKILLs on a stale
+  # cached signature of libmlx (rewritten in place); recipe in the 2026-10-13
+  # workspace log: re-copy the mlx binaries, add the mlx rpath to the kernels.
   # a command, not an alias: nix-darwin's environment.shellAliases only reaches fish
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "brewup" ''
       set -e
       B=/opt/homebrew/bin/brew
       "$B" pin python@3.11
-      "$B" upgrade --formula
+      "$B" upgrade
       sudo "$B" services restart tailscale
     '')
   ];
