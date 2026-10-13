@@ -27,6 +27,29 @@
       knownSha256Hashes = [ "992344f015898df5cd839f795bda683b91eb21830bf09da66092f6d8f1f78ddd" ];
     };
 
+    # herdr server owned by launchd in the GUI login (2026-10-13). Otherwise the
+    # first client after a reboot or `herdr server stop` starts it — and when
+    # that is a remote `herdr --remote` over Tailscale SSH, the server and every
+    # pane inherit the SSH session's TCC context: Day One writes denied,
+    # DEVONthink Automation prompts again (lmini, 10-11 and 10-13). Under
+    # launchd, TCC attributes to the herdr binary itself — the one already
+    # granted Full Disk Access. KeepAlive: `herdr server stop` now means
+    # restart in the right context. After `brew upgrade herdr`, re-grant FDA
+    # (ad-hoc signed) and `launchctl kickstart -k gui/$UID/local.herdr.server`.
+    # The remote side of the race is closed in home.nix (zsh envExtra).
+    launchd.user.agents.herdr-server.serviceConfig = {
+      Label = "local.herdr.server";
+      ProgramArguments = [ "/opt/homebrew/bin/herdr" "server" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      LimitLoadToSessionType = "Aqua";
+      ProcessType = "Interactive";
+      EnvironmentVariables = {
+        PATH = "/opt/homebrew/bin:/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+        LANG = "en_US.UTF-8";
+      };
+    };
+
     # Create /etc/zshrc that loads the nix-darwin environment.
     programs.zsh.enable = true;  # default shell on catalina
     # programs.fish.enable = true;

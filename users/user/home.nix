@@ -100,6 +100,26 @@ in {
     # home-manager sets ZDOTDIR and zsh would stop reading ~/.zshrc entirely.
     dotDir = config.home.homeDirectory;
     # dotDir = "${config.xdg.configHome}/zsh";
+    # macOS: a remote `herdr --remote` runs `zsh -c '… herdr remote-client-bridge'`
+    # over SSH, and the bridge starts a server if none is running — inside the
+    # SSH session's TCC context. Start the launchd one (darwin.nix,
+    # local.herdr.server) instead, and refuse if there is no GUI login yet.
+    # `herdr status server` exits 0 either way; read its output.
+    envExtra = pkgs.lib.optionalString pkgs.stdenv.isDarwin ''
+      if [[ -n ''${SSH_CONNECTION-} && ''${ZSH_EXECUTION_STRING-} == *"herdr remote-client-bridge"* ]] \
+         && [[ $(/opt/homebrew/bin/herdr status server 2>/dev/null) != *"status: running"* ]]; then
+        /bin/launchctl kickstart "gui/$UID/local.herdr.server" >/dev/null 2>&1
+        for _herdr_i in {1..20}; do
+          [[ $(/opt/homebrew/bin/herdr status server 2>/dev/null) == *"status: running"* ]] && break
+          sleep 0.25
+        done
+        if [[ $(/opt/homebrew/bin/herdr status server 2>/dev/null) != *"status: running"* ]]; then
+          print -u2 "herdr: no server in the GUI session on $HOST — log in at the console first"
+          exit 1
+        fi
+        unset _herdr_i
+      fi
+    '';
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" ];
