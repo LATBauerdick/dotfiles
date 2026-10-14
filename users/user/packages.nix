@@ -66,6 +66,7 @@
       tinymist          # typst LSP/preview
       unzip
       unrar
+      uv                # runs PEP 723 scripts (scripts/zettel-index.py)
       wget
       xz
       zellij
