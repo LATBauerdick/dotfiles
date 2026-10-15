@@ -178,6 +178,7 @@ outer.right =      5
 
 ctrl-alt-w = 'close'
 ctrl-alt-f = 'fullscreen'
+ctrl-alt-shift-f = 'layout floating tiling'
 
 ctrl-alt-d = '''exec-and-forget osascript -e '
 tell application "Finder" to activate'
