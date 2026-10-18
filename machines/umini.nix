@@ -349,6 +349,28 @@ in {
    # cache (peak 7.4 G). On 2026-10-10 that plus a seed swapped umini to a
    # standstill. MemoryHigh is soft: the kernel reclaims deluged first, no kill.
    deluged.serviceConfig.MemoryHigh = lib.mkIf delugeEnable "2G";
+   # Fans loud at odd hours (2026-10-17): log package temperature, fan speed
+   # and load every 5 min to see when, and whether jellyfin's rescheduled scans
+   # fixed it. One line per sample in /var/log/cputemp.log.
+   cputemp-log = {
+    description = "Log CPU temperature, fan speed and load";
+    path = [ pkgs.lm_sensors pkgs.gawk pkgs.coreutils ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      t=$(sensors | awk '/^Package id 0/ {print $4}')
+      fan=$(cat /sys/devices/platform/applesmc.768/fan1_input 2>/dev/null || echo -)
+      read -r l1 l5 l15 _ < /proc/loadavg
+      echo "$(date +%FT%R) $t fan $fan load $l1 $l5 $l15" >> /var/log/cputemp.log
+    '';
+   };
+  };
+
+  systemd.timers.cputemp-log = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*:0/5";
+      AccuracySec = "10s";
+    };
   };
 
   systemd.tmpfiles.rules = lib.optionals (jellyfinEnable && poolsAttached) [
