@@ -8,10 +8,8 @@ IgnoreUnknown UseKeychain
 UseKeychain yes
 AddKeysToAgent yes
 
-# Own NixOS hosts: forward the agent so git on them can reach GitHub with the
-# (passphrase-protected) key held by the machine you connect from (2026-09-18).
-Host upro umac ude fmini
-  ForwardAgent yes
+# Every machine has its own key, registered on GitHub (2026-10-19), so no agent
+# forwarding: a forwarded agent lets root on the far host sign with your key.
 
 Host wde
 HostName 116.203.126.183
@@ -23,14 +21,6 @@ Host lpi
 # 192.168.0.193 eth, 192.168.0.106 wlan, 10.55.0.1 usb
   Hostname lpi.local
   User bauerdic
-
-Host gitlab.com
-  Preferredauthentications publickey
-  IdentityFile ~/.ssh/id_rsa
-
-Host gitlab.cern.ch
-  Preferredauthentications publickey
-  IdentityFile ~/.ssh/id_rsa
 
 # Fermilab machines: account is bauerdic (same uid 6170, different name);
 # everything else defaults to latb (Host *). The Fermilab Macs appear on the
@@ -69,7 +59,6 @@ Host *
   IdentityFile   ~/.ssh/id_ed25519
 #   AddKeysToAgent yes
 #   UseKeychain yes
-#   IdentityFile ~/.ssh/id_rsa
 #   ForwardX11 yes
 #   ForwardX11Trusted yes
 #   GSSAPIAuthentication yes
