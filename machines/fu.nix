@@ -202,9 +202,9 @@ in {
   programs.mosh.enable = true;
 
   users.users.root.initialPassword = "root";
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOXZjedCEONef8tQoqk8iZYODg0VoONlyfIz5tFfWXz latb@lmini.local"
-  ];
+  # The fleet-wide shared key was retired 2026-10-19 (one key per machine now);
+  # root logins go through Tailscale SSH, which needs no authorized key.
+  users.users.root.openssh.authorizedKeys.keys = [ ];
 
   time.timeZone = "America/Chicago";
 
