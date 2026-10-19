@@ -373,7 +373,12 @@ in {
     };
   };
 
-  systemd.tmpfiles.rules = lib.optionals (jellyfinEnable && poolsAttached) [
+  systemd.tmpfiles.rules = [
+    # Turbo off (2026-10-19): the 14-year-old cooler lets the package hit its
+    # 105 °C limit at load 2-4 with the fan at max (2.6M throttle events in 14
+    # days). Base 2.3 GHz is plenty for a file/media server.
+    "w /sys/devices/system/cpu/intel_pstate/no_turbo - - - - 1"
+  ] ++ lib.optionals (jellyfinEnable && poolsAttached) [
     # jellyfin's database stores library and metadata paths as
     # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
     # pool directly; this keeps the stored paths valid.
