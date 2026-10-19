@@ -43,5 +43,8 @@ fi
 
 # 4. the CLI tools listed in ~/.config/mise/config.toml
 MISE_YES=1 "$MISE" install
+
+# 5. GUI apps listed in lite/apps.txt (macOS)
+"$DOTFILES/lite/apps.sh"
 echo
 echo "done — open a new shell. Update tools later with:  mise upgrade"
