@@ -50,7 +50,7 @@
        "menubarx"
        "menuwhere"
        "musescore"
-       "nikitabobko/tap/aerospace"
+     # "nikitabobko/tap/aerospace"  # dropped 2026-10-23 for macOS native tiling (darwin.nix); config kept in users/user/aerospace
      # "notchnook"
        "obsidian"
        "omnigraffle"

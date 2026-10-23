@@ -104,6 +104,7 @@ agz () {
 }
 
 ff () {
+  command -v aerospace >/dev/null || { echo "ff: needs AeroSpace (dropped 2026-10-23)" >&2; return 1; }
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 

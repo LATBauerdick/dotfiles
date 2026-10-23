@@ -21,7 +21,8 @@ xdg   nvim/init.lua                 vim/init.lua
 
 # AeroSpace reads only aerospace.toml here (or ~/.aerospace.toml); live, so
 # `aerospace reload-config` picks up edits without a make
-xdg   aerospace/aerospace.toml      aerospace/myAerospace.toml   live
+# dropped 2026-10-23 (macOS native tiling); restore to go back:
+#xdg   aerospace/aerospace.toml      aerospace/myAerospace.toml   live
 # xdg borders/bordersrc          borders/bordersrc       (disabled)
 xdg   yabai/yabairc                 yabai/yabairc
 xdg   skhd/skhdrc                   yabai/skhdrc

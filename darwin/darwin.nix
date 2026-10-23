@@ -88,10 +88,15 @@
         FXPreferredViewStyle = "clmv";
 
       };
-      spaces.spans-displays = true;
-      # macOS native tiling instead of a tiling WM (trial on ftop from
-      # 2026-10-23): Fill (fn-ctrl-F) keeps a normal window, so others can sit
-      # in front; margins are on/off only, their width is fixed by macOS
+      # "Displays have separate Spaces" ON (false here): macOS native tiling
+      # greys out Fill/halves/Arrange without it. AeroSpace wanted it off
+      # (true); AeroSpace was dropped 2026-10-23 — to go back, restore true,
+      # the cask + tap and the aerospace link in users/user/links.txt.
+      # Takes effect after logout/login.
+      spaces.spans-displays = false;
+      # macOS native tiling instead of a tiling WM (since 2026-10-23, after a
+      # trial on ftop): Fill (fn-ctrl-F) keeps a normal window, so others can
+      # sit in front; margins are on/off only, their width is fixed by macOS
       WindowManager = {
         EnableTiledWindowMargins = true;
         EnableTilingByEdgeDrag = true;
@@ -206,7 +211,7 @@
      enable = true;
      casks = myCasks;
      brews = myBrews;
-     taps = [ "nikitabobko/tap" ];
+     taps = [ ];  # was nikitabobko/tap (AeroSpace, dropped 2026-10-23)
      # masApps = myMasApps;
    # onActivation.cleanup = "zap";
      onActivation.autoUpdate = true;
