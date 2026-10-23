@@ -101,7 +101,7 @@
       CustomUserPreferences.NSGlobalDomain.AppleActionOnDoubleClick = "Fill";
       # Window menu shortcuts on ctrl-alt (^~), where AeroSpace had them, so
       # they work from the Planck too (it has no Apple fn/globe key). Halves on
-      # Colemak letters (LATB, 2026-10-23): h left, i right, e top, d bottom.
+      # Colemak letters (LATB, 2026-10-23): h left, i right, e top, n bottom.
       # One shortcut per menu item. Apps pick these up when relaunched. Needs
       # "Displays have separate Spaces" ON, else tiling items are greyed out.
       CustomUserPreferences.NSGlobalDomain.NSUserKeyEquivalents = {
@@ -111,7 +111,7 @@
         "Left" = "^~h";
         "Right" = "^~i";
         "Top" = "^~e";
-        "Bottom" = "^~d";
+        "Bottom" = "^~n";
         "Left & Right" = "^~s";
       };
       trackpad = {
