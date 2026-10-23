@@ -18,10 +18,12 @@ let
   tailnetName = "taild2340b.ts.net";
 
   zfsPools = [ "z3" "z4" "z5" ];
+  # syncoid --recvoptions: every replica read-only (see services.syncoid)
+  readOnly = "o readonly=on";
   # syncoid pulls umini:z1/<d> -> <pool>/<d>; unit names use "-" for "/"
   archivePull = pool: ds: builtins.listToAttrs (map (d: {
     name = "z1-" + builtins.replaceStrings [ "/" ] [ "-" ] d;
-    value = { source = "latb@umini:z1/${d}"; target = "${pool}/${d}"; };
+    value = { source = "latb@umini:z1/${d}"; target = "${pool}/${d}"; recvOptions = readOnly; };
   }) ds);
 in {
   imports =
@@ -372,15 +374,21 @@ in {
     # upload (~45 measured). The uncapped 2026-10-07 catch-up saturated it and
     # made home<->office traffic crawl (48 ms vs 19 ms). Hourly increments
     # are far below this; it only paces catch-ups and full sends.
+    # Every replica is received read-only (recvOptions below sets readonly=on
+    # locally on each dataset; not in commonArgs, which the module follows
+    # with its own per-command --recvoptions ''). The parents z3/s, z4, z5 stay writable: under a read-only
+    # parent zfs cannot create a new child's mountpoint dir, so each newly
+    # pulled dataset failed zfs-mount at the next boot (2026-10-12, -23).
     commonArgs = [ "--sshoption=StrictHostKeyChecking=accept-new" "--target-bwlimit=2.5M" ];
     # module default plus destroy, so syncoid can prune its own old
-    # syncoid_fmini_* marker snapshots on the target
-    localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" ];
+    # syncoid_fmini_* marker snapshots on the target, and readonly for the
+    # receive option above
+    localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" "readonly" ];
     commands = lib.genAttrs [
       "books" "c1" "c1-p2020" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
       "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks" "pin"
       "screensaver" "selects" "sjpegs" "syncthing"
-    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; })
+    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; recvOptions = readOnly; })
     # Archive tier (2026-10-10): photos/videos and music from umini's z1, into
     # two single-disk pools (z4 = 8 TB SkyHawk, z5 = 3 TB WD Red; separate
     # pools, not a stripe, so one dead disk loses one copy). Seeded locally
@@ -390,7 +398,7 @@ in {
     #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount <each source>
     # Plan: ~/Notes/Notes/Claude/2026-10-10-photos-setup.md
     // {
-      z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; };
+      z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; recvOptions = readOnly; };
     }
     // archivePull "z4" [ "Else/Aperture" "Else/Picture-else" "m/musicorigs" "m/musicjohannes" "m/musicam" ]
     // archivePull "z5" [ "m/music" "m/classical" "m/opera" ];
