@@ -99,6 +99,17 @@
       };
       # double-click a title bar = Fill (no nix-darwin option for it)
       CustomUserPreferences.NSGlobalDomain.AppleActionOnDoubleClick = "Fill";
+      # Window menu shortcuts on ctrl-alt (^~), where AeroSpace had them, so
+      # they work from the Planck too (it has no Apple fn/globe key). Colemak:
+      # h = left, i = right. Apps pick these up when relaunched.
+      CustomUserPreferences.NSGlobalDomain.NSUserKeyEquivalents = {
+        "Fill" = "^~f";
+        "Center" = "^~c";
+        "Return to Previous Size" = "^~r";
+        "Left" = "^~h";
+        "Right" = "^~i";
+        "Left & Right" = "^~s";
+      };
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = false;
