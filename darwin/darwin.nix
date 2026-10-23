@@ -89,6 +89,16 @@
 
       };
       spaces.spans-displays = true;
+      # macOS native tiling instead of a tiling WM (trial on ftop from
+      # 2026-10-23): Fill (fn-ctrl-F) keeps a normal window, so others can sit
+      # in front; margins are on/off only, their width is fixed by macOS
+      WindowManager = {
+        EnableTiledWindowMargins = true;
+        EnableTilingByEdgeDrag = true;
+        EnableTilingOptionAccelerator = true;
+      };
+      # double-click a title bar = Fill (no nix-darwin option for it)
+      CustomUserPreferences.NSGlobalDomain.AppleActionOnDoubleClick = "Fill";
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = false;
