@@ -182,6 +182,9 @@
      # upgrades are manual on every Mac (LATB, 2026-09-26): run `brew upgrade`
      # yourself; a switch only installs what is missing
      onActivation.upgrade = false;
+     # show what brew bundle installs (download/build/install lines), not
+     # only the "Homebrew bundle..." header
+     onActivation.extraFlags = [ "--verbose" ];
    };
 #   system.activationScripts.postUserActivation.text = ''
 #      # Following line should allow us to avoid a logout/login cycle
