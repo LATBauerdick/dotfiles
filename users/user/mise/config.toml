@@ -17,7 +17,7 @@ zoxide = "latest"
 direnv = "latest"
 oh-my-posh = "latest"
 jq = "latest"
-"github:herdrdev/herdr" = "latest"
+"github:herdrdev/herdr" = "0.9.4"  # pinned like lmini's brew herdr (brew pin); client and server must match — bump together
 
 [settings]
 experimental = true
