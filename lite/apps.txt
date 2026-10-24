@@ -9,3 +9,5 @@ Brave Browser.app          | https://laptop-updates.brave.com/latest/osx
 # approve the driver + system extension and Input Monitoring in System Settings.
 # Pinned URL is only for the first install — the app updates itself.
 Karabiner-Elements.app     | https://github.com/pqrs-org/Karabiner-Elements/releases/download/v16.3.0/Karabiner-Elements-16.3.0.dmg
+# Bitwarden's own "latest" link redirects to the universal .dmg on GitHub (needs macOS 12+)
+Bitwarden.app              | https://bitwarden.com/download/?app=desktop&platform=macos&variant=dmg
