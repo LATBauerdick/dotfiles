@@ -14,6 +14,7 @@ home  .oh-my-posh                   zsh/oh-my-posh
 home  .ssh/config                   ssh/sshconfig
 home  .gitconfig                    git/gitconfig
 home  .editorconfig                 vim/editorconfig
+home  .finicky.js                   finicky/finicky.js           live
 
 xdg   nvim/lua                      vim/lua
 xdg   nvim/after                    vim/after
