@@ -76,7 +76,7 @@ in
   power.restartAfterPowerFailure = true;
 
   # lmini-only, merged with darwin/darwinCasks.nix / darwinBrews.nix. Were
-  # installed by hand; declared 2026-10-26 so workstation/macs/restore-lmini.sh
+  # installed by hand; declared 2026-10-26 so workstation/macs/restore-lmini.md
   # gets them back. tailscale is the brew formula (root daemon, Tailscale SSH,
   # exit node), not the App Store app.
   homebrew.casks = [ "claude-code" "lunar" "zoom" ];
