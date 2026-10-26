@@ -2,12 +2,27 @@
 
 Bring a freshly installed Apple Silicon Mac back to what lmini has: user `latb`, nix-darwin + home-manager (`darwinConfigurations.lmini`), Homebrew casks/brews, App Store apps, Tailscale, Syncthing, the scheduled Claude jobs. Survey of lmini: 2026-10-26.
 
-Run the blocks one at a time, in Terminal, as `latb`. Each block is safe to re-run.
+Run the blocks one at a time, in Terminal. Step 0 runs as `btal`, everything after as `latb`. Each block is safe to re-run.
 
-## 0. Setup Assistant
+## 0. Setup Assistant: btal
 
-- Admin account, account name **`latb`** (home must be `/Users/latb`)
-- Sign in to the Apple ID — the App Store step needs it
+- Admin account, account name **`btal`** (gets UID 501, as on lmini)
+- No Apple ID needed here
+
+## 0b. Create latb (as btal)
+
+latb on lmini is **UID 6170**, primary group **80 (admin)**, not the usual 501/staff: keep both, so file ownership on synced and backed-up data matches. `sysadminctl`, not `scutil` (that only does host names). `-adminUser btal` gives latb a secure token, so it can unlock FileVault.
+
+```bash
+sudo sysadminctl -addUser latb -fullName "LATBauerdick" -UID 6170 -GID 80 \
+    -shell /bin/zsh -home /Users/latb -admin -password - \
+    -adminUser btal -adminPassword -           # prompts for latb's, then btal's password
+sudo createhomedir -c -u latb
+dscl . -read /Users/latb UniqueID PrimaryGroupID NFSHomeDirectory UserShell
+sysadminctl -secureTokenStatus latb           # check: ENABLED
+```
+
+Log out of btal, log in as **latb**, finish its first-login questions, and sign in to the Apple ID there (step 9, App Store, needs it). Everything below runs as latb.
 
 ## 1. Hostname
 
