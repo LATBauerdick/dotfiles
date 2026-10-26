@@ -75,6 +75,13 @@ in
   power.sleep.computer = "never";
   power.restartAfterPowerFailure = true;
 
+  # lmini-only, merged with darwin/darwinCasks.nix / darwinBrews.nix. Were
+  # installed by hand; declared 2026-10-26 so workstation/macs/restore-lmini.sh
+  # gets them back. tailscale is the brew formula (root daemon, Tailscale SSH,
+  # exit node), not the App Store app.
+  homebrew.casks = [ "claude-code" "lunar" "zoom" ];
+  homebrew.brews = [ "tailscale" ];
+
   # /home is a synthetic link to /Users (/etc/synthetic.conf, set up by hand
   # with /etc/fstab — boot-critical, kept out of nix; copies and notes in
   # ~/Sync/_configs/config/lmini). The automounter must not claim /home, so
