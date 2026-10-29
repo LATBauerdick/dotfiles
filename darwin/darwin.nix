@@ -16,6 +16,17 @@
     # which made latb untrusted and triggered restricted-setting warnings.)
     nix.settings.trusted-users = [ primaryUser ]; # module default already adds root
 
+    # Weekly GC of generations older than 30 days, plus store dedup (2026-10-29).
+    # Without it ftop's /nix grew to 70 GB on 58 system + 39 home-manager
+    # generations for a ~21 GB current closure; a user `nix-collect-garbage`
+    # cannot drop system generations, so nothing was ever dead.
+    nix.gc = {
+      automatic = true;
+      interval = { Weekday = 0; Hour = 3; Minute = 15; };
+      options = "--delete-older-than 30d";
+    };
+    nix.optimise.automatic = true;
+
     # SMB client: no packet signing — noticeably faster to umini, whose shares
     # are reachable from the LAN and the tailnet only (2026-10-11). The hash
     # lets nix-darwin take over lmini's hand-made copy of the same text.
