@@ -27,6 +27,8 @@ let
   plexEnable = true;
   jellyfinEnable = true;
   delugeEnable = true; # moved lmini -> umini 2026-10-04 (was on lmini since 09-26, upro before)
+  calibreWebEnable = true; # since 2026-10-30, read-only view of the MyBooks library
+  calibreLibrary = "/sync/mybooks/MyBooks/MyBooks";
   krb5Enable = true;
   tailscaleEnable = true;
   tailscaleRoutingServer = true; # since the 2026-10-04 cutover; upro is off
@@ -349,6 +351,22 @@ in {
    # cache (peak 7.4 G). On 2026-10-10 that plus a seed swapped umini to a
    # standstill. MemoryHigh is soft: the kernel reclaims deluged first, no kill.
    deluged.serviceConfig.MemoryHigh = lib.mkIf delugeEnable "2G";
+   # calibre-web must never write metadata.db: the desktop calibre on a Mac
+   # owns it and syncthing would turn a second writer into conflict copies.
+   # The files are latb 644, so the calibre-web user can't write anyway; this
+   # also drops the library from the module's ReadWritePaths.
+   calibre-web.serviceConfig.ReadWritePaths = lib.mkIf (calibreWebEnable && poolsAttached) (lib.mkForce [ ]);
+   # syncthing replaces metadata.db by rename and calibre-web keeps reading the
+   # old file, so restart it after a sync. The sleep debounces a burst of
+   # edits: the path unit does not re-trigger while this is still running.
+   calibre-web-reload = lib.mkIf (calibreWebEnable && poolsAttached) {
+    description = "Restart calibre-web after metadata.db changed";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      sleep 60
+      ${pkgs.systemd}/bin/systemctl try-restart calibre-web.service
+    '';
+   };
    # Fans loud at odd hours (2026-10-17): log package temperature, fan speed
    # and load every 5 min to see when, and whether jellyfin's rescheduled scans
    # fixed it. One line per sample in /var/log/cputemp.log.
@@ -371,6 +389,11 @@ in {
       OnCalendar = "*:0/5";
       AccuracySec = "10s";
     };
+  };
+
+  systemd.paths.calibre-web-reload = lib.mkIf (calibreWebEnable && poolsAttached) {
+    wantedBy = [ "paths.target" ];
+    pathConfig.PathChanged = "${calibreLibrary}/metadata.db";
   };
 
   systemd.tmpfiles.rules = [
@@ -454,6 +477,24 @@ in {
   # too. Both free on umini (checked 2026-10-04), so no chown -R is needed.
   users.users.jellyfin = lib.mkIf (jellyfinEnable && poolsAttached) { uid = 990; };
   users.groups.jellyfin = lib.mkIf (jellyfinEnable && poolsAttached) { gid = 988; };
+
+  # calibre-web: browser reader + OPDS (/opds) for the MyBooks library,
+  # tailnet only. Books are added and edited in desktop calibre, never here,
+  # so uploading and conversion stay off (conversion would pull in all of
+  # calibre and load the CPU). Users, shelves and reading state live in
+  # /var/lib/calibre-web/app.db, outside the synced folder.
+  # Published once by hand (persists in tailscaled state):
+  #   tailscale serve --bg --https=8443 http://127.0.0.1:8083
+  # First login admin/admin123 — change it.
+  services.calibre-web = {
+    enable = calibreWebEnable && poolsAttached;
+    listen = { ip = "127.0.0.1"; port = 8083; };
+    options = {
+      inherit calibreLibrary;
+      enableBookUploading = false;
+      enableBookConversion = false;
+    };
+  };
 
 # SMB file sharing
   services.gvfs.enable = true;
