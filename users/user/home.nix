@@ -76,11 +76,13 @@ in {
     ".npmrc".text = ''
        prefix=~/.npm-global
 '';
-    # Plain python3 (stdlib only) for workspace scripts and hooks. Linked alone
-    # into ~/.local/bin, which zshrc moves ahead of /usr/bin: putting all of
-    # the nix profile there would also swap in GNU coreutils for BSD date/stat.
-    # Otherwise `python3` is Apple's /usr/bin 3.9 (Homebrew links only python3.x).
-    ".local/bin/python3".source = "${pkgs.python3}/bin/python3";
+    # python3 for workspace scripts and hooks: stdlib plus openpyxl (KRONOS /
+    # rate spreadsheets) and matplotlib (plots). Linked alone into ~/.local/bin,
+    # which zshrc moves ahead of /usr/bin: putting all of the nix profile there
+    # would also swap in GNU coreutils for BSD date/stat. Otherwise `python3` is
+    # Apple's /usr/bin 3.9 (Homebrew links only python3.x).
+    ".local/bin/python3".source =
+      "${pkgs.python3.withPackages (ps: [ ps.openpyxl ps.matplotlib ])}/bin/python3";
   };
 
 # Tex installation
