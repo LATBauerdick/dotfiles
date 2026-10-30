@@ -116,12 +116,11 @@ mas install 1491071483  # Tot
 
 ## 10. Syncthing and Tailscale
 
-Both installed by the switch (`darwinBrews.nix`, `lmini-darwin.nix`). Tailscale is the brew formula as a root daemon; lmini runs Tailscale SSH and is an exit node.
+Syncthing is the brew formula; Tailscale is the standalone app (`tailscale-app` cask, `lmini-darwin.nix`), because lmini must be able to use fmini's exit node. ssh into lmini is Apple's sshd, restricted by `services.openssh` in `lmini-darwin.nix` to latb from tailnet addresses, keys only.
 
 ```bash
 brew services start syncthing
-sudo brew services start tailscale
-sudo tailscale up --ssh --advertise-exit-node --hostname=lmini   # opens a login URL
+open -a Tailscale   # log in; Settings: Launch at login, Run as exit node, Install CLI
 ```
 
 Tailscale admin console: approve the exit node, disable key expiry for lmini.

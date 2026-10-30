@@ -77,10 +77,24 @@ in
 
   # lmini-only, merged with darwin/darwinCasks.nix / darwinBrews.nix. Were
   # installed by hand; declared 2026-10-26 so workstation/macs/restore-lmini.md
-  # gets them back. tailscale is the brew formula (root daemon, Tailscale SSH,
-  # exit node), not the App Store app.
-  homebrew.casks = [ "claude-code" "lunar" "zoom" ];
-  homebrew.brews = [ "tailscale" ];
+  # gets them back. Tailscale is the standalone GUI app since 2026-10-30, not
+  # the brew formula: open-source tailscaled cannot *use* an exit node, and
+  # lmini needs fmini's to reach the Fermilab network. It can still offer one.
+  homebrew.casks = [ "claude-code" "lunar" "tailscale-app" "zoom" ];
+
+  # ssh into lmini is Apple's sshd (Remote Login), no longer Tailscale SSH.
+  # launchd listens on :22 on every interface, so ListenAddress does nothing;
+  # AllowUsers lets in only latb from tailnet addresses (Tailscale's IPv4 CGNAT
+  # and IPv6 ULA ranges), keys only. A LAN or Wi-Fi connection is refused after
+  # the key exchange. The tailnet ACL still decides which nodes reach :22.
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      AllowUsers latb@100.64.0.0/10 latb@fd7a:115c:a1e0::/48
+    '';
+  };
 
   # /home is a synthetic link to /Users (/etc/synthetic.conf, set up by hand
   # with /etc/fstab — boot-critical, kept out of nix; copies and notes in
