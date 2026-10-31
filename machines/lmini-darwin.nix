@@ -79,7 +79,8 @@ in
   # installed by hand; declared 2026-10-26 so workstation/macs/restore-lmini.md
   # gets them back. Tailscale is the standalone GUI app since 2026-10-30, not
   # the brew formula: open-source tailscaled cannot *use* an exit node, and
-  # lmini needs fmini's to reach the Fermilab network. It can still offer one.
+  # lmini needs fmini's to reach the Fermilab network. Don't let it offer one:
+  # a node advertising an exit node cannot use one (umini is the home exit).
   homebrew.casks = [ "claude-code" "lunar" "tailscale-app" "zoom" ];
 
   # ssh into lmini is Apple's sshd (Remote Login), no longer Tailscale SSH.

@@ -120,10 +120,19 @@ Syncthing is the brew formula; Tailscale is the standalone app (`tailscale-app` 
 
 ```bash
 brew services start syncthing
-open -a Tailscale   # log in; Settings: Launch at login, Run as exit node, Install CLI
+open -a Tailscale   # log in; then Start at login, Install CLI, Allow local network access
 ```
 
-Tailscale admin console: approve the exit node, disable key expiry for lmini.
+Do **not** turn on "Run as exit node": a node that offers an exit node cannot use one, and the app greys out exit-node selection (umini is the home exit node). Tailscale admin console: delete any stale `lmini` node first (else the new one is `lmini-1`), disable key expiry.
+
+If "Start at login" will not switch on (log: smd `getEffectiveDisposition … record not found`, status 3), Launch Services has stale copies of Tailscale.app from another volume, e.g. a migrated disk. List and unregister them, then retry:
+
+```bash
+L=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+$L -dump | grep -E '^path:.*Tailscale.*\.app' | sort -u
+$L -u '/Volumes/<old>/Applications/Tailscale.app'   # repeat until gone
+$L -f -R /Applications/Tailscale.app
+```
 
 ## 11. Reboot
 
