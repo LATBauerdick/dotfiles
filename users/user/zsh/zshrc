@@ -195,7 +195,7 @@ flakify() {
 
 # Load git-ignored secrets (KAGI_API_KEY, ANTHROPIC_AUTH_TOKEN_FNAL, ...).
 # The file lives outside this repo; only the source line is tracked here.
-[ -f "$HOME/Sync/OpenClaw/credentials/secrets.env" ] && source "$HOME/Sync/OpenClaw/credentials/secrets.env"
+[ -f "$HOME/aiws/credentials/secrets.env" ] && source "$HOME/aiws/credentials/secrets.env"
 
 # Run Claude Code against Fermilab's LiteLLM (Azure) proxy in an isolated
 # config dir, so it does NOT inherit the claude.ai subscription login (which

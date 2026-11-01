@@ -296,7 +296,8 @@ in {
 
   # Off the syncthing network since 2026-10: the z3/s copies now come from
   # umini by syncoid (see the zfs section). ~/Notes and ~/Sync become
-  # symlinks into the read-only replica /sync/syncthing/{Notes,Sync}.
+  # symlinks into the read-only replica /sync/syncthing/{Notes,Sync}; the AI
+  # workspace is /sync/syncthing/aiws in the same dataset (2026-11-01).
   services.syncthing = {
     enable = false;
     dataDir = "/home/latb/";

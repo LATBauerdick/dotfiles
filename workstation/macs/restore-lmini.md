@@ -144,7 +144,7 @@ sudo shutdown -r now
 
 ## 12. Syncthing pairing
 
-<http://127.0.0.1:8384>: add the other devices, accept the folders **Sync → `~/Sync`** and **Notes → `~/Notes`**. Wait until `~/Sync/OpenClaw` is complete before step 14.
+<http://127.0.0.1:8384>: add the other devices, accept the folders **Sync → `~/Sync`**, **Notes → `~/Notes`** and **aiws → `~/aiws`** (the AI workspace; its own folder since 2026-11-01, with a per-device `.stignore` — copy it from another device). Wait until `~/aiws` is complete before step 14.
 
 ## 13. Logins and keys
 
@@ -159,8 +159,8 @@ claude          # log in — the token lands in the login Keychain the launchd j
 
 ```bash
 mkdir -p ~/Library/Logs/claude
-cp ~/Sync/OpenClaw/scripts/launchd/local.claude.*.plist ~/Library/LaunchAgents/
-for p in evening-summary memory-distill morning-schedule; do
+cp ~/aiws/scripts/launchd/local.claude.*.plist ~/Library/LaunchAgents/
+for p in evening-summary memory-distill morning-schedule notes-snapshot; do
     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.claude.$p.plist
 done
 launchctl list | grep local.claude
