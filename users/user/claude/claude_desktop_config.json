@@ -9,7 +9,7 @@
       "command": "npx",
       "args": [
         "@modelcontextprotocol/server-filesystem",
-        "~/Notes/Notes"
+        "~/Notes"
       ]
     },
     "git-clutter": {

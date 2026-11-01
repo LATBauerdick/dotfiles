@@ -24,7 +24,7 @@
 # Tailscale: the open-source tailscaled from Homebrew (not the GUI app), so
 # that Tailscale SSH can serve ssh with Remote Login OFF — no sshd for
 # Fermilab's scanners to find (2026-10-04, as on ftop; runbook
-# ~/Notes/Notes/Claude/2026-09-18-tailscale-ssh-macos-runbook.md). tailscaled
+# ~/Notes/Claude/2026-09-18-tailscale-ssh-macos-runbook.md). tailscaled
 # must run as root, which brew bundle's start_service cannot do; once, by hand:
 #   sudo brew services start tailscale
 #   sudo tailscale up --ssh --operator=bauerdic --hostname=fstu

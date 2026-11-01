@@ -4,7 +4,7 @@
 # Rebuilt 2026-10-04 from upro.nix's server half on umac.nix's x86 base.
 #
 # Migration notes (do these at cutover, not before). Runbook pattern:
-# ~/Notes/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
+# ~/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
 #  - zfsPools starts EMPTY; flip to the full list once the enclosures are
 #    attached. Export every pool on upro first: a cleanly exported pool imports
 #    here without -f. All hosts run OpenZFS 2.4.4 — do NOT `zpool upgrade`, so
@@ -272,7 +272,7 @@ in {
   # The DEVONthink sync stores are left out: they are ephemeral transport, and
   # the databases themselves are versioned on lmini (Time Machine) and off-site
   # (Arq -> fmini).
-  # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
+  # Plan: ~/Notes/Claude/2026-10-06-backup-structure-plan.md
   # Disk health. smartd watches every disk and runs a weekly short self-test
   # (Sun 03:00); no long tests, which take a day on big disks behind USB and
   # collide with scrubs. -d sat: the pool disks sit behind USB/Thunderbolt SATA

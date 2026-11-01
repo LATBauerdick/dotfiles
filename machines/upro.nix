@@ -2,7 +2,7 @@
 # Derived from umac.nix (2026-09-17); upro takes over umac's ZFS/media-server role.
 #
 # Migration notes (do these at cutover, not before). Full runbook:
-# ~/Notes/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
+# ~/Notes/Claude/2026-09-19-umac-to-upro-cutover-runbook.md
 #  - zfsPools below starts EMPTY; flip to the full list once the USB drives are
 #    attached. NixOS never force-imports (ZFS_FORCE only via the `zfs_force=1`
 #    kernel parameter), so `zpool export` every pool on umac first; a cleanly

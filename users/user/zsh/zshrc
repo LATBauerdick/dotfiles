@@ -100,7 +100,7 @@ alias xo='xargs -I % open %'
 alias xe='xargs -I % $EDITOR %'
 
 agz () {
-  ag -l -0 ${1} ~/Notes/Notes | xargs -0 $EDITOR
+  ag -l -0 ${1} ~/Notes | xargs -0 $EDITOR
 }
 
 ff () {

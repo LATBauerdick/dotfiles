@@ -366,7 +366,7 @@ in {
   # databases reach fmini through Arq.
   # umini side, once (persists in the pool):
   #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount z0/s
-  # Plan: ~/Notes/Notes/Claude/2026-10-06-backup-structure-plan.md
+  # Plan: ~/Notes/Claude/2026-10-06-backup-structure-plan.md
   services.syncoid = {
     enable = true;
     interval = "*:15"; # after umini's sanoid run on the hour
@@ -396,7 +396,7 @@ in {
     # the first incremental pull). hirez, audiobooks, z1/m/books: not backed
     # up (LATB). umini side, once:
     #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount <each source>
-    # Plan: ~/Notes/Notes/Claude/2026-10-10-photos-setup.md
+    # Plan: ~/Notes/Claude/2026-10-10-photos-setup.md
     // {
       z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; recvOptions = readOnly; };
     }
