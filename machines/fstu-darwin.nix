@@ -114,4 +114,16 @@
       KeepAlive = true;
     };
   };
+
+  # Screen Sharing for the tailnet only: the built-in service, told to accept
+  # local connections alone, reached through Tailscale SSH (`vnc-ssh fstu`,
+  # users/user/home.nix). Port 5900 may still show as listening on the LAN, but
+  # nothing off the machine gets a session (2026-11-02). The "no Screen Sharing
+  # on FNAL Macs" rule in the Tailscale SSH runbook was a recollection, not a
+  # known policy. Order matters: local-only is written before the service loads.
+  system.activationScripts.postActivation.text = ''
+    /usr/bin/defaults write /Library/Preferences/com.apple.RemoteManagement VNCOnlyLocalConnections -bool true
+    /bin/launchctl enable system/com.apple.screensharing
+    /bin/launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.screensharing.plist 2>/dev/null || true
+  '';
 }

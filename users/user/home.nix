@@ -62,6 +62,21 @@ in {
       pkgs.nodejs_22
       # ollamaOverride
       # pkgs.ollama
+    ] ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+      # Screen Sharing through ssh: `vnc-ssh fstu`. The far side accepts local
+      # connections only (machines/fstu-darwin.nix), so the tunnel is the way in.
+      # The remote `sleep` only keeps ssh up until Screen Sharing connects; ssh
+      # then stays for as long as the forwarded connection is open, so closing
+      # the window closes the tunnel. Local port 5901+ since 5900 may be our own.
+      (pkgs.writeShellScriptBin "vnc-ssh" ''
+        set -euo pipefail
+        HOST="''${1:?usage: vnc-ssh HOST}"
+        PORT=5901
+        while /usr/bin/nc -z 127.0.0.1 "$PORT" 2>/dev/null; do PORT=$((PORT + 1)); done
+        /usr/bin/ssh -f -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 \
+            -L "$PORT:127.0.0.1:5900" "$HOST" sleep 30
+        /usr/bin/open "vnc://localhost:$PORT"
+      '')
     ];
   # Prepended to PATH in this order by hm-session-vars.sh. Do NOT express
   # PATH as a multi-line '' string in sessionVariables: the trailing newline
