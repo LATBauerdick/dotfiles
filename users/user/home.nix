@@ -77,12 +77,15 @@ in {
        prefix=~/.npm-global
 '';
     # python3 for workspace scripts and hooks: stdlib plus openpyxl (KRONOS /
-    # rate spreadsheets) and matplotlib (plots). Linked alone into ~/.local/bin,
-    # which zshrc moves ahead of /usr/bin: putting all of the nix profile there
-    # would also swap in GNU coreutils for BSD date/stat. Otherwise `python3` is
-    # Apple's /usr/bin 3.9 (Homebrew links only python3.x).
+    # rate spreadsheets) and matplotlib (plots); on the Macs also chromadb, for
+    # the zettel index (scripts/zettel-index.py; ~2 GB closure, prebuilt in
+    # cache.nixos.org, so the NixOS servers go without). Linked alone into
+    # ~/.local/bin, which zshrc moves ahead of /usr/bin: putting all of the nix
+    # profile there would also swap in GNU coreutils for BSD date/stat. Otherwise
+    # `python3` is Apple's /usr/bin 3.9 (Homebrew links only python3.x).
     ".local/bin/python3".source =
-      "${pkgs.python3.withPackages (ps: [ ps.openpyxl ps.matplotlib ])}/bin/python3";
+      "${pkgs.python3.withPackages (ps: [ ps.openpyxl ps.matplotlib ]
+        ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ ps.chromadb ])}/bin/python3";
   };
 
 # Tex installation
