@@ -318,7 +318,7 @@
       home-manager = home-manager;
       system = "aarch64-darwin";
       user   = "bauerdic";
-      dir   =  "/home/bauerdic";
+      dir   =  "/Users/bauerdic";
       extraModules = [ ./machines/fstu-darwin.nix ];
       extraSpecialArgs = { # pass arguments
         withGUI = false;
