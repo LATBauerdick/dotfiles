@@ -120,10 +120,11 @@
   # users/user/home.nix). Port 5900 may still show as listening on the LAN, but
   # nothing off the machine gets a session (2026-11-02). The "no Screen Sharing
   # on FNAL Macs" rule in the Tailscale SSH runbook was a recollection, not a
-  # known policy. Order matters: local-only is written before the service loads.
+  # known policy. Only the flag lives here; the service itself is switched on in
+  # System Settings › General › Sharing (access: bauerdic only). Enabling it with
+  # launchctl starts screensharingd but leaves com.apple.access_screensharing
+  # empty, and every client gets "Screen Sharing is not permitted" (2026-11-02).
   system.activationScripts.postActivation.text = ''
     /usr/bin/defaults write /Library/Preferences/com.apple.RemoteManagement VNCOnlyLocalConnections -bool true
-    /bin/launchctl enable system/com.apple.screensharing
-    /bin/launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.screensharing.plist 2>/dev/null || true
   '';
 }
