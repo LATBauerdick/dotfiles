@@ -99,4 +99,19 @@
   # prompt; see above). MDM energy settings, if any, win over these.
   power.sleep.computer = "never";
   power.restartAfterPowerFailure = true;
+
+  # They do win: MDM's EnergySaver profile sets System Sleep Timer 30, and pmset
+  # showed sleep 30 despite the line above. Amphetamine only holds sleep off
+  # while bauerdic is logged in, so fstu slept logged out at the console
+  # (2026-11-02, 11:48, during the home move) and OpenZFS 2.4.1 panicked on
+  # wake (new_vnode: free vnode still referenced), zeroing 19 nix store paths.
+  # An assertion from boot needs no login, and the profile only sets the timer.
+  # -s holds only on AC power, which is all a Mac Studio has.
+  launchd.daemons.caffeinate = {
+    serviceConfig = {
+      ProgramArguments = [ "/usr/bin/caffeinate" "-s" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
 }
