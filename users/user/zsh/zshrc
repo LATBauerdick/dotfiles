@@ -194,8 +194,34 @@ flakify() {
 }
 
 # Load git-ignored secrets (KAGI_API_KEY, ANTHROPIC_AUTH_TOKEN_FNAL, ...).
-# The file lives outside this repo; only the source line is tracked here.
-[ -f "$HOME/aiws/credentials/secrets.env" ] && source "$HOME/aiws/credentials/secrets.env"
+# The file lives outside this repo, in the synced workspace that Claude can write,
+# so it is parsed, never sourced: sourcing would run whatever lands there in every
+# shell. Only `[export ]NAME=value` lines are taken, one pair of surrounding quotes
+# is stripped, and nothing is expanded. NAME must look like a credential
+# (…_KEY, _TOKEN, _SECRET, _URL, _ID, optionally with a suffix); names that steer
+# tools (ANTHROPIC_, CLAUDE_, GIT_, GH_, SSH_, DYLD_, …) are refused with a warning.
+_load_secrets() {
+  emulate -L zsh -o extendedglob
+  local f="${1:-$HOME/aiws/credentials/secrets.env}" line k v
+  [[ -f $f ]] || return 0
+  while IFS= read -r line || [[ -n $line ]]; do
+    line=${line%$'\r'}
+    [[ $line =~ '^[[:space:]]*(export[[:space:]]+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$' ]] || continue
+    k=$match[2] v=$match[3]
+    if [[ $k != ANTHROPIC_AUTH_TOKEN_FNAL && ( \
+          $k != [A-Z]*_(KEY|TOKEN|SECRET|URL|ID)(|_[A-Z0-9]##) || \
+          $k == (ANTHROPIC|CLAUDE|GIT|GH|GITHUB|SSH|AWS|DYLD|LD|NODE|PYTHON|NIX|HOMEBREW)_* ) ]]; then
+      print -u2 "secrets.env: skipped $k (not a credential name)"
+      continue
+    fi
+    if [[ $v == \"*\" || $v == \'*\' ]]; then
+      v=${v:1:-1}
+    fi
+    export "$k=$v"
+  done < "$f"
+}
+_load_secrets
+unfunction _load_secrets
 
 # Run Claude Code against Fermilab's LiteLLM (Azure) proxy in an isolated
 # config dir, so it does NOT inherit the claude.ai subscription login (which
