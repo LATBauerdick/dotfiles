@@ -341,6 +341,6 @@ claude-or() {
 }
 
 # Remote Control server in the current dir (run it in a herdr pane in ~/aiws).
-# Session names get the hostname as prefix (the default); stopping it archives
-# its sessions.
-alias crc='claude remote-control --spawn same-dir --no-create-session-in-dir'
+# Session names get "rc: " as prefix (default would be the hostname); stopping
+# it archives its sessions.
+alias crc='claude remote-control --spawn same-dir --no-create-session-in-dir --remote-control-session-name-prefix "rc: "'
