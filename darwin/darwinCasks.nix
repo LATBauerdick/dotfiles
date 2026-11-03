@@ -83,6 +83,7 @@
        "xquartz"
        "xnviewmp"
      # "zoom"
+       "zen-browser"
        #"eaglefiler"
        #"font-comic-mono"
        #"font-iosevka-nerd-font"
