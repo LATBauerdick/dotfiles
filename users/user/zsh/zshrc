@@ -339,3 +339,8 @@ claude-or() {
   CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1" \
   command claude "$@"
 }
+
+# Remote Control server in the current dir (run it in a herdr pane in ~/aiws).
+# Session names get the hostname as prefix (the default); stopping it archives
+# its sessions.
+alias crc='claude remote-control --spawn same-dir --no-create-session-in-dir'
