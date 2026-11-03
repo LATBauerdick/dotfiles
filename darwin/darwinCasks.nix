@@ -20,7 +20,7 @@
 #      "chatgpt"
        "darrylmorley/whatcable/whatcable"
        "devonthink"
-       "discord"
+     # "discord"
 ####   "fantastical"
        "finicky"               # browser router: ⌥-click → Brave, else Safari (users/user/finicky)
        "firefox"
