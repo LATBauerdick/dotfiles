@@ -116,8 +116,8 @@
       # double-click a title bar = Fill (no nix-darwin option for it)
       CustomUserPreferences.NSGlobalDomain.AppleActionOnDoubleClick = "Fill";
       # Tiling on ctrl-alt (h/i/e/n halves, shift = Arrange pair, f/c/r) is
-      # now the Karabiner rule "Window tiling on ctrl-option" (assets/
-      # complex_modifications/window-tiling.json), which emits macOS's own
+      # now done by the Karabiner window-tiling rules (users/user/karabiner,
+      # see its README.md), which emit macOS's own
       # fn-ctrl shortcuts. Since 2026-11-04; it replaced NSUserKeyEquivalents
       # here (^~h etc.), which failed in Zen/Firefox: ⌥i, ⌥e and ⌥n are dead
       # keys on the U.S. layout, and Gecko swallows them before the menu. The

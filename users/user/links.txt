@@ -30,7 +30,11 @@ xdg   skhd/skhdrc                   yabai/skhdrc
 xdg   limelight/limelightrc         yabai/limelightrc
 xdg   awesome                       awesome
 xdg   amethyst                      amethyst
-xdg   karabiner/assets              karabiner/assets
+# Karabiner: the whole folder, live — karabiner.json is shared by every Mac and
+# Karabiner writes it on every UI change (commit those). Rules pick keyboards
+# by device conditions: Apple (built-in/1452/76) vs all others; see
+# karabiner/README.md
+xdg   karabiner                     karabiner                    live
 # config ends with `config-file = ?~/.config/ghostty/myConfig` (the ? skips it
 # silently when missing); both live, so cmd+shift+, reloads edits without a make
 xdg   ghostty/config                ghostty/config               live
