@@ -115,27 +115,16 @@
       };
       # double-click a title bar = Fill (no nix-darwin option for it)
       CustomUserPreferences.NSGlobalDomain.AppleActionOnDoubleClick = "Fill";
-      # Window menu shortcuts on ctrl-alt (^~), where AeroSpace had them, so
-      # they work from the Planck too (it has no Apple fn/globe key). Halves on
-      # Colemak letters (LATB, 2026-10-23): h left, i right, e top, n bottom;
-      # with shift, the two-window Arrange layouts.
-      # One shortcut per menu item. Apps pick these up when relaunched. Needs
-      # "Displays have separate Spaces" ON, else tiling items are greyed out.
-      CustomUserPreferences.NSGlobalDomain.NSUserKeyEquivalents = {
-        "Fill" = "^~f";
-        "Center" = "^~c";
-        "Return to Previous Size" = "^~r";
-        "Left" = "^~h";
-        "Right" = "^~i";
-        "Top" = "^~e";
-        "Bottom" = "^~n";
-        # Arrange (focused window first, next window in the other half):
-        # shift + the same direction key
-        "Left & Right" = "^~$h";
-        "Right & Left" = "^~$i";
-        "Top & Bottom" = "^~$e";
-        "Bottom & Top" = "^~$n";
-      };
+      # Tiling on ctrl-alt (h/i/e/n halves, shift = Arrange pair, f/c/r) is
+      # now the Karabiner rule "Window tiling on ctrl-option" (assets/
+      # complex_modifications/window-tiling.json), which emits macOS's own
+      # fn-ctrl shortcuts. Since 2026-11-04; it replaced NSUserKeyEquivalents
+      # here (^~h etc.), which failed in Zen/Firefox: ⌥i, ⌥e and ⌥n are dead
+      # keys on the U.S. layout, and Gecko swallows them before the menu. The
+      # user equivalents also replaced the built-in fn-ctrl ones; after
+      # removing them run once per Mac:
+      #   defaults delete -g NSUserKeyEquivalents   (then relaunch apps)
+      # Needs "Displays have separate Spaces" ON, else tiling items are greyed out.
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = false;
