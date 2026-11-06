@@ -36,6 +36,14 @@ when the physical keyboard has none. This replaced `NSUserKeyEquivalents` in
 `darwin.nix` (2026-11-04): option-i/e/n are dead keys on the U.S. layout, and
 Gecko apps (Zen) swallowed them before the Window menu saw them.
 
+## Devices
+
+Karabiner leaves a device that also reports as a mouse alone by default. The
+BT-500 adapter for the mechanical keyboard ("USB/BT Adapter for KB/Mouse",
+Handheld Scientific, vendor 12457, product 2) is keyboard + mouse in one, so
+`devices` turns "Modify events" on for it explicitly. Do the same for any other
+combo receiver: `karabiner_cli --list-connected-devices` shows the identifiers.
+
 ## Kept from before
 
 `devices` ignores Apple product 544 (vendor 1452), as fstu did before the shared

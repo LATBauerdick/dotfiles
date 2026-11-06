@@ -10443,6 +10443,15 @@
                         "product_id": 544
                     },
                     "ignore": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 2,
+                        "vendor_id": 12457
+                    },
+                    "ignore": false
                 }
             ]
         }
