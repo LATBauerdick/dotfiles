@@ -22,7 +22,7 @@
        "devonthink"
      # "discord"
 ####   "fantastical"
-       "finicky"               # browser router: ⌥-click → Brave, else Safari (users/user/finicky)
+       "finicky"               # browser router: ⌥-click → Brave, ⇧-click → Zen, else Safari (users/user/finicky)
        "firefox"
        "folx"
        "font-source-sans-3"    # Source Sans 3: slide decks (Slides artifacts, pptx export)

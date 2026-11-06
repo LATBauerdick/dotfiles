@@ -10,5 +10,10 @@ export default {
       match: () => finicky.getModifierKeys().option,
       browser: "Brave Browser",
     },
+    {
+      // hold ⇧ Shift while clicking a link → Zen (bundle id, so the app name doesn't matter)
+      match: () => finicky.getModifierKeys().shift,
+      browser: "app.zen-browser.zen",
+    },
   ],
 };
