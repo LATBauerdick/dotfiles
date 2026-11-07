@@ -20,10 +20,10 @@ let
   zfsPools = [ "z3" "z4" "z5" ];
   # syncoid --recvoptions: every replica read-only (see services.syncoid)
   readOnly = "o readonly=on";
-  # syncoid pulls umini:z1/<d> -> <pool>/<d>; unit names use "-" for "/"
-  archivePull = pool: ds: builtins.listToAttrs (map (d: {
-    name = "z1-" + builtins.replaceStrings [ "/" ] [ "-" ] d;
-    value = { source = "latb@umini:z1/${d}"; target = "${pool}/${d}"; recvOptions = readOnly; };
+  # syncoid pulls umini:<src>/<d> -> <pool>/<d>; unit names use "-" for "/"
+  archivePull = src: pool: ds: builtins.listToAttrs (map (d: {
+    name = "${src}-" + builtins.replaceStrings [ "/" ] [ "-" ] d;
+    value = { source = "latb@umini:${src}/${d}"; target = "${pool}/${d}"; recvOptions = readOnly; };
   }) ds);
 in {
   imports =
@@ -401,8 +401,11 @@ in {
     // {
       z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; recvOptions = readOnly; };
     }
-    // archivePull "z4" [ "Else/Aperture" "Else/Picture-else" "m/musicorigs" "m/musicjohannes" "m/musicam" ]
-    // archivePull "z5" [ "m/music" "m/classical" "m/opera" ];
+    // archivePull "z1" "z4" [ "m/musicorigs" "m/musicjohannes" "m/musicam" ]
+    # z1/Else moved to umini's z3/Else on 2026-11-07 (zfs send -R, snapshots
+    # kept, so these pulls stay incremental); the target on z4 is unchanged.
+    // archivePull "z3" "z4" [ "Else/Aperture" "Else/Picture-else" ]
+    // archivePull "z1" "z5" [ "m/music" "m/classical" "m/opera" ];
   };
 
   # Long retention for what syncoid brings in. fmini takes no snapshots of its

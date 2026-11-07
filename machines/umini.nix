@@ -309,7 +309,9 @@ in {
       (map (d: "z0/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
       (_: { useTemplate = [ "ignore" ]; })
     // lib.genAttrs
-      (map (d: "z1/${d}") [ "Else/Aperture" "Else/Picture-else" "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
+      ((map (d: "z1/${d}") [ "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
+       # z1/Else moved here 2026-11-07 to free z1
+       ++ (map (d: "z3/${d}") [ "Else/Aperture" "Else/Picture-else" ]))
       (_: { useTemplate = [ "archive" ]; });
   };
 
