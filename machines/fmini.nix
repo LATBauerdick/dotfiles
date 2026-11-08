@@ -349,7 +349,7 @@ in {
   boot.zfs.forceImportRoot = false; # root is ext4; never force-import (26.11 default)
 
   # Off-site copy of umini's syncthing datasets: fmini PULLS umini's sanoid
-  # snapshots (z0/s/* -> z3/s/*) every hour, so umini cannot touch these
+  # snapshots (z3/s/* -> z3/s/*; on z0/s until 2026-11-08) every hour, so umini cannot touch these
   # backups and fmini is no longer a syncthing device. The z3/s datasets were
   # seeded by syncoid from umini in 2025-01 and still share that snapshot, so
   # the first run is incremental.
@@ -366,7 +366,7 @@ in {
   # (dtsync, dtpsync, dtasync) are not copied: ephemeral transport — the
   # databases reach fmini through Arq.
   # umini side, once (persists in the pool):
-  #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount z0/s
+  #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount z3/s
   # Plan: ~/Notes/Claude/2026-10-06-backup-structure-plan.md
   services.syncoid = {
     enable = true;
@@ -389,7 +389,7 @@ in {
       "books" "c1" "c1-p2020" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
       "docs" "docsarchive" "incoming" "lr" "mybooks" "pin"
       "screensaver" "selects" "sjpegs" "syncthing"
-    ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; recvOptions = readOnly; })
+    ] (d: { source = "latb@umini:z3/s/${d}"; target = "z3/s/${d}"; recvOptions = readOnly; })
     # Archive tier (2026-10-10): photos/videos and music from umini's z1, into
     # two single-disk pools (z4 = 8 TB SkyHawk, z5 = 3 TB WD Red; separate
     # pools, not a stripe, so one dead disk loses one copy). Seeded locally

@@ -11,7 +11,7 @@
 #    the pools can still go back to upro or umac.
 #  - delete the stub dirs under /data (left from 2025) BEFORE the pool mounts
 #    over them; an empty deluge ssl/ stub is what crashed deluged on upro.
-#  - plex/jellyfin data keep their -umac names (z0/d/plex-umac etc.).
+#  - plex/jellyfin data keep their -umac names (z3/d/plex-umac etc.).
 #  - syncthing: copy upro's ~/.config/syncthing (identity OMJXHGY) over umini's
 #    own (YNPSBSG, retired) with the service stopped on both.
 #  - tailscale: routes + exit node move from upro at cutover
@@ -266,9 +266,12 @@ in {
 
   # Snapshots of the syncthing datasets: short-term undo next to the master
   # copy, and the source of fmini's off-site history (fmini pulls them with
-  # syncoid and keeps them far longer). Kept short because z0 is ~94 % full
+  # syncoid and keeps them far longer). Kept short because the z3 mirror is small
   # and snapshots pin deleted data; the one monthly exists only so fmini has
-  # monthlies to keep. latb holds `zfs allow` send rights on z0/s for that pull.
+  # monthlies to keep. latb holds `zfs allow` send rights on z3/s for that pull.
+  # The syncthing (z3/s) and service (z3/d) datasets moved from z0 to the small
+  # z3 mirror on 2026-11-08 (zfs send -R, snapshots kept, mountpoints /sync and
+  # /data unchanged): active data on z3, static media on the big pools.
   # The DEVONthink sync stores are left out: they are ephemeral transport, and
   # the databases themselves are versioned on lmini (Time Machine) and off-site
   # (Arq -> fmini).
@@ -300,13 +303,13 @@ in {
     };
     datasets = {
       "z1/p" = { useTemplate = [ "archive" ]; recursive = true; };
-      "z0/s" = {
+      "z3/s" = {
         useTemplate = [ "undo" ];
         recursive = true;
         processChildrenOnly = true;
       };
     } // lib.genAttrs
-      (map (d: "z0/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
+      (map (d: "z3/s/${d}") [ "dtsync" "dtpsync" "dtasync" ])
       (_: { useTemplate = [ "ignore" ]; })
     // lib.genAttrs
       ((map (d: "z1/${d}") [ "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
@@ -412,12 +415,12 @@ in {
 
   services.pulseaudio.enable = false;
 
-  nixpkgs.config.plex.plexname = "umac"; # plex data dataset is z0/d/plex-umac; rename both or neither
+  nixpkgs.config.plex.plexname = "umac"; # plex data dataset is z3/d/plex-umac; rename both or neither
   services.plex.enable = plexEnable && poolsAttached;
 
   services.deluge = {
     enable = delugeEnable;
-    # dataset z0/d/deluge; same path as on lmini, so torrents resume as they are
+    # dataset z3/d/deluge; same path as on lmini, so torrents resume as they are
     dataDir = "/data/deluge";
     web.enable = delugeEnable;
     web.openFirewall = delugeEnable;
@@ -472,7 +475,7 @@ in {
   services.jellyfin = {
     enable = jellyfinEnable && poolsAttached;
     openFirewall = true;
-    # Dataset z0/d/jellyfin-umac mounts at /data/jellyfin-umac
+    # Dataset z3/d/jellyfin-umac mounts at /data/jellyfin-umac
     dataDir = "/data/jellyfin-umac/jellyfin";
   };
   # The dataset is owned by umac's dynamic jellyfin ids 990/988, pinned on upro
