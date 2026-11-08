@@ -402,9 +402,9 @@ in {
       z1-p = { source = "latb@umini:z1/p"; target = "z4/p"; recursive = true; recvOptions = readOnly; };
     }
     // archivePull "z1" "z4" [ "m/musicorigs" "m/musicjohannes" "m/musicam" ]
-    # z1/Else moved to umini's z3/Else on 2026-11-07 (zfs send -R, snapshots
-    # kept, so these pulls stay incremental); the target on z4 is unchanged.
-    // archivePull "z3" "z4" [ "Else/Aperture" "Else/Picture-else" ]
+    # Else moved z1 -> z3 (2026-11-07) -> z0 (2026-11-08) on umini (zfs send -R,
+    # snapshots kept, so these pulls stay incremental); the target on z4 is unchanged.
+    // archivePull "z0" "z4" [ "Else/Aperture" "Else/Picture-else" ]
     // archivePull "z1" "z5" [ "m/music" "m/classical" "m/opera" ];
   };
 

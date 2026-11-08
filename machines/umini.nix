@@ -313,8 +313,8 @@ in {
       (_: { useTemplate = [ "ignore" ]; })
     // lib.genAttrs
       ((map (d: "z1/${d}") [ "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
-       # z1/Else moved here 2026-11-07 to free z1
-       ++ (map (d: "z3/${d}") [ "Else/Aperture" "Else/Picture-else" ]))
+       # Else: z1 -> z3 (2026-11-07) -> z0 (2026-11-08); static, so on the big disks
+       ++ (map (d: "z0/${d}") [ "Else/Aperture" "Else/Picture-else" ]))
       (_: { useTemplate = [ "archive" ]; });
   };
 
