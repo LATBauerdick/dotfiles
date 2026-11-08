@@ -387,7 +387,7 @@ in {
     localTargetAllow = [ "change-key" "compression" "create" "mount" "mountpoint" "receive" "rollback" "destroy" "readonly" ];
     commands = lib.genAttrs [
       "books" "c1" "c1-p2020" "c1-p2021" "c1-p2022" "c1-p2023" "c1-p2024" "c1-p2025"
-      "docs" "docsarchive" "incoming" "jpegs" "lr" "mybooks" "pin"
+      "docs" "docsarchive" "incoming" "lr" "mybooks" "pin"
       "screensaver" "selects" "sjpegs" "syncthing"
     ] (d: { source = "latb@umini:z0/s/${d}"; target = "z3/s/${d}"; recvOptions = readOnly; })
     # Archive tier (2026-10-10): photos/videos and music from umini's z1, into
