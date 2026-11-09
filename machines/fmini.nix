@@ -394,8 +394,8 @@ in {
     # two single-disk pools (z4 = 8 TB SkyHawk, z5 = 3 TB WD Red; separate
     # pools, not a stripe, so one dead disk loses one copy). Seeded locally
     # on umini from snapshot seed_2026-10-10 (destroy it on both sides after
-    # the first incremental pull). hirez, audiobooks, z1/m/books: not backed
-    # up (LATB). umini side, once:
+    # the first incremental pull). z1/m/books: not backed up until LATB has
+    # cleaned it up. umini side, once:
     #   zfs allow -u latb bookmark,hold,send,snapshot,destroy,mount <each source>
     # Plan: ~/Notes/Claude/2026-10-10-photos-setup.md
     // {
@@ -405,7 +405,14 @@ in {
     # Else moved z1 -> z3 (2026-11-07) -> z0 (2026-11-08) on umini (zfs send -R,
     # snapshots kept, so these pulls stay incremental); the target on z4 is unchanged.
     // archivePull "z0" "z4" [ "Else/Aperture" "Else/Picture-else" ]
-    // archivePull "z1" "z5" [ "m/music" "m/classical" "m/opera" ];
+    # The rest of Else (~175 G, unique: VMs, Stuff, RootData, Applications-Else)
+    # had no second copy; added 2026-11-08. First pull is a full send (~1 day at the cap).
+    // archivePull "z0" "z4" [ "Else/Applications-Else" "Else/Stuff" "Else/VMs" "Else/RootData" ]
+    // archivePull "z1" "z5" [ "m/music" "m/classical" "m/opera" ]
+    # hirez + audiobooks (~850 G) moved to umini's z0 on 2026-11-08; until
+    # then they had no second copy. No local seed: the first pull is a full
+    # send at the 2.5 MB/s cap (~4 days), into z3/m (3.3 T free).
+    // archivePull "z0" "z3" [ "m/hirez" "m/audiobooks" ];
   };
 
   # Long retention for what syncoid brings in. fmini takes no snapshots of its

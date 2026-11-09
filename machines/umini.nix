@@ -314,7 +314,10 @@ in {
     // lib.genAttrs
       ((map (d: "z1/${d}") [ "m/musicorigs" "m/musicjohannes" "m/musicam" "m/music" "m/classical" "m/opera" ])
        # Else: z1 -> z3 (2026-11-07) -> z0 (2026-11-08); static, so on the big disks
-       ++ (map (d: "z0/${d}") [ "Else/Aperture" "Else/Picture-else" ]))
+       ++ (map (d: "z0/${d}") [ "Else/Aperture" "Else/Picture-else"
+                                 "Else/Applications-Else" "Else/Stuff" "Else/VMs" "Else/RootData" ])
+       # hirez, audiobooks: moved z1 -> z0 2026-11-08 and backed up from then on
+       ++ (map (d: "z0/${d}") [ "m/hirez" "m/audiobooks" ]))
       (_: { useTemplate = [ "archive" ]; });
   };
 
