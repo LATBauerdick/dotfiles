@@ -223,6 +223,10 @@ _load_secrets() {
 _load_secrets
 unfunction _load_secrets
 
+# Sealed Claude sessions: read the workspace memory, write nothing back.
+# `sealed new|open|list|close <topic>` — see ~/Notes/Claude/2026-11-09-sealed-sessions.md
+alias sealed="$HOME/aiws/scripts/sealed.sh"
+
 # Run Claude Code against Fermilab's LiteLLM (Azure) proxy in an isolated
 # config dir, so it does NOT inherit the claude.ai subscription login (which
 # would otherwise shadow ANTHROPIC_AUTH_TOKEN and cause 401s). Requires the
