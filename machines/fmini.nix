@@ -412,7 +412,10 @@ in {
     # hirez + audiobooks (~850 G) moved to umini's z0 on 2026-11-08; until
     # then they had no second copy. No local seed: the first pull is a full
     # send at the 2.5 MB/s cap (~4 days), into z3/m (3.3 T free).
-    // archivePull "z0" "z3" [ "m/hirez" "m/audiobooks" ];
+    // archivePull "z0" "z3" [ "m/hirez" "m/audiobooks" ]
+    # Roon's backups (2026-11-15, ~40 G full send). The 2025-01 copy that sat at
+    # z3/d/roon shared no snapshot with umini; renamed to z3/d/roon-2025-01.
+    // archivePull "z3" "z3" [ "d/roon" ];
   };
 
   # Long retention for what syncoid brings in. fmini takes no snapshots of its
@@ -440,6 +443,7 @@ in {
       "z3/s" = { useTemplate = [ "photos" ]; recursive = true; processChildrenOnly = true; };
       "z4"   = { useTemplate = [ "archive" ]; recursive = true; processChildrenOnly = true; };
       "z5"   = { useTemplate = [ "archive" ]; recursive = true; processChildrenOnly = true; };
+      "z3/d/roon" = { useTemplate = [ "archive" ]; };
     } // lib.genAttrs
       (map (d: "z3/s/${d}") [ "syncthing" "docs" "docsarchive" "mybooks" "lr" "incoming" ])
       (_: { useTemplate = [ "history" ]; });

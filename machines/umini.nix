@@ -320,7 +320,11 @@ in {
        ++ (map (d: "z0/${d}") [ "Else/Aperture" "Else/Picture-else"
                                  "Else/Applications-Else" "Else/Stuff" "Else/VMs" "Else/RootData" ])
        # hirez, audiobooks: moved z1 -> z0 2026-11-08 and backed up from then on
-       ++ (map (d: "z0/${d}") [ "m/hirez" "m/audiobooks" ]))
+       ++ (map (d: "z0/${d}") [ "m/hirez" "m/audiobooks" ])
+       # Roon's own backups (02:00 every 2 days, 10 kept); the live database
+       # in /var/lib/roon-server is on the root disk, so these are its only copy.
+       # Pulled by fmini since 2026-11-15.
+       ++ [ "z3/d/roon" ])
       (_: { useTemplate = [ "archive" ]; });
   };
 
