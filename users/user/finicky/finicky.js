@@ -10,5 +10,10 @@ export default {
       match: () => finicky.getModifierKeys().option,
       browser: "app.zen-browser.zen",
     },
+    {
+      // hold shift while clicking a link → Safari (bundle id, so the app name doesn't matter)
+      match: () => finicky.getModifierKeys().shift,
+      browser: "com.apple.Safari",
+    },
   ],
 };
