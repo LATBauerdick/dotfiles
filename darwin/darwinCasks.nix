@@ -67,7 +67,7 @@
      # "quiet-reader"
      # "raindropio"
      # "raycast"
-     # "roon"
+       "roon"
        "rustdesk"
        "slack"
        "superduper"
