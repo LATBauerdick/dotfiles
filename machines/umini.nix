@@ -11,7 +11,9 @@
 #    the pools can still go back to upro or umac.
 #  - delete the stub dirs under /data (left from 2025) BEFORE the pool mounts
 #    over them; an empty deluge ssl/ stub is what crashed deluged on upro.
-#  - plex/jellyfin data keep their -umac names (z3/d/plex-umac etc.).
+#  - plex/jellyfin datasets were renamed -umac -> -umini on 2026-11-14
+#    (z3/d/plex-umini, z3/d/jellyfin-umini); /data/jellyfin-umac stays as a
+#    symlink because jellyfin.db stores that path (~62k rows).
 #  - syncthing: copy upro's ~/.config/syncthing (identity OMJXHGY) over umini's
 #    own (YNPSBSG, retired) with the service stopped on both.
 #  - tailscale: routes + exit node move from upro at cutover
@@ -107,7 +109,7 @@ in {
 
     firewall.enable = true;
     firewall.allowPing = true;
-# ports for services (slimserver, roon ARC, plex, deluge web) — as umac.
+# ports for services (slimserver, roon ARC, plex, deluge web).
 # SMB (445/139) is not here: it is opened on the LAN and tailnet interfaces
 # only, next to sshd's rule below.
     firewall.allowedTCPPorts = [ 53 3389 9000 3483 32400 55000 55002 3000 ];
@@ -412,14 +414,18 @@ in {
     "w /sys/devices/system/cpu/intel_pstate/no_turbo - - - - 1"
   ] ++ lib.optionals (jellyfinEnable && poolsAttached) [
     # jellyfin's database stores library and metadata paths as
-    # /var/lib/jellyfin/... (umac's hand-made symlink). dataDir points at the
-    # pool directly; this keeps the stored paths valid.
-    "L+ /var/lib/jellyfin - - - - /data/jellyfin-umac/jellyfin"
+    # /var/lib/jellyfin/... (umac's hand-made symlink) and as
+    # /data/jellyfin-umac/... (the dataset's name until 2026-11-14). dataDir
+    # points at the pool directly; these two links keep the stored paths valid.
+    "L+ /var/lib/jellyfin - - - - /data/jellyfin-umini/jellyfin"
+    # plain L, not L+: never replaces what is there, so it is a no-op while the
+    # old dataset is still mounted at this path
+    "L /data/jellyfin-umac - - - - /data/jellyfin-umini"
   ];
 
   services.pulseaudio.enable = false;
 
-  nixpkgs.config.plex.plexname = "umac"; # plex data dataset is z3/d/plex-umac; rename both or neither
+  nixpkgs.config.plex.plexname = hostname; # plex data dataset is z3/d/plex-umini; rename both or neither
   services.plex.enable = plexEnable && poolsAttached;
 
   services.deluge = {
@@ -485,8 +491,8 @@ in {
   services.jellyfin = {
     enable = jellyfinEnable && poolsAttached;
     openFirewall = true;
-    # Dataset z3/d/jellyfin-umac mounts at /data/jellyfin-umac
-    dataDir = "/data/jellyfin-umac/jellyfin";
+    # Dataset z3/d/jellyfin-umini mounts at /data/jellyfin-umini
+    dataDir = "/data/jellyfin-umini/jellyfin";
   };
   # The dataset is owned by umac's dynamic jellyfin ids 990/988, pinned on upro
   # too. Both free on umini (checked 2026-10-04), so no chown -R is needed.
