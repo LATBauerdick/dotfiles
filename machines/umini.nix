@@ -29,6 +29,7 @@ let
   delugeEnable = true; # moved lmini -> umini 2026-10-04 (was on lmini since 09-26, upro before)
   calibreWebEnable = true; # since 2026-10-30, read-only view of the MyBooks library
   calibreLibrary = "/sync/mybooks/MyBooks/MyBooks";
+  roonEnable = true; # Roon subscription renewed 2026-11-14; state in /var/lib/roon-server
   krb5Enable = true;
   tailscaleEnable = true;
   tailscaleRoutingServer = true; # since the 2026-10-04 cutover; upro is off
@@ -429,9 +430,15 @@ in {
     web.openFirewall = delugeEnable;
   };
 
+  services.roon-server = {
+    enable = roonEnable;
+    openFirewall = roonEnable;
+  };
+
   services.slimserver.enable = false;
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "roon-server"
       "unrar"
   ];
 
