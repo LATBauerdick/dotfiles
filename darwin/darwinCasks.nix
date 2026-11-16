@@ -69,6 +69,7 @@
      # "raycast"
        "roon"
        "rustdesk"
+       "saffsanity/sill/sill"
        "slack"
        "superduper"
        "switchresx"
