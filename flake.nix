@@ -29,6 +29,11 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     limainit.url = "github:nixos-lima/nixos-lima";
 
+    # Rex (superlogical.com/rex/docs/linux/installation.md, "Nix and NixOS"):
+    # the vendor's flake, packaging the release binary. Linux servers only;
+    # the Macs run Rex.app. Upgrade with `nix flake update rex`.
+    rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+
     # Apple Silicon (Asahi) support for upro. If the Asahi kernel ever fails to
     # build against fresh unstable, drop the follows line to use the project's
     # tested nixpkgs pin instead.
@@ -185,6 +190,13 @@
         withGUI = false;
         isDesktop = true;
       };
+      # Personal Rex server as the systemd user unit `rex` (home-manager module,
+      # per the Rex docs). Runs at boot because umini.nix sets linger for latb.
+      # Do not also run `rex server install` here: it refuses existing units.
+      extraModules = [{
+        home-manager.sharedModules = [ inputs.rex.homeManagerModules.default ];
+        home-manager.users.latb.services.rex.enable = true;
+      }];
     };
 
     # MacBook Pro 14" M1 Max (Asahi Linux). Firmware lives on the ESP

@@ -172,6 +172,11 @@ in {
 
   programs.zsh.enable = true;
 
+  # Rex personal server (home-manager `services.rex`, set in flake.nix): the
+  # Rex docs say to run `loginctl enable-linger` once so it starts at boot and
+  # survives logout; this is the declarative form.
+  users.users.latb.linger = true;
+
   security.sudo = {
     wheelNeedsPassword = false;
     extraRules = [
