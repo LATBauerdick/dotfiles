@@ -348,3 +348,8 @@ claude-or() {
 # Session names get "rc: " as prefix (default would be the hostname); stopping
 # it archives its sessions.
 alias crc='claude remote-control --spawn same-dir --no-create-session-in-dir --remote-control-session-name-prefix "rc: "'
+
+# Rex terminal blocks: Rex puts its bin dir first in PATH and sets REX_BIN_DIR,
+# but /etc/zshenv (nix-darwin), path_helper and the path= lines above rebuild
+# PATH and drop it. Prepend it again — keep this the last PATH change in the file.
+if [ -n "$REX_BIN_DIR" ]; then export PATH="$REX_BIN_DIR:$PATH"; fi

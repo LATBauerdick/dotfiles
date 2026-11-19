@@ -101,6 +101,13 @@ in {
     ".local/bin/python3".source =
       "${pkgs.python3.withPackages (ps: [ ps.openpyxl ps.matplotlib ]
         ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ ps.chromadb ])}/bin/python3";
+  } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+    # rex outside Rex's own terminals (ssh logins, other terminal apps), where
+    # there is no REX_BIN_DIR for zshrc to prepend. Points at the server's
+    # Versions/Current, so it follows Rex updates; dangling (and ignored by
+    # the shell) on a Mac without Rex.
+    ".local/bin/rex".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex";
   };
 
 # Tex installation
