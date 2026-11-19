@@ -172,7 +172,7 @@ launchctl kickstart gui/$(id -u)/local.claude.morning-schedule   # allow the Cal
 - Finicky as default browser: System Settings › Desktop & Dock › Default web browser
 - Karabiner: driver extension + Input Monitoring
 - Accessibility: PopClip, LaunchBar, Leader Key
-- Full Disk Access: `/opt/homebrew/bin/herdr`, then `launchctl kickstart -k gui/$(id -u)/local.herdr.server`
+- Rex: open Rex.app once (registers its launchd server), then Full Disk Access for `~/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app`; DEVONthink Automation is granted at the first AppleScript from a Rex tab (e.g. `dt-sync-inventory.sh`). `crc` runs in a Rex tab in `~/aiws`
 - Claude's private memory is not synced: copy `~/.claude/projects/-Users-latb-Sync-OpenClaw/` from a backup if wanted
 
 ## 16. Install apps by hand
