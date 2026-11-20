@@ -28,7 +28,7 @@
        "hookmark"
        "houdahspot"
        "iina"
-       "itsycal"
+       { name = "itsycal"; args = { appdir = "/Applications"; }; }  # pinned: zshrc HOMEBREW_CASK_OPTS sends casks to ~/Applications
        "karabiner-elements"
        "keycastr"
      # "kicad"
