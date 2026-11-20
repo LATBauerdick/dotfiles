@@ -8,9 +8,9 @@
   # nix hash convert --hash-algo sha256 --to sri). Latest production version:
   # tar -xjOf RoonServer_linuxx64.tar.bz2 RoonServer/VERSION
   let
-    version = "2.74.1719"; # latest production 2026-11-04 (nixpkgs 26.11 has 2.70.1671)
+    version = "2.75.1725"; # latest production 2026-11-19 (nixpkgs 26.11 has 2.70.1671)
     urlVersion = builtins.replaceStrings [ "." ] [ "0" ] version;
-    vhash = "sha256-r5/CeKL6WcUW7BCF1dUCB4OwAiRwAqOV34h7mz3qySc=";
+    vhash = "sha256-V2ewKGZTyc47mzsL1SG93tkBluKkJvEr/nSNxV6iIgk=";
   in
 self: super: {
 
