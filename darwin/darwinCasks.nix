@@ -19,6 +19,8 @@
      # "discord"
        "firefox"
        "folx"
+       "font-libre-baskerville" # Libre Baskerville: DCM Plan deck (Upgrades/)
+       "font-public-sans"      # Public Sans: DCM Plan deck (Upgrades/); Keynote can't use pptx-embedded fonts
        "font-source-sans-3"    # Source Sans 3: slide decks (Slides artifacts, pptx export)
        "ghostty"
        "grammarly-desktop"
