@@ -52,16 +52,16 @@
      # "onyx"
      # "opera"
        "orion"
-       "pdf-expert"
+       { name = "pdf-expert"; args = { appdir = "/Applications"; }; }
        "plex"
-       "popclip"
+       { name = "popclip"; args = { appdir = "/Applications"; }; }
      # "qmk-toolbox"
      # "qobuz"
      # "quicksilver"
      # "quiet-reader"
      # "raindropio"
      # "raycast"
-       "roon"
+       { name = "roon"; args = { appdir = "/Applications"; }; }
        "rustdesk"
        "saffsanity/sill/sill"
        "slack"
