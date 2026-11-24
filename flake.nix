@@ -338,6 +338,21 @@
       };
     };
 
+    # The FNAL MacBook Air M5 (hostname mac-149207, ssh nickname fair), set up
+    # fresh 2026-11-24; `make darwin` maps the hostname to it (Makefile).
+    darwinConfigurations.fair = mkDarwin {
+      nixpkgs = nixpkgs;
+      home-manager = home-manager;
+      system = "aarch64-darwin";
+      user   = "bauerdic";
+      dir   =  "/Users/bauerdic";
+      extraModules = [ ./machines/fair-darwin.nix ];
+      extraSpecialArgs = { # pass arguments
+        withGUI = false;
+        isDesktop = true;
+      };
+    };
+
     darwinConfigurations.btalmac = mkDarwin {
       nixpkgs = nixpkgs;
       home-manager = home-manager;

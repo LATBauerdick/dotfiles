@@ -17,7 +17,8 @@ MACNAME ?= m1mac
 DARWIN_HOSTS := lmini
 # Fermilab Macs keep their MDM hostname mac-<property number>; map it to the
 # per-host config's nickname (case-folded: MDM may set it in upper case)
-DARWIN_ALIAS := $(if $(filter mac-144343,$(shell echo $(NIXNAME) | tr A-Z a-z)),fstu,)
+NIXNAME_LC := $(shell echo $(NIXNAME) | tr A-Z a-z)
+DARWIN_ALIAS := $(if $(filter mac-144343,$(NIXNAME_LC)),fstu,$(if $(filter mac-149207,$(NIXNAME_LC)),fair,))
 DARWIN_TARGET := $(or $(DARWIN_ALIAS),$(if $(filter $(NIXNAME),$(DARWIN_HOSTS)),$(NIXNAME),$(MACNAME).$(USER)))
 
 # nixpkgs 26.11 dropped x86_64-darwin, so the nix targets stop on an Intel Mac
