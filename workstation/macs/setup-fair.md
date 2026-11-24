@@ -42,10 +42,10 @@ shutdown -r now
 
 If the root shell is gone before the `chown` ran: `login bauerdic` in Terminal gives a shell with the new uid, where `sudo` works again; put the old number (`stat -f %u ~`) in place of `$OLD`.
 
-After logging in again, the second command must print nothing:
+After logging in again, the second command must print nothing (it skips the iCloud folders, which make a full walk very slow; silence is the good result):
 
 ```bash
-id -u; find ~ -xdev ! -user 6170 2>/dev/null | head
+id -u; find ~ -xdev \( -path ~/Library/Mobile\ Documents -o -path ~/Library/CloudStorage \) -prune -o ! -user 6170 -print 2>/dev/null | head
 ```
 
 FileVault and SecureToken hang on the account's GeneratedUID, not the numeric uid, so login and disk unlock should be unaffected; the primary group stays `staff` (20). ⚠️ Not tested on a Jamf / Platform SSO Mac. To undo: the same `dscl` line with the numbers swapped, and the reverse `chown`.
