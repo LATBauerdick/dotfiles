@@ -18,21 +18,29 @@ Give Terminal **Full Disk Access** first (System Settings › Privacy & Security
 id -u; dscl . -list /Users UniqueID | grep -w 6170      # current uid; the grep must print nothing
 ```
 
+Open a **root shell first** and stay in it for the next three blocks. Once the uid has changed, the old shell's uid belongs to nobody and `sudo` answers "you do not exist in the passwd database" (seen 2026-11-24).
+
 ```bash
-OLD=$(id -u); sudo dscl . -change /Users/bauerdic UniqueID $OLD 6170
+sudo -s
 ```
 
-Same Terminal window, so `$OLD` is still set — everything the old uid owned, in the home and outside it:
+```bash
+OLD=$(id -u bauerdic); echo $OLD; dscl . -change /Users/bauerdic UniqueID $OLD 6170
+```
+
+Everything the old uid owned, in the home and outside it. "Operation not permitted" on a few system-protected files is harmless:
 
 ```bash
-sudo find /System/Volumes/Data -xdev -user $OLD -exec chown -h 6170 {} + 2>/dev/null
+find /System/Volumes/Data -xdev -user $OLD -exec chown -h 6170 {} +; stat -f %u /Users/bauerdic      # 6170
 ```
 
 Reboot at once: running processes still carry the old uid.
 
 ```bash
-sudo shutdown -r now
+shutdown -r now
 ```
+
+If the root shell is gone before the `chown` ran: `login bauerdic` in Terminal gives a shell with the new uid, where `sudo` works again; put the old number (`stat -f %u ~`) in place of `$OLD`.
 
 After logging in again, the second command must print nothing:
 
