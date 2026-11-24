@@ -8,13 +8,47 @@ Run the blocks one at a time, in Terminal, as bauerdic. Each block is safe to re
 
 Differences from before the repair: the home is **`/Users/bauerdic`** (was `/home/bauerdic`; no `/home` link at all — sandboxed daemons and the Claude app both want the physical path), and fair has its own flake output `.#fair` instead of the shared `m1mac.bauerdic`.
 
-## 0. Check the starting point
+## 0. uid 6170
+
+MDM creates bauerdic with the next free uid (501/502); the fleet uses **6170** for it, so file ownership matches on external disks and backups. Do it first, while almost nothing belongs to the account. It runs from bauerdic's own Terminal (MDM allows no second admin at the console).
+
+Give Terminal **Full Disk Access** first (System Settings › Privacy & Security), else the ownership change fails on `~/Library/Mail`, Safari and the like. Quit every other app.
 
 ```bash
-id -un; echo $HOME; hostname -s; uname -m; id -u
+id -u; dscl . -list /Users UniqueID | grep -w 6170      # current uid; the grep must print nothing
 ```
 
-Expect `bauerdic`, `/Users/bauerdic`, `MAC-149207` (pinned by MDM — do not change it; `make darwin` maps it to `fair`), `arm64`. The uid is whatever MDM gave; the old one was 6170. Nothing below depends on it.
+```bash
+OLD=$(id -u); sudo dscl . -change /Users/bauerdic UniqueID $OLD 6170
+```
+
+Same Terminal window, so `$OLD` is still set — everything the old uid owned, in the home and outside it:
+
+```bash
+sudo find /System/Volumes/Data -xdev -user $OLD -exec chown -h 6170 {} + 2>/dev/null
+```
+
+Reboot at once: running processes still carry the old uid.
+
+```bash
+sudo shutdown -r now
+```
+
+After logging in again, the second command must print nothing:
+
+```bash
+id -u; find ~ -xdev ! -user 6170 2>/dev/null | head
+```
+
+FileVault and SecureToken hang on the account's GeneratedUID, not the numeric uid, so login and disk unlock should be unaffected; the primary group stays `staff` (20). ⚠️ Not tested on a Jamf / Platform SSO Mac. To undo: the same `dscl` line with the numbers swapped, and the reverse `chown`.
+
+## 0b. Check the starting point
+
+```bash
+id -un; id -u; echo $HOME; hostname -s; uname -m
+```
+
+Expect `bauerdic`, `6170`, `/Users/bauerdic`, `MAC-149207` (pinned by MDM — do not change it; `make darwin` maps it to `fair`), `arm64`.
 
 ## 1. Command Line Tools and Rosetta
 
