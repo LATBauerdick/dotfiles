@@ -263,7 +263,9 @@ find ~/.hermes/hermes-agent ~/.hermes/bin -type l ! -exec test -e {} \; -print  
 hermes --version                # 0.21.1
 ```
 
-If it does not start, the venv's interpreter is the first thing to look at (a uv-managed python under ftop's home that was not in the tarball). `auth.json` is per machine: start `hermes` in `~/aiws` and log in.
+`auth.json` is per machine: start `hermes` in `~/aiws` and log in.
+
+**Done 2026-11-25, and what differed from the recipe above:** the venv's interpreter is uv's `cpython-3.11.15` under `~/.local/share/uv/python`, which the tarball leaves out — copy that directory too and include it in the rewrite and symlink steps (its `cpython-3.11-…` link is absolute). Copied with rsync from lmini (ftop → lmini → fair) once ftop took ssh (step 12b applied there); a single `tar | ssh` pipe stalled. With GNU tools first on the PATH use `/usr/bin/grep` and `/usr/bin/sed` for the rewrite. The five `~/.hermes/bin/browser*`/`bu` links dangle on fair and on ftop (uv tool `browser-use` is not installed).
 
 ## 12b. ssh into fair
 
