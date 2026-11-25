@@ -17,6 +17,7 @@
        "darrylmorley/whatcable/whatcable"
        "devonthink"
      # "discord"
+       "finicky"               # link router; config users/user/finicky → ~/.finicky.js
        "firefox"
        "folx"
        "font-libre-baskerville" # Libre Baskerville: DCM Plan deck (Upgrades/)
