@@ -265,6 +265,28 @@ hermes --version                # 0.21.1
 
 If it does not start, the venv's interpreter is the first thing to look at (a uv-managed python under ftop's home that was not in the tarball). `auth.json` is per machine: start `hermes` in `~/aiws` and log in.
 
+## 12b. ssh into fair (temporary, only when needed)
+
+Fermilab's 2018 `/etc/ssh/sshd_config` lists removed algorithms (line 40 `Ciphers …arcfour…`, line 41 `MACs …hmac-ripemd160`) and sets `PubkeyAuthentication no`, so with Remote Login on, sshd resets every connection (`sudo /usr/sbin/sshd -t`: "Bad SSH2 cipher spec"). Fermilab allows Kerberos ssh only, so open it for a task and close it again. Four things are needed (all four bit on 2026-11-24):
+
+1. Remote Login on, and **bauerdic in "Allow access for"** (otherwise: key accepted, then "Connection closed").
+2. The config fix — key login from tailnet addresses only, passwords off:
+
+```bash
+sudo cp -p /etc/ssh/sshd_config /etc/ssh/sshd_config.fnal-2018 && sudo sed -i '' -E 's/^(Ciphers|MACs) /#&/' /etc/ssh/sshd_config && printf '\nPasswordAuthentication no\nKbdInteractiveAuthentication no\nMatch Address 100.64.0.0/10,fd7a:115c:a1e0::/48\n    PubkeyAuthentication yes\n' | sudo tee -a /etc/ssh/sshd_config
+sudo /usr/sbin/sshd -t && echo config-ok
+```
+
+3. lmini's key in fair's `authorized_keys` (fair → lmini works after step 9):
+
+```bash
+ssh latb@lmini 'cat ~/.ssh/id_ed25519.pub' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys
+```
+
+4. On lmini, fair's host key is new after a wipe: `ssh-keygen -R mac-149207`, then accept the new one.
+
+Close again: `sudo cp -p /etc/ssh/sshd_config.fnal-2018 /etc/ssh/sshd_config`, Remote Login off.
+
 ## 13. DEVONthink
 
 Do **not** open DEVONthink before its databases are in place. A new sync peer is seeded by **copying the `.dtBase2` files from lmini**, never by downloading from a sync store; only then does fair join `DTsync`. Do this with Claude on lmini.
@@ -283,5 +305,5 @@ sudo shutdown -r now
 - Karabiner: driver extension + Input Monitoring
 - Accessibility: PopClip, LaunchBar, Leader Key
 - Rex: open Rex.app once (registers its launchd server)
-- App Store apps are not declarative; lmini's list is in `restore-lmini.md`, step 9
+- App Store apps: see step 16
 - Remote Login: leave it off (the Tailscale app cannot serve Tailscale SSH; fair is maintained from a Claude session on fair)
